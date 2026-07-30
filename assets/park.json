@@ -1,0 +1,78 @@
+{
+  "updated": "2026-07-29T21:00:00+03:00",
+  "source": "demo",
+  "machines": [
+    {
+      "type": "Автокран",
+      "icon": "i-crane",
+      "img": "assets/img/crane-25.jpg",
+      "name": "Ивановец КС-45717, 25 т",
+      "specs": ["25 тонн", "стрела 21 м", "вылет 20 м"],
+      "status": "free",
+      "status_text": "Свободен завтра, 30 июля",
+      "price": "от 16 300 ₽",
+      "unit": "/ смена",
+      "cta": "Забронировать"
+    },
+    {
+      "type": "Автокран",
+      "icon": "i-crane",
+      "img": "assets/img/crane-100.jpg",
+      "name": "Liebherr LTM 1100, 100 т",
+      "specs": ["100 тонн", "стрела 52 м", "гусёк 19 м"],
+      "status": "part",
+      "status_text": "31 июля — занят до 14:00",
+      "price": "под запрос",
+      "unit": "",
+      "cta": "Забронировать"
+    },
+    {
+      "type": "Автокран",
+      "icon": "i-crane",
+      "img": "assets/img/crane-500.jpg",
+      "name": "Liebherr LTM 1500, 500 т",
+      "specs": ["500 тонн", "тяжёлый монтаж", "с сопровождением"],
+      "status": "busy",
+      "status_text": "Занят до 3 августа",
+      "price": "под запрос",
+      "unit": "",
+      "cta": "Уточнить сроки"
+    },
+    {
+      "type": "Автовышка",
+      "icon": "i-lift",
+      "img": "assets/img/lift-28.jpg",
+      "name": "Автовышка Hyundai, 28 м",
+      "specs": ["28 метров", "люлька 3 м", "город"],
+      "status": "free",
+      "status_text": "Свободна сегодня",
+      "price": "от 9 900 ₽",
+      "unit": "/ смена",
+      "cta": "Забронировать"
+    },
+    {
+      "type": "Манипулятор",
+      "icon": "i-manip",
+      "img": "assets/img/manip-7.jpg",
+      "name": "Манипулятор КамАЗ, стрела 7 т",
+      "specs": ["борт 8 т", "стрела 7 т", "кран-борт"],
+      "status": "free",
+      "status_text": "Свободен завтра, 30 июля",
+      "price": "от 9 900 ₽",
+      "unit": "/ смена",
+      "cta": "Забронировать"
+    },
+    {
+      "type": "Экскаватор-погрузчик",
+      "icon": "i-exc",
+      "img": "assets/img/excloader.jpg",
+      "name": "Экскаватор-погрузчик Hyundai H940S",
+      "specs": ["ковш + гидромолот", "город", "земляные работы"],
+      "status": "part",
+      "status_text": "1 августа — занят с утра",
+      "price": "от 8 100 ₽",
+      "unit": "/ смена",
+      "cta": "Забронировать"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+/* Стили внутренних SEO-страниц КРАН365 (дополняют style.css) */
+
+.page-top{ padding-top:96px; padding-bottom:8px; }
+.crumbs{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:.84rem; color:var(--muted-2); }
+.crumbs a{ color:var(--muted); transition:color .2s; }
+.crumbs a:hover{ color:var(--orange); }
+.crumbs span{ opacity:.5; }
+
+.page-hero{ padding-block:14px clamp(28px,4vw,44px); }
+.page-hero h1{ font-size:clamp(2rem,4.6vw,3.3rem); margin-top:14px; max-width:20ch; }
+.page-hero .lead{ margin-top:16px; color:var(--muted); font-size:1.08rem; max-width:66ch; }
+.page-hero .price-badge{
+  display:inline-flex; align-items:baseline; gap:10px; margin-top:22px;
+  padding:14px 22px; border:1px solid var(--line); border-radius:14px; background:var(--steel-700);
+}
+.page-hero .price-badge b{ font-size:1.7rem; font-weight:900; color:var(--orange); letter-spacing:-.02em; }
+.page-hero .price-badge span{ color:var(--muted); font-size:.9rem; }
+.page-hero .actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; align-items:center; }
+
+/* колонки: контент + сайдбар-заявка */
+.page-cols{ display:grid; grid-template-columns:1fr 360px; gap:40px; align-items:start; }
+.prose{ max-width:72ch; }
+.prose h2{ font-size:clamp(1.5rem,3vw,2.1rem); margin:36px 0 14px; }
+.prose h3{ font-size:1.2rem; margin:22px 0 8px; }
+.prose p{ color:#CFD6DF; margin:10px 0; }
+.prose ul{ color:#CFD6DF; padding-left:22px; margin:12px 0; }
+.prose li{ margin:6px 0; }
+.prose a{ color:var(--orange); text-decoration:underline; text-underline-offset:2px; }
+
+/* таблица цен */
+.ptable-wrap{ overflow-x:auto; margin:18px 0; border:1px solid var(--line); border-radius:14px; }
+.ptable{ width:100%; border-collapse:collapse; font-size:.95rem; min-width:420px; }
+.ptable th,.ptable td{ padding:13px 16px; text-align:left; border-bottom:1px solid var(--line-2); }
+.ptable thead th{ background:var(--steel-800); color:var(--muted); font-weight:700; font-size:.82rem; text-transform:uppercase; letter-spacing:.04em; }
+.ptable tbody tr:last-child td{ border-bottom:0; }
+.ptable td b{ color:var(--orange); }
+.ptable tbody tr:hover{ background:rgba(255,255,255,.02); }
+
+/* FAQ */
+.faq{ margin:16px 0; border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+.faq details{ border-bottom:1px solid var(--line-2); }
+.faq details:last-child{ border-bottom:0; }
+.faq summary{ cursor:pointer; padding:16px 20px; font-weight:700; list-style:none; display:flex; justify-content:space-between; gap:16px; align-items:center; transition:color .2s; }
+.faq summary::-webkit-details-marker{ display:none; }
+.faq summary::after{ content:"+"; color:var(--orange); font-size:1.4rem; font-weight:400; line-height:1; transition:transform .2s; }
+.faq details[open] summary::after{ transform:rotate(45deg); }
+.faq summary:hover{ color:var(--orange); }
+.faq details > div{ padding:0 20px 18px; color:#CFD6DF; }
+
+/* сайдбар-заявка (sticky) */
+.aside{ position:sticky; top:90px; border:1px solid var(--line); border-radius:var(--radius-lg); background:var(--steel-800); padding:24px; }
+.aside h3{ font-size:1.15rem; }
+.aside p{ color:var(--muted); font-size:.9rem; margin:8px 0 16px; }
+.aside .form__row{ grid-template-columns:1fr; }
+
+/* связанные страницы */
+.related{ margin-top:16px; }
+.related-grid{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+.related-grid a{ padding:10px 16px; border:1px solid var(--line); border-radius:100px; color:var(--muted); font-weight:700; font-size:.9rem; transition:.2s; }
+.related-grid a:hover{ border-color:var(--orange); color:var(--orange); transform:translateY(-2px); }
+.related-grid a b{ color:var(--ink); }
+
+@media (max-width:900px){
+  .page-cols{ grid-template-columns:1fr; }
+  .aside{ position:static; }
+}

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Строительная площадка с башенным и автомобильным краном на закате">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a1206"/>
+      <stop offset="0.42" stop-color="#241606"/>
+      <stop offset="0.72" stop-color="#3a2205"/>
+      <stop offset="1" stop-color="#0c0f14"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.72" cy="0.62" r="0.55">
+      <stop offset="0" stop-color="#ff8a2b" stop-opacity="0.9"/>
+      <stop offset="0.35" stop-color="#ff6a00" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#ff6a00" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <rect width="1600" height="900" fill="url(#sun)"/>
+  <circle cx="1150" cy="560" r="120" fill="#ff7d1a" opacity="0.55"/>
+
+  <!-- дальние здания -->
+  <g fill="#0c0f14" opacity="0.85">
+    <rect x="0" y="600" width="150" height="300"/>
+    <rect x="150" y="540" width="120" height="360"/>
+    <rect x="1360" y="560" width="140" height="340"/>
+    <rect x="1500" y="620" width="100" height="280"/>
+  </g>
+
+  <!-- каркас строящегося здания -->
+  <g stroke="#0a0d12" stroke-width="10" fill="none" opacity="0.9">
+    <rect x="430" y="470" width="300" height="430"/>
+    <line x1="430" y1="560" x2="730" y2="560"/>
+    <line x1="430" y1="650" x2="730" y2="650"/>
+    <line x1="430" y1="740" x2="730" y2="740"/>
+    <line x1="530" y1="470" x2="530" y2="900"/>
+    <line x1="630" y1="470" x2="630" y2="900"/>
+  </g>
+
+  <!-- БАШЕННЫЙ КРАН -->
+  <g fill="none" stroke="#05070a" stroke-width="7">
+    <!-- мачта -->
+    <path d="M300 900 L300 250 M340 900 L340 250 M300 250 L340 250" stroke-width="9"/>
+    <path d="M300 320 L340 360 M340 320 L300 360 M300 420 L340 460 M340 420 L300 460 M300 520 L340 560 M340 520 L300 560 M300 620 L340 660 M340 620 L300 660 M300 720 L340 760 M340 720 L300 760" stroke-width="4"/>
+    <!-- поворотная башенка -->
+    <path d="M290 250 L350 250 L340 210 L300 210 Z" fill="#05070a"/>
+    <!-- стрела (jib) -->
+    <path d="M320 210 L980 235" stroke-width="8"/>
+    <path d="M320 210 L980 235 L320 175 Z" fill="#05070a" opacity="0.65"/>
+    <!-- противовес -->
+    <path d="M320 210 L150 218" stroke-width="8"/>
+    <rect x="120" y="205" width="46" height="34" fill="#05070a"/>
+    <!-- верхняя опора (пилон) и ванты -->
+    <path d="M330 175 L330 130 M330 130 L150 218 M330 130 L720 226" stroke-width="4"/>
+    <!-- каретка + крюк с грузом -->
+    <path d="M720 235 L720 340" stroke-width="4"/>
+    <rect x="694" y="340" width="52" height="40" fill="#05070a"/>
+  </g>
+  <!-- сигнальный блик на стреле -->
+  <path d="M320 210 L980 235" stroke="#ff6a00" stroke-width="2.5" opacity="0.5" fill="none"/>
+
+  <!-- АВТОКРАН справа (силуэт с поднятой стрелой) -->
+  <g fill="#05070a" stroke="#05070a">
+    <path d="M1120 900 L1120 760 L1330 760 L1330 900 Z"/>
+    <circle cx="1160" cy="900" r="34"/>
+    <circle cx="1230" cy="900" r="34"/>
+    <circle cx="1300" cy="900" r="34"/>
+    <!-- телескопическая стрела вверх -->
+    <path d="M1180 770 L980 430" stroke-width="20" stroke-linecap="round"/>
+    <path d="M980 430 L980 500" stroke-width="5"/>
+    <rect x="958" y="500" width="44" height="30"/>
+  </g>
+  <path d="M1180 770 L980 430" stroke="#ff6a00" stroke-width="3" opacity="0.45" fill="none"/>
+
+  <!-- земля -->
+  <rect x="0" y="866" width="1600" height="34" fill="#05070a"/>
+</svg>
