@@ -173,9 +173,9 @@ section{ position:relative; padding-block:clamp(64px,8vw,120px); }
 .hero__scrim{
   position:absolute; inset:0; z-index:2;
   background:
-    radial-gradient(120% 90% at 12% 62%, rgba(8,10,14,.88) 0%, rgba(8,10,14,.58) 34%, rgba(8,10,14,0) 68%),
-    linear-gradient(180deg, rgba(10,13,20,.66) 0%, rgba(10,13,20,.24) 26%, rgba(10,13,20,.38) 62%, rgba(10,13,20,.80) 92%, rgba(10,13,20,.92) 100%),
-    linear-gradient(90deg, rgba(10,13,20,.82) 0%, rgba(10,13,20,.46) 40%, rgba(10,13,20,.10) 74%, rgba(10,13,20,0) 100%);
+    radial-gradient(105% 80% at 6% 50%, rgba(8,10,14,.72) 0%, rgba(8,10,14,.30) 38%, rgba(8,10,14,0) 64%),
+    linear-gradient(180deg, rgba(10,13,20,.5) 0%, rgba(10,13,20,.08) 24%, rgba(10,13,20,.14) 58%, rgba(10,13,20,.6) 92%, rgba(10,13,20,.78) 100%),
+    linear-gradient(90deg, rgba(10,13,20,.66) 0%, rgba(10,13,20,.28) 42%, rgba(10,13,20,.02) 72%, rgba(10,13,20,0) 100%);
 }
 .hero .wrap{ position:relative; z-index:3; }
 .hero__kicker{ margin-bottom:20px; }
