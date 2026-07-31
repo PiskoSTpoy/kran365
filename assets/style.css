@@ -471,3 +471,25 @@ select.input{ appearance:none; background-image:linear-gradient(45deg,transparen
 .cat-grid .reveal:nth-child(7){ transition-delay:.30s; }
 .cat-grid .reveal:nth-child(8){ transition-delay:.35s; }
 @media (prefers-reduced-motion:reduce){ .reveal{ transform:none; transition:none; } .hero__scrim::after{ display:none; } .hero__bg{ transform:none !important; height:100%; } }
+
+/* ===== Редизайн главной, слой 3: интерактивный подбор ===== */
+.picker{ padding:clamp(42px,6vw,76px) 0; background:var(--paper-2,#f4f6f8); border-bottom:1px solid rgba(0,0,0,.05); }
+.picker__grid{ display:grid; grid-template-columns:1fr 1.08fr; gap:clamp(24px,4vw,56px); align-items:center; }
+.picker__intro h2{ margin:.35em 0 .35em; font-size:clamp(1.7rem,3.4vw,2.5rem); }
+.picker__intro p{ color:var(--muted); max-width:44ch; }
+.picker__card{ background:var(--ink,#151A21); color:#fff; border-radius:22px; padding:clamp(22px,3vw,34px); box-shadow:0 26px 64px rgba(16,20,28,.20); }
+.picker__field{ display:block; margin-bottom:15px; }
+.picker__field span{ display:block; font-size:.85rem; color:rgba(255,255,255,.64); margin-bottom:7px; }
+.picker__field select{ width:100%; padding:14px 16px; border-radius:13px; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.06); color:#fff; font-size:1rem; -webkit-appearance:none; appearance:none; cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F5741C' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; background-size:16px; }
+.picker__field select:focus{ outline:none; border-color:var(--orange); background-color:rgba(255,255,255,.10); }
+.picker__field option{ color:#151A21; }
+.picker__hint{ color:rgba(255,255,255,.5); font-size:.87rem; margin:4px 0 0; }
+.picker__result{ margin-top:6px; border-top:1px solid rgba(255,255,255,.12); padding-top:18px; animation:pk-in .42s ease; }
+@keyframes pk-in{ from{ opacity:0; transform:translateY(8px); } to{ opacity:1; transform:none; } }
+.picker__rec > span{ display:block; color:rgba(255,255,255,.58); font-size:.85rem; }
+.picker__rec b{ display:block; font-size:clamp(1.25rem,2.4vw,1.7rem); font-weight:800; margin:4px 0 3px; line-height:1.15; }
+.picker__rec em{ display:block; color:var(--orange); font-style:normal; font-weight:700; }
+.picker__cta{ display:flex; gap:12px; margin-top:18px; flex-wrap:wrap; }
+.picker__cta .btn{ flex:1 1 auto; text-align:center; justify-content:center; }
+@media (max-width:760px){ .picker__grid{ grid-template-columns:1fr; } }

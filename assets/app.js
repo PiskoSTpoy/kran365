@@ -196,5 +196,34 @@
     }, { passive: true });
   }
 
+  /* ---------- Интерактивный подбор техники ---------- */
+  var pkLoad = document.getElementById('pk-load');
+  if (pkLoad) {
+    var pkHeight = document.getElementById('pk-height'),
+        pkTerm = document.getElementById('pk-term'),
+        pkResult = document.getElementById('pk-result'),
+        pkHint = document.getElementById('pk-hint'),
+        pkName = document.getElementById('pk-name'),
+        pkPrice = document.getElementById('pk-price');
+    var pkRecommend = function () {
+      var l = parseInt(pkLoad.value, 10) || 0,
+          h = parseInt(pkHeight.value, 10) || 0,
+          t = pkTerm.value;
+      if (!l || !h || !t) { pkResult.hidden = true; if (pkHint) pkHint.hidden = false; return; }
+      var lvl = Math.max(l, h), name, from;
+      if (l <= 1 && h <= 1) { name = 'Автокран 25 тонн'; from = 16300; }
+      else if (lvl <= 2) { name = 'Автокран 32–40 тонн'; from = 19900; }
+      else if (lvl <= 3) { name = 'Автокран 50–70 тонн'; from = 34900; }
+      else { name = 'Автокран 90+ тонн или гусеничный кран'; from = 0; }
+      var price = from === 0 ? 'цена под запрос' : 'ориентир от ' + from.toLocaleString('ru-RU') + ' ₽ / смена';
+      if (t === 'month' && from !== 0) price += ' · помесячно выгоднее';
+      pkName.textContent = name;
+      pkPrice.textContent = price;
+      pkResult.hidden = false;
+      if (pkHint) pkHint.hidden = true;
+    };
+    [pkLoad, pkHeight, pkTerm].forEach(function (el) { el.addEventListener('change', pkRecommend); });
+  }
+
   /* ---------- Год в футере при необходимости ---------- */
 })();

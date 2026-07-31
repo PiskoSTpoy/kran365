@@ -116,6 +116,36 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
   </div>
 </div>
 
+<!-- ======================= ПОДБОР ТЕХНИКИ ======================= -->
+<section class="picker" id="podbor">
+  <div class="wrap picker__grid">
+    <div class="picker__intro reveal">
+      <span class="eyebrow">Подбор за 15 секунд</span>
+      <h2>Не знаете, какая техника нужна?</h2>
+      <p>Ответьте на три вопроса — сразу покажем подходящую машину и ориентир цены. Точный расчёт под вашу задачу — бесплатно по телефону.</p>
+    </div>
+    <div class="picker__card reveal">
+      <label class="picker__field"><span>Что поднять · масса груза</span>
+        <select id="pk-load"><option value="">Выберите…</option><option value="1">До 3 тонн</option><option value="2">3–8 тонн</option><option value="3">8–16 тонн</option><option value="4">16–32 тонны</option><option value="5">Больше 32 тонн</option></select>
+      </label>
+      <label class="picker__field"><span>Высота подъёма</span>
+        <select id="pk-height"><option value="">Выберите…</option><option value="1">До 12 м</option><option value="2">12–25 м</option><option value="3">25–50 м</option><option value="4">Больше 50 м</option></select>
+      </label>
+      <label class="picker__field"><span>На какой срок</span>
+        <select id="pk-term"><option value="">Выберите…</option><option value="shift">Смена</option><option value="week">Неделя</option><option value="month">Месяц</option></select>
+      </label>
+      <p class="picker__hint" id="pk-hint">Заполните три поля — подберём машину и назовём ориентир цены.</p>
+      <div class="picker__result" id="pk-result" hidden>
+        <div class="picker__rec"><span>Вам подойдёт:</span><b id="pk-name">—</b><em id="pk-price">—</em></div>
+        <div class="picker__cta">
+          <a class="btn btn--primary" href="#order">Оставить заявку <span class="arr">→</span></a>
+          <a class="btn btn--ghost" href="tel:+79055535869">Позвонить</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ======================= TRUST STRIP ======================= -->
 <div class="trust">
   <div class="wrap trust__row">
