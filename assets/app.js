@@ -181,5 +181,20 @@
     counters.forEach(function (c) { cio.observe(c); });
   }
 
+  /* ---------- Параллакс фона героя ---------- */
+  var heroBg = document.querySelector('.hero__bg');
+  if (heroBg && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var pTicking = false;
+    window.addEventListener('scroll', function () {
+      if (pTicking) return;
+      pTicking = true;
+      requestAnimationFrame(function () {
+        var y = window.scrollY || window.pageYOffset || 0;
+        if (y < 900) heroBg.style.transform = 'translate3d(0,' + (-y * 0.14) + 'px,0)';
+        pTicking = false;
+      });
+    }, { passive: true });
+  }
+
   /* ---------- Год в футере при необходимости ---------- */
 })();

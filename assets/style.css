@@ -454,3 +454,20 @@ select.input{ appearance:none; background-image:linear-gradient(45deg,transparen
 .marquee:hover .marquee__track{ animation-play-state:paused; }
 @keyframes kr-marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
 @media (prefers-reduced-motion:reduce){ .marquee__track{ animation:none; } }
+
+/* ===== Редизайн главной, слой 2: кинематографичный герой + хореография ===== */
+.hero{ overflow:hidden; }
+.hero__bg{ bottom:auto; height:118%; will-change:transform; }
+.hero h1{ font-size:clamp(2.7rem,7.4vw,6rem); text-shadow:0 2px 34px rgba(0,0,0,.42); }
+.hero__scrim::after{ content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(60% 46% at 16% 80%, rgba(245,116,28,.15), rgba(245,116,28,0) 62%); }
+.reveal{ transform:translateY(34px) scale(.986); transition:opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); }
+.reveal.in{ transform:none; }
+.cat-grid .reveal:nth-child(2){ transition-delay:.05s; }
+.cat-grid .reveal:nth-child(3){ transition-delay:.10s; }
+.cat-grid .reveal:nth-child(4){ transition-delay:.15s; }
+.cat-grid .reveal:nth-child(5){ transition-delay:.20s; }
+.cat-grid .reveal:nth-child(6){ transition-delay:.25s; }
+.cat-grid .reveal:nth-child(7){ transition-delay:.30s; }
+.cat-grid .reveal:nth-child(8){ transition-delay:.35s; }
+@media (prefers-reduced-motion:reduce){ .reveal{ transform:none; transition:none; } .hero__scrim::after{ display:none; } .hero__bg{ transform:none !important; height:100%; } }
