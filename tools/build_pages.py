@@ -185,6 +185,10 @@ def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
 <meta name="description" content="%s">
 <link rel="canonical" href="%s">
 <meta property="og:title" content="%s"><meta property="og:description" content="%s"><meta property="og:type" content="website">
+<meta property="og:url" content="%s"><meta property="og:site_name" content="КРАН365"><meta property="og:locale" content="ru_RU">
+<meta property="og:image" content="https://kran365.ru/assets/img/og-cover.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="%s"><meta name="twitter:description" content="%s"><meta name="twitter:image" content="https://kran365.ru/assets/img/og-cover.jpg">
+<link rel="preconnect" href="https://mc.yandex.ru" crossorigin>
 <link rel="stylesheet" href="/assets/style.css">
 <link rel="stylesheet" href="/assets/pages.css">
 <link rel="icon" href="data:image/svg+xml,%%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%%3E%%3Crect width='32' height='32' rx='7' fill='%%23FF6A00'/%%3E%%3Cpath d='M7 25V9h2v16H7zm2-13 12 1-12 4V12zm-3 13h18' stroke='%%23160a00' stroke-width='2' fill='none' stroke-linecap='round'/%%3E%%3C/svg%%3E">
@@ -193,15 +197,18 @@ def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
 <body>
 %s
 %s
+<main>
 <div class="page-top"><div class="wrap"><nav class="crumbs">%s</nav></div></div>
 %s
 %s
 %s
+</main>
 %s
 %s
 <script src="/assets/app.js"></script>
 </body>
 </html>''' % (esc(title), esc(desc), canonical, esc(title), esc(desc),
+              canonical, esc(title), esc(desc),
               METRIKA + "\n" + jsonld(ld_objs), SPRITE, NAV, crumbs_html, hero_html, body_html,
               cta_band(), FOOTER, FAB)
     out = os.path.join(ROOT, rel_path)
@@ -854,9 +861,10 @@ def build():
         urls.append("/geo/%s/" % g[0])
     for g in GEO_RF:
         urls.append("/geo/%s/" % g[0])
-    sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemap.org/schemas/sitemap/0.9">\n'
-    sm = sm.replace("sitemap.org/schemas","sitemaps.org/schemas")
-    sm += "".join("<url><loc>%s%s</loc></url>\n" % (SITE,u) for u in urls) + "</urlset>\n"
+    import datetime as _dt
+    _today = _dt.date.today().isoformat()
+    sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    sm += "".join('<url><loc>%s%s</loc><lastmod>%s</lastmod></url>\n' % (SITE, u, _today) for u in urls) + "</urlset>\n"
     with open(os.path.join(ROOT,"sitemap.xml"),"w",encoding="utf-8") as f: f.write(sm)
     with open(os.path.join(ROOT,"robots.txt"),"w",encoding="utf-8") as f:
         f.write("User-agent: *\nAllow: /\nSitemap: %s/sitemap.xml\n" % SITE)
