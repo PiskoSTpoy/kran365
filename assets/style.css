@@ -519,3 +519,11 @@ select.input{ appearance:none; background-image:linear-gradient(45deg,transparen
 .calc__result .btn--ghost:hover{ background:rgba(255,255,255,.18); border-color:#fff; color:#fff; }
 .calc__result small{ margin-top:14px; color:rgba(255,255,255,.5); font-size:.78rem; line-height:1.45; }
 @media (max-width:820px){ .calc{ grid-template-columns:1fr; } .calc__grid{ grid-template-columns:1fr 1fr; } }
+
+/* ===== Полировка: карточки, футер, выравнивание ===== */
+.cat h3{ min-height:2.15em; display:flex; align-items:flex-end; line-height:1.12; }
+.cat__meta{ display:block; min-height:2.7em; line-height:1.32; }
+.footer h4{ font-size:1.05rem; }
+.footer a{ font-size:.92rem; }
+.footer .btn{ display:inline-flex; width:auto; padding:13px 22px; color:#fff; border-radius:100px; margin-top:14px; }
+.footer .btn:hover{ color:#fff; }
