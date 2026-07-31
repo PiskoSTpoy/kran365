@@ -119,10 +119,12 @@ def breadcrumb_ld(items):
         {"@type":"ListItem","position":i+1,"name":n,"item":SITE+u} for i,(n,u) in enumerate(items)]}
 
 def local_business_ld():
-    return {"@context":"https://schema.org","@type":"LocalBusiness","name":"КРАН365",
-        "image":SITE+"/assets/img/crane-100.jpg","telephone":PHONE_TEL,"url":SITE,
+    return {"@context":"https://schema.org","@type":"LocalBusiness","@id":SITE+"/#business","name":"КРАН365",
+        "image":SITE+"/assets/img/crane-100.jpg","telephone":PHONE_TEL,"email":"info@kran365.ru","url":SITE,
+        "priceRange":"₽₽","currenciesAccepted":"RUB","paymentAccepted":"Наличный и безналичный расчёт",
         "address":{"@type":"PostalAddress","addressLocality":"Москва","streetAddress":"проспект Андропова, 10","addressCountry":"RU"},
-        "openingHours":"Mo-Su 00:00-24:00","areaServed":"Москва и Московская область"}
+        "geo":{"@type":"GeoCoordinates","latitude":55.6767,"longitude":37.6654},
+        "openingHours":"Mo-Su 00:00-24:00","areaServed":"Москва и Московская область","sameAs":[TG]}
 
 def service_ld(name, desc, price):
     offer = {"@type":"Offer","priceCurrency":"RUB","availability":"https://schema.org/InStock"}
