@@ -296,15 +296,43 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
   <div class="wrap">
     <div class="calc reveal">
       <div class="calc__text">
-        <span class="eyebrow">Подбор техники</span>
-        <h2 style="margin-top:12px">Не знаете, какой кран нужен?</h2>
-        <p>Укажите вес груза, высоту и вылет — подберём подходящую машину из парка и сразу назовём цену смены. Или просто позвоните — инженер подберёт за 5 минут.</p>
-        <div class="calc__form">
-          <a class="btn btn--primary" href="#order">Подобрать кран <span class="arr">→</span></a>
-          <a class="btn btn--ghost" href="tel:+79055535869">Позвонить инженеру</a>
+        <span class="eyebrow">Калькулятор аренды</span>
+        <h2 style="margin-top:12px">Прикиньте стоимость за 20 секунд</h2>
+        <p>Выберите технику, число смен и расстояние подачи — покажем ориентир цены. Точную стоимость под вашу задачу назовём бесплатно по телефону.</p>
+        <div class="calc__grid">
+          <label class="calc__field calc__field--wide"><span>Техника</span>
+            <select id="kk-type">
+              <option value="" data-rate="">Выберите технику…</option>
+              <option value="Автокран до 40 т" data-rate="20000">Автокран до 40 т</option>
+              <option value="Автокран 50–90 т" data-rate="40000">Автокран 50–90 т</option>
+              <option value="Автокран 100+ т" data-rate="0">Автокран 100+ т</option>
+              <option value="Гусеничный / башенный кран" data-rate="0">Гусеничный / башенный кран</option>
+              <option value="Автовышка" data-rate="12000">Автовышка</option>
+              <option value="Манипулятор" data-rate="12000">Манипулятор</option>
+              <option value="Экскаватор / погрузчик" data-rate="12000">Экскаватор / погрузчик</option>
+              <option value="Самосвал" data-rate="11000">Самосвал</option>
+              <option value="Бульдозер / грейдер / каток" data-rate="22000">Бульдозер / грейдер / каток</option>
+              <option value="Трал / длинномер" data-rate="15000">Трал / длинномер</option>
+            </select>
+          </label>
+          <label class="calc__field"><span>Смен</span>
+            <input id="kk-shifts" type="number" min="1" max="60" value="1" inputmode="numeric">
+          </label>
+          <label class="calc__field"><span>Подача, км от МКАД</span>
+            <input id="kk-km" type="number" min="0" max="1000" value="0" inputmode="numeric">
+          </label>
         </div>
       </div>
-      <div class="calc__visual"><svg><use href="#i-crane"/></svg></div>
+      <div class="calc__result">
+        <span class="calc__result-label">Ориентир стоимости</span>
+        <b id="kk-price">—</b>
+        <em id="kk-note">Выберите технику и параметры</em>
+        <div class="calc__cta">
+          <a class="btn btn--primary btn--block" href="#order">Оставить заявку <span class="arr">→</span></a>
+          <a class="btn btn--ghost btn--block" href="tel:+79055535869">+7 (905) 553-58-69</a>
+        </div>
+        <small>Это ориентир. Точную цену под задачу назовём бесплатно — оператор и топливо уже учтены.</small>
+      </div>
     </div>
   </div>
 </section>

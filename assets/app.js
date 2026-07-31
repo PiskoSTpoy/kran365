@@ -227,3 +227,29 @@
 
   /* ---------- Год в футере при необходимости ---------- */
 })();
+
+/* ---------- Калькулятор аренды (ориентир) ---------- */
+(function(){
+  var t=document.getElementById('kk-type');
+  if(!t) return;
+  var sh=document.getElementById('kk-shifts'), km=document.getElementById('kk-km'),
+      price=document.getElementById('kk-price'), note=document.getElementById('kk-note');
+  function ru(n){ return n.toLocaleString('ru-RU'); }
+  function calc(){
+    var opt=t.options[t.selectedIndex];
+    if(t.value===''){ price.textContent='—'; note.textContent='Выберите технику и параметры'; return; }
+    var rate=parseFloat(opt.getAttribute('data-rate'));
+    if(!rate){ price.textContent='под запрос'; note.textContent='Крупная техника — цену назовём индивидуально по телефону'; return; }
+    var shifts=Math.min(60,Math.max(1,parseInt(sh.value,10)||1));
+    var dist=Math.min(1000,Math.max(0,parseInt(km.value,10)||0));
+    var discount=shifts>=20?0.8:(shifts>=10?0.9:1);
+    var total=rate*shifts*discount + dist*100;
+    var low=Math.round(total*0.9/500)*500, high=Math.round(total*1.15/500)*500;
+    price.textContent=ru(low)+' – '+ru(high)+' ₽';
+    var p=[shifts>1?(shifts+' смен'+(discount<1?' · скидка за срок':'')):'1 смена'];
+    if(dist>0) p.push('подача ~'+dist+' км');
+    p.push('оператор в цене');
+    note.textContent='за '+p.join(' · ');
+  }
+  [t,sh,km].forEach(function(e){ e.addEventListener('input',calc); e.addEventListener('change',calc); });
+})();
