@@ -14,6 +14,20 @@ PHONE_TEL = "+79055535869"
 PHONE_DISP = "+7 (905) 553-58-69"
 TG = "https://t.me/usdctrc2o"
 
+# Яндекс.Метрика (счётчик 111188532) — на всех страницах
+METRIKA = '''<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function(m,e,t,r,i,k,a){
+m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+m[i].l=1*new Date();
+for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+})(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=111188532', 'ym');
+ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/111188532" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->'''
+
 # ---------------------------------------------------------------- общие блоки
 SPRITE = '''<svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <symbol id="i-crane" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M6 21V4m0 0 13 1L6 8V4M3 21h18M6 5 4 3m8 0-6 1m6 12v3m0-3-2-1h4l-2 1Z"/></symbol>
@@ -188,7 +202,7 @@ def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
 <script src="/assets/app.js"></script>
 </body>
 </html>''' % (esc(title), esc(desc), canonical, esc(title), esc(desc),
-              jsonld(ld_objs), SPRITE, NAV, crumbs_html, hero_html, body_html,
+              METRIKA + "\n" + jsonld(ld_objs), SPRITE, NAV, crumbs_html, hero_html, body_html,
               cta_band(), FOOTER, FAB)
     out = os.path.join(ROOT, rel_path)
     os.makedirs(os.path.dirname(out), exist_ok=True)
