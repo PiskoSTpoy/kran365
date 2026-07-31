@@ -323,6 +323,7 @@ BLOG = [
 ]
 
 from data_rf import GEO_RF, BLOG_RF   # автоген: 30 городов РФ + 16 статей блога
+from data_cat import CATS             # автоген: 12 новых категорий спецтехники
 BLOG = BLOG + BLOG_RF
 
 # Марки автокранов
@@ -833,6 +834,34 @@ def build():
              hero("Зона работы", h1, lead, None), body(prose, rel) + TRUST, ld)
         pages += 1
 
+    # --- новые категории спецтехники (диспетчер, максимальный каталог)
+    for c in CATS:
+        crumbs = [home, (c["name_nom"], "/%s/" % c["slug"])]
+        faqs = [(f[0], f[1]) for f in c["faqs"]]
+        rows = ""
+        for it in c["items"]:
+            specs = " · ".join(esc(s) for s in it["specs"])
+            rows += '<tr><td>%s</td><td>%s</td><td><b>%s</b></td></tr>' % (esc(it["name"]), specs, money(it.get("price")))
+        table = ('<div class="ptable-wrap"><table class="ptable"><thead><tr><th>Модель</th><th>Характеристики</th>'
+                 '<th>Цена</th></tr></thead><tbody>%s</tbody></table></div>') % rows
+        prose = ('<p>%s</p>'
+                 '<h2>Модели и цены</h2>'
+                 '<p>Ниже — варианты, которые подбираем под задачу. Цена «от», за смену; окончательную называем после уточнения объёма и площадки.</p>%s'
+                 '<h2>Как мы работаем</h2><ul>'
+                 '<li>Находим и подаём технику из проверенной сети — с оператором и ответственностью за сроки по договору</li>'
+                 '<li>Подбираем класс машины под ваш объём, грунт и задачу</li>'
+                 '<li>Договор, счёт, закрывающие документы, ЭДО для юрлиц</li>'
+                 '<li>Работаем по Москве, области и регионам России</li></ul>'
+                 '<h2>Частые вопросы</h2>%s') % (esc(c["intro"]), table, faq_html(faqs))
+        rel = related_types() + related_tasks()
+        ld = [breadcrumb_ld(crumbs), service_ld(c["h1"], c["lead"], c.get("price_from")), faq_ld(faqs), local_business_ld()]
+        title = "%s в Москве и по России — цена %s | КРАН365" % (c["h1"], money(c.get("price_from")).lower())
+        desc = ("%s: подберём и подадим из проверенной сети, оператор в стоимости, договор и ЭДО. Звоните %s." %
+                (c["h1"], PHONE_DISP))
+        page("%s/index.html" % c["slug"], title, desc, crumbs,
+             hero("Спецтехника", c["h1"], c["lead"], c.get("price_from")), body(prose, rel) + TRUST, ld)
+        pages += 1
+
     # --- sitemap.xml
     urls = ["/"]
     for t in TYPES:
@@ -861,6 +890,8 @@ def build():
         urls.append("/geo/%s/" % g[0])
     for g in GEO_RF:
         urls.append("/geo/%s/" % g[0])
+    for c in CATS:
+        urls.append("/%s/" % c["slug"])
     import datetime as _dt
     _today = _dt.date.today().isoformat()
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
