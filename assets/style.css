@@ -445,3 +445,12 @@ select.input{ appearance:none; background-image:linear-gradient(45deg,transparen
   .hero__facts{ grid-template-columns:repeat(2,1fr); gap:8px; }
   .hero__actions{ gap:10px; }
 }
+
+/* ===== Бренд-бегущая строка ===== */
+.marquee{ overflow:hidden; background:var(--orange); border-top:1px solid rgba(0,0,0,.16); border-bottom:1px solid rgba(0,0,0,.16); }
+.marquee__track{ display:inline-flex; align-items:center; white-space:nowrap; will-change:transform; animation:kr-marquee 42s linear infinite; }
+.marquee__track span{ font-weight:800; text-transform:uppercase; letter-spacing:.03em; font-size:clamp(.9rem,1.5vw,1.1rem); color:#160a00; padding:13px 20px; }
+.marquee__dot{ color:rgba(22,10,0,.5); font-style:normal; font-size:.75em; padding:0 2px; }
+.marquee:hover .marquee__track{ animation-play-state:paused; }
+@keyframes kr-marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+@media (prefers-reduced-motion:reduce){ .marquee__track{ animation:none; } }
