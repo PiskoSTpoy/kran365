@@ -168,7 +168,7 @@ section{ position:relative; padding-block:clamp(64px,8vw,120px); }
   opacity:0; transition:opacity 1.1s ease;
 }
 .hero__video.is-playing{ opacity:1; }
-@keyframes kenburns{ from{ transform:scale(1.04); } to{ transform:scale(1.14); } }
+@keyframes kenburns{ from{ transform:scale(1.02); } to{ transform:scale(1.07); } }
 @media (prefers-reduced-motion:reduce){ .hero__poster{ animation:none; } }
 .hero__scrim{
   position:absolute; inset:0; z-index:2;

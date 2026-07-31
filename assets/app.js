@@ -190,7 +190,7 @@
       pTicking = true;
       requestAnimationFrame(function () {
         var y = window.scrollY || window.pageYOffset || 0;
-        if (y < 900) heroBg.style.transform = 'translate3d(0,' + (-y * 0.14) + 'px,0)';
+        if (y < 900) heroBg.style.transform = 'translate3d(0,' + (-y * 0.08) + 'px,0)';
         pTicking = false;
       });
     }, { passive: true });
