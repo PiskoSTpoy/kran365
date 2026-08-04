@@ -222,6 +222,15 @@ def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
 
 def money(p): return "под запрос" if not p else "от %s ₽" % format(p, ",d").replace(",", " ")
 
+def hour_price(p):
+    """Оценочная цена за час — из расчёта 8-часовой смены (мин. заказ всё равно смена)."""
+    if not p: return None
+    return int(round(p / 8 / 10.0)) * 10
+
+def price_hour_html(p):
+    hp = hour_price(p)
+    return ' <span class="price-hour">≈ %s ₽/час</span>' % format(hp, ",d").replace(",", " ") if hp else ""
+
 # ---------------------------------------------------------------- данные
 AVTOKRAN = [(25,16300),(32,19900),(40,29900),(50,34900),(60,44900),(70,54900),(90,None),(100,None),(150,None),(250,None)]
 
@@ -443,8 +452,8 @@ def price_table_types(active=None):
     rows = ""
     for t in TYPES:
         cls = ' style="background:rgba(255,106,0,.06)"' if active==t["slug"] else ""
-        rows += '<tr%s><td><a href="/%s/" style="color:var(--ink)">%s</a></td><td>%s</td><td><b>%s</b> <span style="color:var(--muted-2);font-size:.82rem">/ смена</span></td></tr>' % (
-            cls, t["slug"], esc(t["name"]), esc(t["meta"]), money(t["price"]))
+        rows += '<tr%s><td><a href="/%s/" style="color:var(--ink)">%s</a></td><td>%s</td><td><b>%s</b> <span style="color:var(--muted-2);font-size:.82rem">/ смена</span>%s</td></tr>' % (
+            cls, t["slug"], esc(t["name"]), esc(t["meta"]), money(t["price"]), price_hour_html(t["price"]))
     return '<div class="ptable-wrap"><table class="ptable"><thead><tr><th>Техника</th><th>Параметры</th><th>Цена</th></tr></thead><tbody>%s</tbody></table></div>' % rows
 
 def tonnage_table(active=None):
@@ -452,7 +461,7 @@ def tonnage_table(active=None):
     for t,p in AVTOKRAN:
         cls = ' style="background:rgba(255,106,0,.06)"' if active==t else ""
         rows += '<tr%s><td><a href="/avtokrany/%d-tonn/" style="color:var(--ink)">Автокран %d т</a></td><td>%s</td></tr>' % (
-            cls, t, t, ('<b>%s</b> <span style="color:var(--muted-2);font-size:.82rem">/ смена</span>' % money(p)) if p else '<b>под запрос</b>')
+            cls, t, t, ('<b>%s</b> <span style="color:var(--muted-2);font-size:.82rem">/ смена</span>%s' % (money(p), price_hour_html(p))) if p else '<b>под запрос</b>')
     return '<div class="ptable-wrap"><table class="ptable"><thead><tr><th>Грузоподъёмность</th><th>Цена</th></tr></thead><tbody>%s</tbody></table></div>' % rows
 
 def related_tonnages(active):
@@ -469,7 +478,7 @@ def param_table(items, base, unit, active=None):
     for it in items:
         v, p = it[0], it[1]
         cls = ' style="background:rgba(255,106,0,.06)"' if active == v else ""
-        price = ('<b>%s</b> <span style="color:var(--muted-2);font-size:.82rem">/ смена</span>' % money(p)) if p else '<b>под запрос</b>'
+        price = ('<b>%s</b> <span style="color:var(--muted-2);font-size:.82rem">/ смена</span>%s' % (money(p), price_hour_html(p))) if p else '<b>под запрос</b>'
         rows += '<tr%s><td><a href="%s%d-%s/" style="color:var(--ink)">%d %s</a></td><td>%s</td></tr>' % (
             cls, base, v, unit[1], v, unit[0], price)
     return '<div class="ptable-wrap"><table class="ptable"><thead><tr><th>Параметр</th><th>Цена</th></tr></thead><tbody>%s</tbody></table></div>' % rows
@@ -493,7 +502,7 @@ def related_types(active_slug=None):
 def hero(kicker, h1, lead, price, price_unit="/ смена"):
     badge = ""
     if price:
-        badge = '<div class="price-badge"><b>%s</b><span>%s</span></div>' % (money(price), price_unit)
+        badge = '<div class="price-badge"><b>%s</b><span>%s</span>%s</div>' % (money(price), price_unit, price_hour_html(price))
     return '''<section class="page-hero"><div class="wrap">
   <span class="eyebrow">%s</span><h1>%s</h1><p class="lead">%s</p>
   %s
@@ -844,7 +853,7 @@ def build():
         rows = ""
         for it in c["items"]:
             specs = " · ".join(esc(s) for s in it["specs"])
-            rows += '<tr><td>%s</td><td>%s</td><td><b>%s</b></td></tr>' % (esc(it["name"]), specs, money(it.get("price")))
+            rows += '<tr><td>%s</td><td>%s</td><td><b>%s</b>%s</td></tr>' % (esc(it["name"]), specs, money(it.get("price")), price_hour_html(it.get("price")))
         table = ('<div class="ptable-wrap"><table class="ptable"><thead><tr><th>Модель</th><th>Характеристики</th>'
                  '<th>Цена</th></tr></thead><tbody>%s</tbody></table></div>') % rows
         prose = ('<p>%s</p>'

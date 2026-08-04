@@ -10,11 +10,12 @@
 .page-hero h1{ font-size:clamp(2rem,4.6vw,3.3rem); margin-top:14px; max-width:20ch; }
 .page-hero .lead{ margin-top:16px; color:var(--muted); font-size:1.08rem; max-width:66ch; }
 .page-hero .price-badge{
-  display:inline-flex; align-items:baseline; gap:10px; margin-top:22px;
+  display:inline-flex; flex-wrap:wrap; align-items:baseline; gap:10px; margin-top:22px;
   padding:14px 22px; border:1px solid var(--line); border-radius:14px; background:var(--card); box-shadow:var(--shadow-sm);
 }
 .page-hero .price-badge b{ font-size:1.7rem; font-weight:900; color:var(--orange); letter-spacing:-.02em; }
 .page-hero .price-badge span{ color:var(--muted); font-size:.9rem; }
+.page-hero .price-badge .price-hour{ flex-basis:100%; color:var(--muted-2)!important; font-size:.82rem!important; }
 .page-hero .actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; align-items:center; }
 
 /* колонки: контент + сайдбар-заявка */
@@ -35,6 +36,7 @@
 .ptable tbody tr:last-child td{ border-bottom:0; }
 .ptable td b{ color:var(--orange); }
 .ptable tbody tr:hover{ background:rgba(18,28,45,.03); }
+.ptable .price-hour{ display:block; color:var(--muted-2); font-size:.78rem; font-weight:400; margin-top:2px; white-space:nowrap; }
 
 /* FAQ */
 .faq{ margin:16px 0; border:1px solid var(--line); border-radius:14px; overflow:hidden; }

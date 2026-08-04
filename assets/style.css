@@ -242,9 +242,10 @@ section{ position:relative; padding-block:clamp(64px,8vw,120px); }
 .cat__ico{ display:none; }
 .cat h3{ font-size:1.2rem; font-weight:800; color:#fff; text-shadow:0 2px 12px rgba(0,0,0,.55); }
 .cat__meta{ color:rgba(255,255,255,.82); font-size:.88rem; text-shadow:0 1px 8px rgba(0,0,0,.6); }
-.cat__price{ margin-top:10px; font-weight:800; display:flex; align-items:baseline; gap:6px; }
+.cat__price{ margin-top:10px; font-weight:800; display:flex; align-items:baseline; gap:6px; flex-wrap:wrap; }
 .cat__price b{ color:#FFB36B; font-size:1.06rem; }
 .cat__price span{ color:rgba(255,255,255,.6); font-size:.8rem; font-weight:500; }
+.cat__price .cat__price-hour{ flex-basis:100%; font-size:.76rem; color:rgba(255,255,255,.5); }
 .cat__go{
   position:absolute; top:16px; right:16px; z-index:1; width:34px; height:34px; border-radius:50%;
   display:grid; place-items:center; color:#fff;
@@ -261,6 +262,7 @@ section{ position:relative; padding-block:clamp(64px,8vw,120px); }
 #uslugi .cat__meta{ color:var(--muted); text-shadow:none; }
 #uslugi .cat__price b{ color:var(--orange); }
 #uslugi .cat__price span{ color:var(--muted-2); }
+#uslugi .cat__price .cat__price-hour{ color:var(--muted-2); }
 #uslugi .cat__go{ background:var(--paper-3); color:var(--muted); border-color:var(--line); }
 #uslugi .cat:hover .cat__go{ background:var(--orange); color:#fff; }
 
