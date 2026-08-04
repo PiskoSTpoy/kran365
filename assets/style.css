@@ -410,6 +410,7 @@ select.input{ appearance:none; background-image:linear-gradient(45deg,transparen
 .fab a{ width:56px; height:56px; border-radius:50%; display:grid; place-items:center; color:#fff;
   box-shadow:0 14px 30px -10px rgba(18,28,45,.5); transition:transform .2s ease; }
 .fab a:hover{ transform:translateY(-3px) scale(1.05); }
+.fab__wa{ background:#25D366; }
 .fab__tg{ background:#2AABEE; }
 .fab__call{ background:var(--orange); color:#fff; animation:fabpulse 2.6s infinite; }
 .fab svg{ width:26px; height:26px; }
@@ -454,6 +455,15 @@ select.input{ appearance:none; background-image:linear-gradient(45deg,transparen
 .marquee:hover .marquee__track{ animation-play-state:paused; }
 @keyframes kr-marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
 @media (prefers-reduced-motion:reduce){ .marquee__track{ animation:none; } }
+
+.marquee--dark{ background:var(--ink); border-color:rgba(255,255,255,.1); }
+.marquee--dark .marquee__track{ animation-duration:52s; }
+.marquee--dark .marquee__track span{ color:rgba(255,255,255,.82); font-weight:700; }
+.marquee--dark .marquee__dot{ color:var(--orange); }
+
+/* ===== Гео: подзаголовок между блоками МО / РФ ===== */
+.geo__subhead{ margin:28px 0 6px; font-size:1.05rem; font-weight:800; color:var(--ink-2); }
+.geo__subhead:first-of-type{ margin-top:10px; }
 
 /* ===== Редизайн главной, слой 2: кинематографичный герой + хореография ===== */
 .hero{ overflow:hidden; }
