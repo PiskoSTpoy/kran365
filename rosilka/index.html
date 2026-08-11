@@ -220,14 +220,29 @@
 
   footer { padding:44px 0 0; text-align:center; font-family:var(--mono); font-size:12px; color:var(--micro); }
 
-  /* ── веб-версия: то, чего PDF дать не может ──────────────────────────────
-     Появление секций при прокрутке и липкая кнопка внизу. Ничего мигающего:
-     брендбук требует плоскости и спокойствия, поэтому только сдвиг и прозрачность. */
-  .rise { opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease; }
-  .rise.in { opacity:1; transform:none; }
-  @media (prefers-reduced-motion: reduce) {
-    .rise { opacity:1; transform:none; transition:none; }
+  /* ── вкладки разделов ────────────────────────────────────────────────────
+     КП длинное, и без оглавления человек с телефона не понимает, сколько ещё
+     листать и есть ли там ответ на его вопрос. Полоса липнет к верху и
+     подсвечивает раздел, который сейчас на экране. */
+  .tabs { position:sticky; top:0; z-index:30; background:var(--bg);
+          border-bottom:1px solid var(--line); margin:0 -26px; padding:0 26px; }
+  .tabs-in { display:flex; gap:0; overflow-x:auto; scrollbar-width:none; }
+  .tabs-in::-webkit-scrollbar { display:none; }
+  .tabs a { flex:none; font-family:var(--mono); font-size:11.5px; letter-spacing:.08em;
+            text-transform:uppercase; color:var(--micro); text-decoration:none;
+            padding:14px 16px; border-bottom:2px solid transparent; white-space:nowrap; }
+  .tabs a:first-child { padding-left:0; }
+  .tabs a:hover { color:var(--ink); }
+  .tabs a.act { color:var(--acc-ink); border-bottom-color:var(--acc); font-weight:700; }
+  .tabs a:focus-visible { outline:2px solid var(--acc-ink); outline-offset:-4px; }
+  :root[data-theme="dark"] .tabs a.act { color:var(--acc); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .tabs a.act { color:var(--acc); }
   }
+  /* якорь не должен уезжать под липкую полосу */
+  section[id] { scroll-margin-top:56px; }
+
+  /* ── веб-версия: то, чего PDF дать не может ─────────────────────────── */
 
   /* Кнопка всегда под рукой: КП читают с телефона, и мотать обратно наверх,
      чтобы написать, никто не станет. Появляется после первого экрана. */
@@ -283,8 +298,22 @@
     </div>
   </section>
 
+
+<nav class="tabs" aria-label="Разделы предложения">
+  <div class="wrap tabs-in">
+    <a href="#den">Один день</a>
+    <a href="#kak">Как работает</a>
+    <a href="#otchet">Отчёт</a>
+    <a href="#adres">Маршрутизация</a>
+    <a href="#cifry">Цифры</a>
+    <a href="#vnutri">Что внутри</a>
+    <a href="#cena">Цена</a>
+    <a href="#voprosy">Вопросы</a>
+  </div>
+</nav>
+
   <!-- ───────────────────────── боль ───────────────────────── -->
-  <section>
+  <section id="den">
     <div class="head">
       <div>
         <div class="lbl"><span class="dot"></span>С чего всё начинается</div>
@@ -332,7 +361,7 @@
   </section>
 
   <!-- ───────────────────────── как работает ───────────────────────── -->
-  <section>
+  <section id="kak">
     <div class="head">
       <div>
         <div class="lbl"><span class="dot"></span>Как это работает</div>
@@ -353,7 +382,7 @@
   </section>
 
   <!-- ───────────────────────── ежедневный отчёт ───────────────────────── -->
-  <section>
+  <section id="otchet">
     <div class="head">
       <div>
         <div class="lbl"><span class="dot"></span>Контроль</div>
@@ -411,7 +440,7 @@
   </section>
 
   <!-- ───────────────────────── маршрутизация ───────────────────────── -->
-  <section>
+  <section id="adres">
     <div class="head">
       <div>
         <div class="lbl"><span class="dot"></span>Главное отличие</div>
@@ -447,7 +476,7 @@
   </section>
 
   <!-- ───────────────────────── цифры ───────────────────────── -->
-  <section>
+  <section id="cifry">
     <div class="proof">
       <div class="lbl">Из работающего кабинета</div>
       <h2>Цифры, а не обещания</h2>
@@ -463,7 +492,7 @@
   </section>
 
   <!-- ───────────────────────── что внутри ───────────────────────── -->
-  <section>
+  <section id="vnutri">
     <div class="head">
       <div>
         <div class="lbl"><span class="dot"></span>Что внутри</div>
@@ -500,7 +529,7 @@
   </section>
 
   <!-- ───────────────────────── условия ───────────────────────── -->
-  <section>
+  <section id="cena">
     <div class="head">
       <div>
         <div class="lbl"><span class="dot"></span>Условия</div>
@@ -540,7 +569,7 @@
   </section>
 
   <!-- ───────────────────────── возражения ───────────────────────── -->
-  <section>
+  <section id="voprosy">
     <div class="head">
       <div>
         <div class="lbl"><span class="dot"></span>Что спрашивают перед стартом</div>
@@ -609,20 +638,31 @@
   "use strict";
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Появление секций. Без IntersectionObserver (старые вебвью мессенджеров)
-  // просто показываем всё сразу — контент важнее эффекта.
-  var blocks = document.querySelectorAll("section");
-  if (!reduce && "IntersectionObserver" in window) {
-    Array.prototype.forEach.call(blocks, function (b, i) {
-      if (i === 0) return;                 // первый экран показываем сразу
-      b.classList.add("rise");
-    });
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+  // Анимации появления НЕТ намеренно. Она стартует с невидимого контента, и
+  // если наблюдатель за прокруткой не отработает (открытие сразу по якорю,
+  // экономия ресурсов в вебвью мессенджера, ошибка в соседнем скрипте) —
+  // человек видит пустую страницу вместо предложения. Для КП, которое
+  // открывают по ссылке из холодного сообщения, это неприемлемая цена за эффект.
+
+  // Подсветка активной вкладки. Берём раздел, чья верхняя граница ближе всего
+  // сверху к липкой полосе — так подсветка совпадает с тем, что человек читает,
+  // а не с тем, что формально пересекло экран.
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tabs a"));
+  if (tabs.length) {
+    var targets = tabs.map(function (a) {
+      return { a: a, el: document.querySelector(a.getAttribute("href")) };
+    }).filter(function (t) { return t.el; });
+    var markTab = function () {
+      var best = null, bestTop = -1e9;
+      targets.forEach(function (t) {
+        var top = t.el.getBoundingClientRect().top - 70;
+        if (top <= 0 && top > bestTop) { bestTop = top; best = t; }
       });
-    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.05 });
-    Array.prototype.forEach.call(document.querySelectorAll(".rise"), function (b) { io.observe(b); });
+      targets.forEach(function (t) { t.a.classList.toggle("act", best && t === best); });
+    };
+    window.addEventListener("scroll", markTab, { passive: true });
+    window.addEventListener("resize", markTab);
+    markTab();
   }
 
   // Липкая кнопка: показываем, когда обложка ушла вверх, и прячем у финального
