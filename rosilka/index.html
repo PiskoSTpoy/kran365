@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- СТРАНИЦА-ОТВЕТВЛЕНИЕ. Лежит на домене про аренду кранов, но к нему отношения
+     не имеет: это предложение другого продукта, которое рассылается адресно.
+     noindex,nofollow — чтобы чужая тема не попала в индекс и не размывала
+     релевантность сайта по «аренда крана». Ссылок с сайта на неё нет, в
+     sitemap.xml её тоже нет (генератор собирает карту по своим спискам). -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="yandex" content="noindex, nofollow">
+<title>Росилка — рассылка заявок по чатам спецтехники</title>
+<meta name="description" content="Заявка пишется один раз и сама уходит по нужным чатам в MAX, WhatsApp и Telegram.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><g stroke=%22%23A8E10C%22 stroke-width=%229%22 stroke-linecap=%22round%22 fill=%22none%22><path d=%22M15 50H45%22/><path d=%22M45 50L80 20%22/><path d=%22M45 50L80 50%22/><path d=%22M45 50L80 80%22/></g></svg>">
+</head>
+<body>
+<style>
+  /* Токены — из брендбука линейки без изменений (правило 01: токены не адаптируются). */
+  :root {
+    --bg:#F6F7F3; --cell:#FFFFFF; --ink:#111310; --mute:#565B52; --micro:#62675C;
+    --line:rgba(17,19,16,.14); --line-soft:rgba(17,19,16,.08);
+    --acc:#A8E10C; --acc-ink:#3E6900; --side:#101210;
+    --ok-bg:#E6F6C8; --ok-ink:#3E6900;
+    --warn-bg:#FDEBC8; --warn-ink:#8A5A00;
+    --risk-bg:#FBDCD7; --risk-ink:#A02318;
+    --mute-bg:#EAECE6;
+    --mono:ui-monospace,"JetBrains Mono",Consolas,"Cascadia Mono",Menlo,monospace;
+    --sans:Inter,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  :root[data-theme="dark"] {
+    --bg:#0E100D; --cell:#171A15; --ink:#F0F2ED; --mute:#A8AEA0; --micro:#8C9284;
+    --line:rgba(240,242,237,.16); --line-soft:rgba(240,242,237,.08);
+    --ok-bg:#22331A; --ok-ink:#B7EE6E;
+    --warn-bg:#332A16; --warn-ink:#E8C168;
+    --risk-bg:#3A1F1B; --risk-ink:#F0A79B;
+    --mute-bg:#20221D;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:#0E100D; --cell:#171A15; --ink:#F0F2ED; --mute:#A8AEA0; --micro:#8C9284;
+      --line:rgba(240,242,237,.16); --line-soft:rgba(240,242,237,.08);
+      --ok-bg:#22331A; --ok-ink:#B7EE6E;
+      --warn-bg:#332A16; --warn-ink:#E8C168;
+      --risk-bg:#3A1F1B; --risk-ink:#F0A79B;
+      --mute-bg:#20221D;
+    }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+         font-size:16.5px; line-height:1.6; -webkit-font-smoothing:antialiased;
+         overflow-wrap:break-word; }
+  /* Дети grid/flex по умолчанию не сжимаются уже своего содержимого (min-width:auto)
+     и распирают страницу вбок: на 390px КП уезжало за правый край, обрезая заголовок.
+     Горизонтальная прокрутка на телефоне для КП недопустима — его читают с телефона. */
+  .cover-facts > *, .ba > *, .flow > *, .two > *, .route-grid > *,
+  .proof-grid > *, .grid3 > *, .price > *, .faq > *, .screen-body .row > * { min-width:0; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 26px 120px; }
+  h1,h2,h3 { margin:0; font-weight:800; letter-spacing:-.02em; text-wrap:balance; }
+  p { margin:0; }
+  code { font-family:var(--mono); background:var(--line-soft); padding:2px 6px; border-radius:4px; font-size:.9em; }
+  .lbl { font-family:var(--mono); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase;
+         color:var(--acc-ink); font-weight:700; }
+  .lbl .dot { display:inline-block; width:6px; height:6px; background:var(--acc); margin-right:8px; }
+  section { padding:74px 0; border-bottom:1px solid var(--line); }
+  section:last-of-type { border-bottom:none; }
+  .head { display:flex; align-items:baseline; justify-content:space-between; gap:24px;
+          margin-bottom:36px; flex-wrap:wrap; }
+  .head h2 { font-size:clamp(26px,3.6vw,38px); }
+  .head .num { font-family:var(--mono); font-size:13px; color:var(--micro); }
+  .lead { font-size:18px; color:var(--mute); max-width:66ch; }
+  .tnum { font-variant-numeric:tabular-nums; }
+
+  /* --- обложка --- */
+  .cover { padding:52px 0 78px; }
+  .cover-meta { display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+                font-family:var(--mono); font-size:12px; letter-spacing:.08em;
+                color:var(--micro); text-transform:uppercase; padding-bottom:52px; }
+  .mark-row { display:flex; align-items:center; gap:16px; margin-bottom:26px; }
+  .mark-row svg { width:44px; height:44px; }
+  .mark-row .word { font-family:var(--mono); font-weight:700; font-size:17px; letter-spacing:.04em; }
+  .cover h1 { font-size:clamp(34px,5.4vw,58px); line-height:1.04; }
+  .cover .tagline { margin-top:22px; max-width:56ch; font-size:18.5px; color:var(--mute); }
+  .cover-facts { margin-top:36px; display:grid; grid-template-columns:repeat(3,1fr);
+                 gap:1px; background:var(--line); border:1px solid var(--line); }
+  .cf { background:var(--cell); padding:18px 20px; }
+  .cf .k { font-family:var(--mono); font-size:11px; text-transform:uppercase;
+           letter-spacing:.06em; color:var(--micro); }
+  .cf .v { margin-top:6px; font-size:15px; font-weight:700; }
+
+  /* --- боль: до/после --- */
+  .ba { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line);
+        border:1px solid var(--line); }
+  .ba-col { background:var(--cell); padding:30px 28px; }
+  .ba-col .tag { font-family:var(--mono); font-size:11px; letter-spacing:.1em;
+                 text-transform:uppercase; padding:4px 9px; display:inline-block; }
+  .tag-before { background:var(--risk-bg); color:var(--risk-ink); }
+  .tag-after { background:var(--ok-bg); color:var(--ok-ink); }
+  .ba-col h3 { font-size:19px; margin-top:16px; }
+  .ba-list { margin-top:16px; display:flex; flex-direction:column; gap:11px; }
+  .ba-list div { font-size:14.5px; color:var(--mute); padding-left:18px; position:relative; }
+  .ba-list div::before { content:""; position:absolute; left:0; top:9px; width:7px; height:7px;
+                         background:var(--line); }
+  .ba-col.after .ba-list div::before { background:var(--acc); }
+  .ba-metric { margin-top:22px; padding-top:18px; border-top:1px solid var(--line-soft);
+               font-family:var(--mono); font-size:13px; color:var(--micro); }
+  .ba-metric b { display:block; font-size:30px; color:var(--ink); font-weight:800; margin-bottom:4px; }
+  .ba-col.after .ba-metric b { color:var(--acc-ink); }
+
+  /* --- поток --- */
+  .flow { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--line); }
+  .fstep { background:var(--cell); padding:26px 22px; border-right:1px solid var(--line); }
+  .flow .fstep:last-child { border-right:none; }
+  .fstep .n { font-family:var(--mono); font-size:24px; font-weight:800; color:var(--acc-ink); }
+  .fstep h3 { font-size:15.5px; margin-top:10px; }
+  .fstep p { margin-top:8px; font-size:13.5px; color:var(--mute); }
+
+  /* --- макет сообщения (пример экрана) --- */
+  .screen { border:1px solid var(--line); background:var(--cell); }
+  .screen-bar { display:flex; align-items:center; gap:10px; padding:12px 16px;
+                border-bottom:1px solid var(--line); font-family:var(--mono);
+                font-size:11.5px; color:var(--micro); text-transform:uppercase; letter-spacing:.08em; }
+  .screen-bar .dot3 { display:flex; gap:5px; }
+  .screen-bar .dot3 i { width:7px; height:7px; background:var(--line); display:block; }
+  .screen-body { padding:22px 24px; font-size:14.5px; }
+  .screen-body .row { display:flex; justify-content:space-between; gap:16px; padding:7px 0; }
+  .screen-body .row + .row { border-top:1px solid var(--line-soft); }
+  .screen-body .row .k { color:var(--mute); }
+  .screen-body .row .v { font-weight:700; font-variant-numeric:tabular-nums; }
+  .screen-title { font-weight:800; font-size:16px; margin-bottom:14px; }
+  .mgr { display:flex; justify-content:space-between; gap:14px; padding:9px 0;
+         font-size:14px; border-top:1px solid var(--line-soft); }
+  .mgr .who { color:var(--mute); }
+  .mgr .cnt { font-family:var(--mono); font-variant-numeric:tabular-nums; }
+  .mgr .cnt b { color:var(--acc-ink); }
+  .screen-foot { padding:12px 24px 20px; font-family:var(--mono); font-size:11.5px; color:var(--micro); }
+
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:26px; align-items:start; }
+  .why { display:flex; flex-direction:column; gap:18px; }
+  .why-item { border-left:3px solid var(--acc); padding:2px 0 2px 18px; }
+  .why-item h4 { margin:0; font-size:15.5px; font-weight:700; }
+  .why-item p { margin-top:5px; font-size:14.5px; color:var(--mute); }
+
+  /* --- маршрутизация --- */
+  .route { border:1px solid var(--line); background:var(--cell); padding:30px 28px; }
+  .route-in { font-family:var(--mono); font-size:14px; padding:12px 16px;
+              border:1px solid var(--line); display:inline-block; }
+  .route-in b { color:var(--acc-ink); }
+  .route-grid { margin-top:24px; display:grid; grid-template-columns:1fr 1fr; gap:1px;
+                background:var(--line); border:1px solid var(--line); }
+  .rt { background:var(--cell); padding:20px 22px; }
+  .rt .st { font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
+            padding:3px 8px; display:inline-block; }
+  .rt h4 { margin:12px 0 0; font-size:15px; }
+  .rt p { margin-top:7px; font-size:13.5px; color:var(--mute); }
+  .rt .cnt { margin-top:12px; font-family:var(--mono); font-size:22px; font-weight:800; }
+  .st-go { background:var(--ok-bg); color:var(--ok-ink); }
+  .st-no { background:var(--mute-bg); color:var(--mute); }
+
+  /* --- тёмный блок цифр --- */
+  .proof { background:var(--side); color:#F0F2ED; padding:52px 48px; }
+  .proof .lbl { color:#A8AEA0; }
+  .proof h2 { color:#fff; margin-top:12px; font-size:clamp(24px,3vw,32px); }
+  .proof .sub { margin-top:14px; color:#A8AEA0; font-size:15.5px; max-width:64ch; }
+  .proof-grid { margin-top:30px; display:grid; grid-template-columns:repeat(4,1fr);
+                gap:1px; background:rgba(255,255,255,.12); }
+  .pc { background:#171A15; padding:22px 20px; }
+  .pc .n { font-family:var(--mono); font-size:27px; font-weight:800; color:var(--acc);
+           font-variant-numeric:tabular-nums; }
+  .pc .l { margin-top:7px; font-size:12.5px; color:#A8AEA0; }
+
+  /* --- защита --- */
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); border:1px solid var(--line); }
+  .cell { background:var(--cell); padding:26px 24px; border-right:1px solid var(--line);
+          border-bottom:1px solid var(--line); }
+  .grid3 .cell:nth-child(3n) { border-right:none; }
+  .grid3 .cell:nth-last-child(-n+3) { border-bottom:none; }
+  .cell .idx { font-family:var(--mono); font-size:12px; color:var(--micro); }
+  .cell h3 { font-size:17px; margin-top:11px; }
+  .cell p { margin-top:9px; color:var(--mute); font-size:14px; }
+  .status { display:inline-block; margin-top:14px; font-family:var(--mono); font-size:10.5px;
+            letter-spacing:.06em; padding:4px 9px; text-transform:uppercase; }
+  .status.live { background:var(--ok-bg); color:var(--ok-ink); }
+  .status.soon { background:var(--mute-bg); color:var(--mute); }
+
+  /* --- цена --- */
+  .price { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line);
+           border:1px solid var(--line); }
+  .pcell { background:var(--cell); padding:32px 30px; }
+  .pcell .plan { font-family:var(--mono); font-size:11.5px; letter-spacing:.1em;
+                 text-transform:uppercase; color:var(--acc-ink); font-weight:700; }
+  .pcell .amount { margin-top:14px; font-size:34px; font-weight:800; letter-spacing:-.02em; }
+  .pcell .amount span { font-size:16px; color:var(--micro); font-weight:600; }
+  .pcell ul { margin:18px 0 0; padding:0; list-style:none; display:flex;
+              flex-direction:column; gap:10px; }
+  .pcell li { font-size:14.5px; color:var(--mute); padding-left:18px; position:relative; }
+  .pcell li::before { content:""; position:absolute; left:0; top:9px; width:7px; height:7px;
+                      background:var(--acc); }
+  .price-note { margin-top:22px; border:1px dashed var(--line); background:var(--cell);
+                padding:20px 24px; font-size:14.5px; color:var(--mute); }
+  .price-note b { color:var(--ink); }
+
+  /* --- возражения --- */
+  .faq { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line);
+         border:1px solid var(--line); }
+  .fq { background:var(--cell); padding:24px 26px; }
+  .fq .q { font-weight:800; font-size:15.5px; }
+  .fq .a { margin-top:9px; font-size:14.5px; color:var(--mute); }
+
+  /* --- CTA --- */
+  .cta { text-align:center; padding:76px 0 20px; }
+  .cta h2 { font-size:clamp(26px,4vw,40px); }
+  .cta p { margin-top:14px; color:var(--mute); font-size:17px; }
+  .btn { display:inline-flex; align-items:center; gap:9px; font-family:var(--mono); font-size:13.5px;
+         letter-spacing:.04em; padding:14px 24px; border:1px solid var(--acc); background:var(--acc);
+         color:#16210A; text-decoration:none; font-weight:700; margin-top:26px; }
+  .btn:focus-visible { outline:3px solid var(--acc-ink); outline-offset:3px; }
+  .cta .small { margin-top:14px; font-family:var(--mono); font-size:12.5px; color:var(--micro); }
+
+  footer { padding:44px 0 0; text-align:center; font-family:var(--mono); font-size:12px; color:var(--micro); }
+
+  /* ── веб-версия: то, чего PDF дать не может ──────────────────────────────
+     Появление секций при прокрутке и липкая кнопка внизу. Ничего мигающего:
+     брендбук требует плоскости и спокойствия, поэтому только сдвиг и прозрачность. */
+  .rise { opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease; }
+  .rise.in { opacity:1; transform:none; }
+  @media (prefers-reduced-motion: reduce) {
+    .rise { opacity:1; transform:none; transition:none; }
+  }
+
+  /* Кнопка всегда под рукой: КП читают с телефона, и мотать обратно наверх,
+     чтобы написать, никто не станет. Появляется после первого экрана. */
+  .dock { position:fixed; left:0; right:0; bottom:0; z-index:20;
+          background:var(--cell); border-top:1px solid var(--line);
+          display:flex; align-items:center; justify-content:space-between; gap:16px;
+          padding:12px 20px; transform:translateY(110%); transition:transform .35s ease; }
+  .dock.on { transform:none; }
+  .dock .txt { font-size:14px; color:var(--mute); }
+  .dock .txt b { color:var(--ink); }
+  .dock a { flex:none; }
+  @media (prefers-reduced-motion: reduce) { .dock { transition:none; } }
+  @media (max-width:640px) { .dock .txt { display:none; } .dock { justify-content:center; } }
+
+  .cell, .fq, .rt { transition:border-color .2s ease; }
+  .cell:hover, .fq:hover, .rt:hover { border-color:var(--acc); }
+
+  @media (max-width:860px) {
+    .cover-facts, .ba, .flow, .two, .route-grid, .proof-grid, .grid3, .price, .faq { grid-template-columns:1fr !important; }
+    .fstep, .cell { border-right:none !important; }
+    .proof { padding:36px 24px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <!-- ───────────────────────── обложка ───────────────────────── -->
+  <section class="cover">
+    <div class="cover-meta">
+      <span>Коммерческое предложение</span>
+      <span>Росилка — рассыльщик заявок</span>
+      <span>11.08.2026</span>
+    </div>
+
+    <div class="mark-row">
+      <svg viewBox="0 0 100 100" fill="none" role="img" aria-label="Знак Росилки — разветвление">
+        <path d="M15 50 H45" stroke="#A8E10C" stroke-width="9" stroke-linecap="round"/>
+        <path d="M45 50 L80 20" stroke="#A8E10C" stroke-width="9" stroke-linecap="round"/>
+        <path d="M45 50 L80 50" stroke="#A8E10C" stroke-width="9" stroke-linecap="round"/>
+        <path d="M45 50 L80 80" stroke="#A8E10C" stroke-width="9" stroke-linecap="round"/>
+      </svg>
+      <span class="word">РОСИЛКА</span>
+    </div>
+
+    <h1>Ваш менеджер тратит 6 часов в день на копипаст заявок. Это делает робот за 40 секунд.</h1>
+    <p class="tagline">Заявка приходит в один чат — и сама расходится по всем профильным группам
+      в Telegram, MAX и WhatsApp. Менеджер занимается сделками, а не перекладыванием текста.</p>
+
+    <div class="cover-facts">
+      <div class="cf"><div class="k">Каналы</div><div class="v">Telegram · MAX · WhatsApp</div></div>
+      <div class="cf"><div class="k">Подключение</div><div class="v">10 минут, без программиста</div></div>
+      <div class="cf"><div class="k">Отчёт владельцу</div><div class="v">Каждый день в 22:00</div></div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── боль ───────────────────────── -->
+  <section>
+    <div class="head">
+      <div>
+        <div class="lbl"><span class="dot"></span>С чего всё начинается</div>
+        <h2 style="margin-top:10px;">Один день менеджера спецтехники</h2>
+      </div>
+      <span class="num">01</span>
+    </div>
+    <p class="lead" style="margin-bottom:30px;">Слева — то, как это устроено у большинства контор
+      сегодня. Справа — тот же день, но с Росилкой. Цифры взяты из базы работающего кабинета,
+      а не придуманы для презентации.</p>
+
+    <div class="ba">
+      <div class="ba-col">
+        <span class="tag tag-before">Как сейчас</span>
+        <h3>Руками, по одному чату</h3>
+        <div class="ba-list">
+          <div>Пришла заявка на автокран — менеджер копирует текст.</div>
+          <div>Открывает первый чат, вставляет, отправляет. Второй. Третий.</div>
+          <div>На 30-м чате путается, кому уже отправил, а кому нет.</div>
+          <div>Часть чатов пропускает — просто устал. Заявка не дошла до тех, кто мог взять.</div>
+          <div>Вечером владелец спрашивает «сколько разослали?» — точного ответа нет.</div>
+        </div>
+        <div class="ba-metric">
+          <b class="tnum">≈ 6 ч 49 мин</b>
+          ручной работы в день — 817 отправок по 30 секунд
+        </div>
+      </div>
+
+      <div class="ba-col after">
+        <span class="tag tag-after">С Росилкой</span>
+        <h3>Написал один раз — ушло везде</h3>
+        <div class="ba-list">
+          <div>Менеджер отправляет заявку боту-кабинету. Один раз.</div>
+          <div>Система сама определяет тип техники по тексту.</div>
+          <div>Заявка уходит только в профильные чаты — с паузами, чтобы номер не забанили.</div>
+          <div>Дубли отсекаются: одна заявка из трёх каналов не станет тремя рассылками.</div>
+          <div>В 22:00 владельцу приходит отчёт: сколько заявок и сколько сообщений ушло.</div>
+        </div>
+        <div class="ba-metric">
+          <b class="tnum">≈ 40 сек</b>
+          внимания менеджера на ту же заявку
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── как работает ───────────────────────── -->
+  <section>
+    <div class="head">
+      <div>
+        <div class="lbl"><span class="dot"></span>Как это работает</div>
+        <h2 style="margin-top:10px;">Четыре шага — и рассылка идёт сама</h2>
+      </div>
+      <span class="num">02</span>
+    </div>
+    <div class="flow">
+      <div class="fstep"><span class="n">01</span><h3>Свой бот-кабинет</h3>
+        <p>Пишете название конторы главному боту — ваш личный бот создаётся автоматически за минуту.</p></div>
+      <div class="fstep"><span class="n">02</span><h3>Подключаете номера</h3>
+        <p>Телефон и код для Telegram и MAX, восьмизначный код привязки для WhatsApp. Прямо в кабинете.</p></div>
+      <div class="fstep"><span class="n">03</span><h3>Чаты подтягиваются сами</h3>
+        <p>Система читает ваши группы и раскладывает по типам техники. Личные и внутренние — отсеивает.</p></div>
+      <div class="fstep"><span class="n">04</span><h3>Заявки летят</h3>
+        <p>Менеджер пишет заявку боту — она расходится по нужным чатам всех трёх мессенджеров.</p></div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── ежедневный отчёт ───────────────────────── -->
+  <section>
+    <div class="head">
+      <div>
+        <div class="lbl"><span class="dot"></span>Контроль</div>
+        <h2 style="margin-top:10px;">Каждый вечер вы знаете, кто сколько разослал</h2>
+      </div>
+      <span class="num">03</span>
+    </div>
+    <p class="lead" style="margin-bottom:30px;">В 22:00 отчёт приходит владельцу прямо в кабинет —
+      не нужно никуда заходить и ничего выгружать. Видно и общий объём, и вклад каждого менеджера.</p>
+
+    <div class="two">
+      <div class="screen">
+        <div class="screen-bar">
+          <span class="dot3"><i></i><i></i><i></i></span>
+          <span>Кабинет · сообщение от бота · 22:00</span>
+        </div>
+        <div class="screen-body">
+          <div class="screen-title">📊 Итоги за день</div>
+          <div class="row"><span class="k">Заявок</span><span class="v tnum">26</span></div>
+          <div class="row"><span class="k">Разослано сообщений</span><span class="v tnum">817</span></div>
+
+          <div style="margin-top:20px; font-weight:800; font-size:14.5px;">По менеджерам</div>
+          <div class="mgr"><span class="who">Менеджер А</span>
+            <span class="cnt">14 заяв. → <b>152</b> сообщ.</span></div>
+          <div class="mgr"><span class="who">Менеджер Б</span>
+            <span class="cnt">12 заяв. → <b>665</b> сообщ.</span></div>
+        </div>
+        <div class="screen-foot">// имена скрыты · пропорции реальные, из рабочего кабинета</div>
+      </div>
+
+      <div class="why">
+        <div class="why-item">
+          <h4>Видно, кто реально работает</h4>
+          <p>Слева — настоящий отчёт клиента. Два менеджера, заявок почти поровну: 14 и 12.
+            А сообщений — <b>152 против 665</b>. Второй охватывает вчетверо больше рынка
+            той же работой. Без отчёта об этом не знал никто, включая владельца.</p>
+        </div>
+        <div class="why-item">
+          <h4>Видно, что заявка не зависла</h4>
+          <p>Заявки делятся на закрытые и открытые. Открытая неделю — повод спросить сегодня,
+            а не обнаружить в конце месяца.</p>
+        </div>
+        <div class="why-item">
+          <h4>Отчёт не нужно просить</h4>
+          <p>Приходит сам, каждый день. Если заявок за день не было — сообщение не приходит,
+            чтобы не приучать себя пролистывать пустые уведомления.</p>
+        </div>
+        <div class="why-item">
+          <h4>Есть срез за неделю и месяц</h4>
+          <p>С разбивкой по менеджерам и выгрузкой таблицей — для разговора о премии
+            цифры уже посчитаны.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── маршрутизация ───────────────────────── -->
+  <section>
+    <div class="head">
+      <div>
+        <div class="lbl"><span class="dot"></span>Главное отличие</div>
+        <h2 style="margin-top:10px;">Заявка уходит по адресу, а не веером</h2>
+      </div>
+      <span class="num">04</span>
+    </div>
+    <p class="lead" style="margin-bottom:30px;">Рассылка «во все чаты подряд» заканчивается одинаково:
+      админ группы устаёт от чужих тем и удаляет ваш номер. Мы разбираем текст заявки и шлём
+      только туда, где её ждут.</p>
+
+    <div class="route">
+      <div class="lbl" style="margin-bottom:14px;">Пример</div>
+      <span class="route-in">Заявка: «Нужен <b>автокран</b> 25 тонн, Химки, завтра на 6 часов»</span>
+
+      <div class="route-grid">
+        <div class="rt">
+          <span class="st st-go">Уходит</span>
+          <h4>Чаты по автокранам</h4>
+          <p>Включая те, где автокран назван вместе с другой техникой —
+            «Аренда кранов, автовышек, манипуляторов» получит эту заявку тоже.</p>
+          <div class="cnt tnum" style="color:var(--acc-ink);">105 чатов</div>
+        </div>
+        <div class="rt">
+          <span class="st st-no">Не уходит</span>
+          <h4>Тралы, катки, миксеры, чаты своих машинистов</h4>
+          <p>Чужая тема — прямой путь к бану номера. Внутренние чаты бригады
+            и чёрные списки отделены совсем: туда идут только свои метки.</p>
+          <div class="cnt tnum" style="color:var(--micro);">0 чатов</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── цифры ───────────────────────── -->
+  <section>
+    <div class="proof">
+      <div class="lbl">Из работающего кабинета</div>
+      <h2>Цифры, а не обещания</h2>
+      <p class="sub">Один действующий клиент — спецтехника, Москва и область. Всё ниже взято
+        из базы сервиса, а не посчитано для презентации.</p>
+      <div class="proof-grid">
+        <div class="pc"><div class="n">776</div><div class="l">рабочих чатов подключено в трёх мессенджерах</div></div>
+        <div class="pc"><div class="n">817</div><div class="l">сообщений разослано за одни сутки</div></div>
+        <div class="pc"><div class="n">31</div><div class="l">чат в среднем получает одну заявку</div></div>
+        <div class="pc"><div class="n">1&nbsp;344</div><div class="l">сообщения за неделю с одного кабинета</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── что внутри ───────────────────────── -->
+  <section>
+    <div class="head">
+      <div>
+        <div class="lbl"><span class="dot"></span>Что внутри</div>
+        <h2 style="margin-top:10px;">Чем это отличается от «бота-пересыльщика»</h2>
+      </div>
+      <span class="num">05</span>
+    </div>
+    <div class="grid3">
+      <div class="cell"><span class="idx">01</span><h3>Бережём номера</h3>
+        <p>Паузы между отправками, ротация чатов, дневные лимиты. Рассылка выглядит как работа
+          человека, а не как бот, — за это и банят.</p>
+        <span class="status live">Работает</span></div>
+      <div class="cell"><span class="idx">02</span><h3>Один текст — одна рассылка</h3>
+        <p>Заявка, пришедшая сразу в три канала, не превращается в три рассылки: дубли
+          распознаются по тексту.</p>
+        <span class="status live">Работает</span></div>
+      <div class="cell"><span class="idx">03</span><h3>Свои чаты не трогаем</h3>
+        <p>Чат бригады, чёрный список, «свободная техника» — отдельные адреса. Заявка на технику
+          туда не попадёт никогда.</p>
+        <span class="status live">Работает</span></div>
+      <div class="cell"><span class="idx">04</span><h3>Новые чаты сами</h3>
+        <p>Менеджер вступил в группу — она подтянется в рассылку за сутки. Выгнали из группы —
+          система заметит и перестанет туда слать.</p>
+        <span class="status live">Работает</span></div>
+      <div class="cell"><span class="idx">05</span><h3>Данные изолированы</h3>
+        <p>Ваши номера, чаты и заявки не видны другим клиентам сервиса. Ключи доступа
+          хранятся в зашифрованном виде.</p>
+        <span class="status live">Работает</span></div>
+      <div class="cell"><span class="idx">06</span><h3>Автооплата подписки</h3>
+        <p>Приём платежей через ЮKassa. Пока подключение оформляем вручную — договариваемся
+          напрямую.</p>
+        <span class="status soon">Скоро</span></div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── условия ───────────────────────── -->
+  <section>
+    <div class="head">
+      <div>
+        <div class="lbl"><span class="dot"></span>Условия</div>
+        <h2 style="margin-top:10px;">Сколько это стоит</h2>
+      </div>
+      <span class="num">06</span>
+    </div>
+
+    <div class="price">
+      <div class="pcell">
+        <span class="plan">Пилот</span>
+        <div class="amount">Бесплатно <span>· пока идёт тест</span></div>
+        <ul>
+          <li>Полный кабинет без урезаний</li>
+          <li>Три мессенджера сразу</li>
+          <li>Ежедневный отчёт по менеджерам</li>
+          <li>Помощь с подключением — от нас</li>
+        </ul>
+      </div>
+      <div class="pcell">
+        <span class="plan">Что дальше</span>
+        <div class="amount">Обсуждаем <span>· после пилота</span></div>
+        <ul>
+          <li>Цену называем, когда вы увидите свои цифры за неделю</li>
+          <li>Никаких списаний без вашего согласия</li>
+          <li>Уйти можно в любой момент — номера и чаты остаются вашими</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="price-note">
+      <b>Почему бесплатно.</b> Сервис работает на боевых каналах, но автоматическая оплата ещё
+      в разработке — вместо того чтобы брать деньги вручную за неготовое, мы открыли пилот.
+      Вы получаете рабочий инструмент, мы — живые замечания. Когда включим оплату, вы уже будете
+      знать по своей статистике, стоит ли она того.
+    </div>
+  </section>
+
+  <!-- ───────────────────────── возражения ───────────────────────── -->
+  <section>
+    <div class="head">
+      <div>
+        <div class="lbl"><span class="dot"></span>Что спрашивают перед стартом</div>
+        <h2 style="margin-top:10px;">Честные ответы на неудобные вопросы</h2>
+      </div>
+      <span class="num">07</span>
+    </div>
+    <div class="faq">
+      <div class="fq">
+        <div class="q">А номер не забанят?</div>
+        <div class="a">Риск есть всегда — им управляют, а не обещают его отсутствие. Между отправками
+          стоят паузы, чаты идут по очереди, есть дневной лимит. Если из чата вас удалили — система
+          это замечает и перестаёт туда слать, а не долбится дальше. Рассылка выглядит как работа
+          человека — именно за обратное и банят.</div>
+      </div>
+      <div class="fq">
+        <div class="q">Мои чаты и контакты увидит кто-то ещё?</div>
+        <div class="a">Нет. Данные каждой конторы отделены друг от друга, ключи доступа к вашим
+          номерам хранятся зашифрованными. Ни другой клиент сервиса, ни ваш менеджер из соседнего
+          отдела чужих номеров не видит.</div>
+      </div>
+      <div class="fq">
+        <div class="q">Что будет, если я решу уйти?</div>
+        <div class="a">Номера и группы остаются вашими — мы ничего к себе не привязываем. Отключаете
+          аккаунты в кабинете, и рассылка прекращается. Никаких «выгрузите данные за отдельную плату».</div>
+      </div>
+      <div class="fq">
+        <div class="q">Менеджеру придётся переучиваться?</div>
+        <div class="a">Он отправляет заявку в чат с ботом — так же, как писал бы её коллеге.
+          Никаких новых программ и вкладок. Если умеет писать в мессенджере — уже умеет пользоваться.</div>
+      </div>
+      <div class="fq">
+        <div class="q">У нас свои внутренние чаты — туда точно не улетит?</div>
+        <div class="a">Чат бригады, чёрный список и «свободная техника» помечаются отдельно и обычные
+          заявки не получают вовсе. Пометить чат можно вручную — авто-разбор такую пометку не
+          переигрывает.</div>
+      </div>
+      <div class="fq">
+        <div class="q">Сколько времени займёт запуск?</div>
+        <div class="a">Около десяти минут: назвать контору, войти в мессенджеры по номеру телефона,
+          проверить, как система разложила ваши чаты. Первую заявку разошлёте в тот же день.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── CTA ───────────────────────── -->
+  <section class="cta">
+    <div class="lbl"><span class="dot"></span>Начать</div>
+    <h2 style="margin-top:14px;">Подключим первый мессенджер сегодня</h2>
+    <p>Напишите боту название конторы — дальше он проведёт по шагам сам.<br>
+      Первую заявку разошлёте в тот же день.</p>
+    <a class="btn" href="https://t.me/rosilkabotglavniy_bot">Написать @rosilkabotglavniy_bot →</a>
+    <div class="small">// подключение занимает 10 минут · программист не нужен</div>
+  </section>
+
+  <footer>Росилка — рассыльщик заявок · коммерческое предложение · 11.08.2026</footer>
+</div>
+
+<div class="dock" id="dock">
+  <div class="txt">Подключение <b>10 минут</b>, программист не нужен</div>
+  <a class="btn" href="https://t.me/rosilkabotglavniy_bot" style="margin-top:0;">Написать боту →</a>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Появление секций. Без IntersectionObserver (старые вебвью мессенджеров)
+  // просто показываем всё сразу — контент важнее эффекта.
+  var blocks = document.querySelectorAll("section");
+  if (!reduce && "IntersectionObserver" in window) {
+    Array.prototype.forEach.call(blocks, function (b, i) {
+      if (i === 0) return;                 // первый экран показываем сразу
+      b.classList.add("rise");
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.05 });
+    Array.prototype.forEach.call(document.querySelectorAll(".rise"), function (b) { io.observe(b); });
+  }
+
+  // Липкая кнопка: показываем, когда обложка ушла вверх, и прячем у финального
+  // блока — там своя кнопка, две одинаковые рядом выглядят как ошибка вёрстки.
+  var dock = document.getElementById("dock");
+  var cta = document.querySelector(".cta");
+  function onScroll() {
+    var past = window.scrollY > window.innerHeight * 0.9;
+    var atEnd = cta && cta.getBoundingClientRect().top < window.innerHeight * 0.95;
+    dock.classList.toggle("on", past && !atEnd);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
