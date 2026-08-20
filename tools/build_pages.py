@@ -470,6 +470,56 @@ def related_types(active_slug=None):
     links = "".join('<a href="/%s/">%s</a>' % (t["slug"], esc(t["name"])) for t in TYPES if t["slug"]!=active_slug)
     return '<div class="related"><h3>Другая техника</h3><div class="related-grid">%s</div></div>' % links
 
+
+def related_cats(active_slug=None, limit=None):
+    """Перелинковка категорий спецтехники между собой.
+    До этого на них вела единственная ссылка — с главной, из-за чего робот
+    считал их второстепенными."""
+    items = [c for c in CATS if c["slug"] != active_slug]
+    if limit:
+        items = items[:limit]
+    links = "".join('<a href="/%s/">%s</a>' % (c["slug"], esc(c["name_nom"])) for c in items)
+    return '<div class="related"><h3>Другая спецтехника</h3><div class="related-grid">%s</div></div>' % links
+
+
+def related_blog(*keys, **kw):
+    """Ссылки на статьи блога по теме страницы.
+
+    Нужны не только читателю: до этого статьи лежали на глубине 3 клика
+    от главной (главная -> /blog/ -> статья), теперь профильные разделы
+    ведут на них напрямую.
+    """
+    limit = kw.get("limit", 3)
+    picked, seen = [], set()
+    for k in keys:
+        for slug, title, lead, blocks in BLOG:
+            if k in slug and slug not in seen:
+                seen.add(slug)
+                picked.append((slug, title))
+            if len(picked) >= limit:
+                break
+        if len(picked) >= limit:
+            break
+    if not picked:
+        return ""
+    links = "".join('<a href="/blog/%s/">%s</a>' % (sl, esc(t)) for sl, t in picked)
+    return '<div class="related"><h3>Статьи по теме</h3><div class="related-grid">%s</div></div>' % links
+
+
+def related_geo_rf(active_slug=None, limit=10):
+    """Перелинковка городов России между собой.
+
+    related_geo() охватывает только Москву и область, поэтому на страницы
+    30 регионов вела единственная ссылка — с главной.
+    """
+    # скользящее окно: каждая страница ведёт на СВОИХ соседей по списку,
+    # иначе первые десять городов собирают все ссылки, а остальные — ни одной
+    idx = next((i for i, g in enumerate(GEO_RF) if g[0] == active_slug), 0)
+    rest = GEO_RF[idx + 1:] + GEO_RF[:idx]
+    items = rest[:limit]
+    links = "".join('<a href="/geo/%s/">%s</a>' % (g[0], esc(g[2])) for g in items)
+    return '<div class="related"><h3>Другие города России</h3><div class="related-grid">%s</div></div>' % links
+
 def hero(kicker, h1, lead, price, price_unit="/ смена"):
     badge = ""
     if price:
@@ -881,6 +931,18 @@ def seo_desc(*parts):
             out = cut[:i].rstrip(" ,;:—-") + "…"
     return out
 
+
+BLOG_FOR_TYPE = {
+    "avtokrany":         ("avtokrana-50", "gruzovaya-harakteristika", "kak-vybrat-avtokran"),
+    "avtovyshki":        ("avtovyshka", "stropalshik", "podgotovka-ploshchadki"),
+    "manipulyatory":     ("manipulyatora", "kran-ili-manipulyator", "razgruzka-fury"),
+    "ekskavatory":       ("ekskavatora", "vyvoz-grunta", "podgotovka-ploshchadki"),
+    "samosvaly":         ("vyvoz-grunta", "arenda-na-mesyac", "dogovor-arendy"),
+    "traly":             ("perevozka-negabarita", "arenda-gusenichnogo", "dogovor-arendy"),
+    "gusenichnye-krany": ("arenda-gusenichnogo", "montazh-metallokonstrukciy", "ppr-na-kran"),
+    "bashennye-krany":   ("bashennyy-kran", "ppr-na-kran", "razreshenie-na-rabotu"),
+}
+
 # ---------------------------------------------------------------- генерация
 def build():
     pages = 0
@@ -904,19 +966,22 @@ def build():
                      '<h2>Частые вопросы</h2>%s') % (esc(t["lead"]), tonnage_table(),
                      param_table(STRELA,"/avtokrany/strela-",("метров","metrov")), faq_html(faqs))
             rel = (related_tonnages(-1) + related_param(STRELA,"/avtokrany/strela-",("метров","metrov"),-1,"Длина стрелы")
-                   + related_marki() + related_tasks() + related_geo() + related_types(t["slug"]))
+                   + related_marki() + related_blog(*BLOG_FOR_TYPE["avtokrany"]) + related_tasks()
+                   + related_geo() + related_types(t["slug"]))
         elif t["slug"] == "avtovyshki":
             prose = hub_extra_intro("avtovyshki") + ('<h2>Аренда автовышки по высоте подъёма</h2>'
                      '<p>Подберём автовышку по рабочей высоте и вылету. Цены «от», за смену, оператор и топливо включены.</p>%s'
                      '<h2>Для каких работ</h2><ul><li>Монтаж и обслуживание освещения</li><li>Работы на фасадах и остеклении</li><li>Установка вывесок и рекламных конструкций</li><li>Обрезка деревьев, клининг высотных объектов</li></ul>'
                      '<h2>Частые вопросы</h2>%s') % (param_table(VYSHKI,"/avtovyshki/",("метров","metrov")), faq_html(faqs))
-            rel = related_param(VYSHKI,"/avtovyshki/",("метров","metrov"),-1,"Высота подъёма") + related_types(t["slug"]) + related_geo()
+            rel = (related_param(VYSHKI,"/avtovyshki/",("метров","metrov"),-1,"Высота подъёма")
+                   + related_blog(*BLOG_FOR_TYPE["avtovyshki"]) + related_types(t["slug"]) + related_geo())
         elif t["slug"] == "manipulyatory":
             prose = hub_extra_intro("manipulyatory") + ('<h2>Аренда манипулятора по грузоподъёмности стрелы</h2>'
                      '<p>Кран-борт привезёт, разгрузит и установит груз за один выезд. Цены «от», за смену, с оператором и топливом.</p>%s'
                      '<h2>Что возят манипулятором</h2><ul><li>Бытовки, модульные здания, посты охраны</li><li>Ёмкости, септики, кессоны</li><li>Стройматериалы, ЖБИ, поддоны</li><li>Спецтехника и оборудование</li></ul>'
                      '<h2>Частые вопросы</h2>%s') % (param_table(MANIP,"/manipulyatory/",("тонн","tonn")), faq_html(faqs))
-            rel = related_param(MANIP,"/manipulyatory/",("тонн","tonn"),-1,"Грузоподъёмность стрелы") + related_tasks() + related_types(t["slug"]) + related_geo()
+            rel = (related_param(MANIP,"/manipulyatory/",("тонн","tonn"),-1,"Грузоподъёмность стрелы")
+                   + related_blog(*BLOG_FOR_TYPE["manipulyatory"]) + related_tasks() + related_types(t["slug"]) + related_geo())
         elif t["slug"] in ("ekskavatory", "samosvaly"):
             items = EKSK if t["slug"] == "ekskavatory" else SAMOSVAL
             base = "/%s/" % t["slug"]
@@ -927,16 +992,17 @@ def build():
                      '<h2>Вся техника КРАН365</h2>%s<h2>Частые вопросы</h2>%s') % (
                      tbl, price_table_types(t["slug"]), faq_html(faqs))
             rel = ('<div class="related"><h3>Модели</h3><div class="related-grid">%s</div></div>' %
-                   "".join('<a href="%s%s/">%s</a>' % (base, s2, esc(n2)) for s2, n2, _, _ in items)) + related_tasks() + related_types(t["slug"]) + related_geo()
+                   "".join('<a href="%s%s/">%s</a>' % (base, s2, esc(n2)) for s2, n2, _, _ in items)) + related_blog(*BLOG_FOR_TYPE.get(t["slug"], ())) + related_tasks() + related_types(t["slug"]) + related_geo()
         elif t["slug"] in HUBS_DATA:
             prose = hub_prose(t["slug"], t["lead"])
             faqs = HUBS_DATA[t["slug"]]["faqs"]
-            rel = related_types(t["slug"]) + related_tasks() + related_geo()
+            rel = related_blog(*BLOG_FOR_TYPE.get(t["slug"], ())) + related_types(t["slug"]) + related_tasks() + related_geo()
         else:
             prose = ('<p>%s</p><h2>Цены на аренду</h2><p>Стоимость указана «от», за смену — включает работу оператора и топливо. Точную цену под вашу задачу назовём по телефону.</p>%s'
                      '<h2>Вся техника КРАН365</h2>%s<h2>Частые вопросы</h2>%s') % (
                      esc(t["lead"]), price_table_types(t["slug"]), price_table_types(), faq_html(faqs))
             rel = related_types(t["slug"]) + related_geo()
+        rel += related_cats(limit=8)
         h1 = "Аренда %s в Москве и области" % t["one"]
         title = seo_title(h1, None, "цена %s" % money(t["price"]).lower())
         desc = seo_desc("Аренда %s в Москве и области: %s" % (t["one"], t["meta"]),
@@ -1197,7 +1263,7 @@ def build():
                         "Договор и закрывающие документы")
         lead = d["intro"][0]
         prose = geo_rf_prose(slug, prep, neigh)
-        rel = related_geo(slug) + related_tasks() + related_types()
+        rel = related_geo_rf(slug) + related_tasks() + related_types()
         ld = [breadcrumb_ld(crumbs), service_ld("Аренда спецтехники в %s" % prep, lead, None), faq_ld(d["faqs"]), local_business_ld()]
         page("geo/%s/index.html" % slug, title, desc, crumbs,
              hero("Зона работы", h1, d["angle"], None), body(prose, rel) + TRUST, ld)
@@ -1222,7 +1288,7 @@ def build():
                  '<li>Договор, счёт, закрывающие документы, ЭДО для юрлиц</li>'
                  '<li>Работаем по Москве, области и регионам России</li></ul>'
                  '<h2>Частые вопросы</h2>%s') % (esc(c["intro"]), table, faq_html(faqs))
-        rel = related_types() + related_tasks()
+        rel = related_cats(c["slug"]) + related_types() + related_tasks()
         ld = [breadcrumb_ld(crumbs), service_ld(c["h1"], c["lead"], c.get("price_from")), faq_ld(faqs), local_business_ld()]
         title = seo_title(c["h1"], "в Москве", "цена %s" % money(c.get("price_from")).lower())
         desc = seo_desc("%s: подберём и подадим технику из проверенной сети" % c["h1"],
