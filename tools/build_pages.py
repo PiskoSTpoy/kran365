@@ -820,11 +820,13 @@ def hub_prose(slug, lead):
 
     out += "<h2>Что советуем перед заказом</h2><p>%s</p>" % d["advice"]
 
-    out += "<h2>Цены на технику</h2>"
-    out += ("<p>Стоимость этой техники считается под задачу: слишком много переменных — "
-            "срок работ, доставка, подготовка площадки. Ниже — ориентиры по остальному парку, "
-            "а по вашей задаче посчитаем отдельно.</p>")
-    out += price_table_types(slug)
+    out += "<h2>Сколько это стоит</h2>"
+    out += ("<p>Технику этого класса не считают по прайсу: стоимость складывается из срока работ, "
+            "доставки и подготовки площадки, и на разных объектах отличается кратно. "
+            "Пришлите задачу — посчитаем и назовём сумму целиком, без сюрпризов в счёте. "
+            "Цены на технику с посменной ставкой смотрите в разделах "
+            '<a href="/avtokrany/">автокранов</a>, <a href="/avtovyshki/">автовышек</a> '
+            'и <a href="/manipulyatory/">манипуляторов</a>.</p>')
 
     out += "<h2>Частые вопросы</h2>%s" % faq_html(d["faqs"])
     return out
@@ -989,8 +991,8 @@ def build():
                 base, s2, esc(n2), esc(d2), money(p2)) for s2, n2, d2, p2 in items)
             tbl = '<div class="ptable-wrap"><table class="ptable"><thead><tr><th>Техника</th><th>Параметры</th><th>Цена</th></tr></thead><tbody>%s</tbody></table></div>' % rows
             prose = hub_extra_intro(t["slug"]) + ('<h2>Модели и цены</h2><p>Стоимость указана «от», за смену — включает работу оператора и топливо.</p>%s'
-                     '<h2>Вся техника КРАН365</h2>%s<h2>Частые вопросы</h2>%s') % (
-                     tbl, price_table_types(t["slug"]), faq_html(faqs))
+                     '<h2>Частые вопросы</h2>%s') % (
+                     tbl, faq_html(faqs))
             rel = ('<div class="related"><h3>Модели</h3><div class="related-grid">%s</div></div>' %
                    "".join('<a href="%s%s/">%s</a>' % (base, s2, esc(n2)) for s2, n2, _, _ in items)) + related_blog(*BLOG_FOR_TYPE.get(t["slug"], ())) + related_tasks() + related_types(t["slug"]) + related_geo()
         elif t["slug"] in HUBS_DATA:
@@ -999,8 +1001,8 @@ def build():
             rel = related_blog(*BLOG_FOR_TYPE.get(t["slug"], ())) + related_types(t["slug"]) + related_tasks() + related_geo()
         else:
             prose = ('<p>%s</p><h2>Цены на аренду</h2><p>Стоимость указана «от», за смену — включает работу оператора и топливо. Точную цену под вашу задачу назовём по телефону.</p>%s'
-                     '<h2>Вся техника КРАН365</h2>%s<h2>Частые вопросы</h2>%s') % (
-                     esc(t["lead"]), price_table_types(t["slug"]), price_table_types(), faq_html(faqs))
+                     '<h2>Частые вопросы</h2>%s') % (
+                     esc(t["lead"]), price_table_types(t["slug"]), faq_html(faqs))
             rel = related_types(t["slug"]) + related_geo()
         rel += related_cats(limit=8)
         h1 = "Аренда %s в Москве и области" % t["one"]
