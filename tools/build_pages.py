@@ -303,6 +303,7 @@ from data_marki import MARKI_DATA     # уникальный контент ст
 from data_vysh_manip import VYSHKI_DATA, MANIP_DATA  # автовышки (ось: работа на высоте) и манипуляторы (ось: экономика рейса)
 from data_zemlya import EKSK_DATA, SAMOSVAL_DATA     # экскаваторы (ось: грунт и производительность) и самосвалы (ось: экономика вывоза)
 from data_geo_mo import GEO_MO_DATA   # гео Москвы и области (ось: логистика подачи и местные условия)
+from data_hubs import HUBS_DATA       # хабы без своей ветки: тралы, гусеничные и башенные краны
 from data_geo_rf import GEO_RF_DATA   # гео городов России (ось: региональная специфика, честно про партнёрскую сеть)
 from data_blog_base import BLOG_BASE   # 6 базовых статей, переписанных из коротких заготовок
 BLOG = list(BLOG_BASE) + BLOG_RF
@@ -751,6 +752,32 @@ def geo_rf_prose(slug, prep, neigh):
     out += "<h2>Частые вопросы</h2>%s" % faq_html(d["faqs"])
     return out
 
+
+def hub_prose(slug, lead):
+    """Уникальный текст хаба техники, у которого нет собственной ветки с таблицей моделей."""
+    d = HUBS_DATA[slug]
+    out = ""
+    for p in d["intro"]:
+        out += "<p>%s</p>" % esc(p)
+
+    out += "<h2>%s</h2>" % esc(d["table_title"])
+    out += spec_table(d["table_rows"], d["table_head"])
+
+    out += "<h2>%s</h2><p>%s</p>" % (esc(d["key_title"]), esc(d["key_text"]))
+
+    out += "<h2>Типовые задачи</h2><ul>%s</ul>" % "".join("<li>%s</li>" % esc(x) for x in d["points"])
+
+    out += "<h2>Что советуем перед заказом</h2><p>%s</p>" % d["advice"]
+
+    out += "<h2>Цены на технику</h2>"
+    out += ("<p>Стоимость этой техники считается под задачу: слишком много переменных — "
+            "срок работ, доставка, подготовка площадки. Ниже — ориентиры по остальному парку, "
+            "а по вашей задаче посчитаем отдельно.</p>")
+    out += price_table_types(slug)
+
+    out += "<h2>Частые вопросы</h2>%s" % faq_html(d["faqs"])
+    return out
+
 # ---------------------------------------------------------------- генерация
 def build():
     pages = 0
@@ -798,6 +825,10 @@ def build():
                      esc(t["lead"]), tbl, price_table_types(t["slug"]), faq_html(faqs))
             rel = ('<div class="related"><h3>Модели</h3><div class="related-grid">%s</div></div>' %
                    "".join('<a href="%s%s/">%s</a>' % (base, s2, esc(n2)) for s2, n2, _, _ in items)) + related_tasks() + related_types(t["slug"]) + related_geo()
+        elif t["slug"] in HUBS_DATA:
+            prose = hub_prose(t["slug"], t["lead"])
+            faqs = HUBS_DATA[t["slug"]]["faqs"]
+            rel = related_types(t["slug"]) + related_tasks() + related_geo()
         else:
             prose = ('<p>%s</p><h2>Цены на аренду</h2><p>Стоимость указана «от», за смену — включает работу оператора и топливо. Точную цену под вашу задачу назовём по телефону.</p>%s'
                      '<h2>Вся техника КРАН365</h2>%s<h2>Частые вопросы</h2>%s') % (
