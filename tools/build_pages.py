@@ -194,7 +194,7 @@ def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
 <link rel="preconnect" href="https://mc.yandex.ru" crossorigin>
 <link rel="stylesheet" href="/assets/style.css">
 <link rel="stylesheet" href="/assets/pages.css">
-<link rel="icon" href="data:image/svg+xml,%%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%%3E%%3Crect width='32' height='32' rx='7' fill='%%23FF6A00'/%%3E%%3Cpath d='M7 25V9h2v16H7zm2-13 12 1-12 4V12zm-3 13h18' stroke='%%23160a00' stroke-width='2' fill='none' stroke-linecap='round'/%%3E%%3C/svg%%3E">
+<link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 %s
 </head>
 <body>
