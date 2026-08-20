@@ -6,7 +6,7 @@
 микроразметка Schema.org (BreadcrumbList, Service+Offer, FAQPage, LocalBusiness), перелинковка.
 Запуск:  python tools/build_pages.py
 """
-import os, json, html
+import os, json, html, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://kran365.ru"
@@ -811,6 +811,76 @@ def hub_extra_intro(slug):
     out += "<h2>Что важно учесть при выборе</h2><p>%s</p>" % esc(d["note"])
     return out
 
+
+# ---------------------------------------------------------------- SEO: длины сниппета
+TITLE_LIMIT = 62      # запас до 65: кириллица шире латиницы в пикселях
+DESC_LIMIT  = 158     # запас до 165
+
+BRAND = "КРАН365"
+
+
+def _clean(s):
+    """Схлопывает пробелы и убирает повтор гео, если он уже есть в основе."""
+    return re.sub(r"\s+", " ", s).strip()
+
+
+
+def lc_first(s):
+    """Строчная только первая буква — чтобы «Москвы» внутри фразы не превращалось в «москвы»."""
+    s = _clean(s)
+    return s[:1].lower() + s[1:] if s else s
+
+def seo_title(core, geo=None, extra=None):
+    """Собирает title в пределах лимита выдачи.
+
+    core  — обязательная основа («Аренда автокрана 25 тонн»)
+    geo   — регион, присоединяется без тире и только если его ещё нет в основе
+    extra — уточнение через тире («цена от 16 300 ₽»)
+
+    Части, которые не помещаются, не добавляются вовсе — обрывов на полуслове нет.
+    """
+    out = _clean(core)
+    tail = " | " + BRAND
+    if len(out) > TITLE_LIMIT:                     # длинный заголовок статьи
+        cut = out[:TITLE_LIMIT - 1]
+        out = cut[:cut.rfind(" ")].rstrip(" ,;:—-") + "…"
+        return out
+
+    if geo:
+        geo = _clean(geo)
+        has_geo = ("Москв" in out) or ("Росси" in out)
+        if not has_geo and len(out) + 1 + len(geo) + len(tail) <= TITLE_LIMIT:
+            out = out + " " + geo
+
+    if extra:
+        extra = _clean(extra)
+        if len(out) + 3 + len(extra) + len(tail) <= TITLE_LIMIT:
+            out = out + " — " + extra
+
+    if len(out) + len(tail) <= TITLE_LIMIT:
+        out += tail
+    return out
+
+
+def seo_desc(*parts):
+    """Собирает description из предложений, пока укладывается в лимит.
+    Обрывов на полуслове не бывает: предложение либо входит целиком, либо нет."""
+    out = ""
+    for p in parts:
+        if not p:
+            continue
+        p = _clean(p)
+        if not p.endswith((".", "!", "?")):
+            p += "."
+        cand = (out + " " + p).strip()
+        if len(cand) <= DESC_LIMIT:
+            out = cand
+        elif not out:                      # первое предложение длиннее лимита
+            cut = p[:DESC_LIMIT]
+            i = cut.rfind(" ")
+            out = cut[:i].rstrip(" ,;:—-") + "…"
+    return out
+
 # ---------------------------------------------------------------- генерация
 def build():
     pages = 0
@@ -868,9 +938,10 @@ def build():
                      esc(t["lead"]), price_table_types(t["slug"]), price_table_types(), faq_html(faqs))
             rel = related_types(t["slug"]) + related_geo()
         h1 = "Аренда %s в Москве и области" % t["one"]
-        title = "%s — цена %s | КРАН365" % (h1, money(t["price"]).lower())
-        desc = "Аренда %s в Москве и МО: %s. Оператор в стоимости, подача от 1 дня, договор и ЭДО. Цена %s/смена. Звоните %s." % (
-            t["one"], t["meta"], money(t["price"]).lower(), PHONE_DISP)
+        title = seo_title(h1, None, "цена %s" % money(t["price"]).lower())
+        desc = seo_desc("Аренда %s в Москве и области: %s" % (t["one"], t["meta"]),
+                        "Цена %s/смена, оператор и топливо включены" % money(t["price"]).lower(),
+                        "Подача от 1 дня, договор и ЭДО")
         ld = [breadcrumb_ld(crumbs), service_ld("Аренда "+t["one"], t["lead"], t["price"]), faq_ld(faqs), local_business_ld()]
         page("%s/index.html" % t["slug"], title, desc, crumbs,
              hero("Аренда спецтехники", h1, t["lead"], t["price"]),
@@ -883,12 +954,10 @@ def build():
                 d = TONNAGE[tn]
                 crumbs2 = [home, ("Автокраны","/avtokrany/"), ("%d тонн" % tn, "/avtokrany/%d-tonn/" % tn)]
                 h1b = "Аренда автокрана %d тонн" % tn
-                title2 = "%s в Москве — цена %s | КРАН365" % (h1b, money(pr).lower())
-                desc2 = ("Аренда автокрана %d тонн в Москве и области: %s. %s Грузоподъёмность по вылету, "
-                         "требования к площадке, оператор в стоимости. Звоните %s.") % (
-                    tn, d["klass"].lower(),
-                    ("Цена "+money(pr).lower()+"/смена.") if pr else "Стоимость — по расчёту под объект.",
-                    PHONE_DISP)
+                title2 = seo_title(h1b, "в Москве", "цена %s" % money(pr).lower())
+                desc2 = seo_desc("Автокран %d тонн в Москве и области: %s" % (tn, lc_first(d["klass"])),
+                                 ("Цена %s/смена" % money(pr).lower()) if pr else "Стоимость по расчёту",
+                                 "Грузоподъёмность по вылету, требования к площадке")
                 leadb = d["intro"][0]
                 prose2 = tonnage_prose(tn, pr)
                 rel2 = related_tonnages(tn) + related_geo()
@@ -907,10 +976,11 @@ def build():
         prose = vyshka_prose(h, pr)
         rel = related_param(VYSHKI,"/avtovyshki/",("метров","metrov"),h,"Другие высоты") + related_geo() + related_types("avtovyshki")
         ld = [breadcrumb_ld(crumbs), service_ld(h1, lead, pr), faq_ld(d["faqs"]), local_business_ld()]
-        page("avtovyshki/%d-metrov/index.html" % h, "%s в Москве — цена %s | КРАН365" % (h1, money(pr).lower()),
-             "Автовышка %d м в Москве и области (%s): высота и боковой вылет, грузоподъёмность люльки, "
-             "для каких работ подходит. Цена %s/смена с оператором. Звоните %s." % (
-                 h, d["boom"], money(pr).lower(), PHONE_DISP),
+        page("avtovyshki/%d-metrov/index.html" % h,
+             seo_title(h1, "в Москве", "цена %s" % money(pr).lower()),
+             seo_desc("Автовышка %d м в Москве и области: %s" % (h, lc_first(d["focus"])),
+                      "Высота и боковой вылет, грузоподъёмность люльки",
+                      "Цена %s/смена с оператором" % money(pr).lower()),
              crumbs, hero("Автовышки · %d м" % h, h1, d["focus"], pr), body(prose, rel), ld)
         pages += 1
 
@@ -923,10 +993,11 @@ def build():
         prose = manip_prose(t, pr)
         rel = related_param(MANIP,"/manipulyatory/",("тонн","tonn"),t,"Другая грузоподъёмность") + related_tasks() + related_geo()
         ld = [breadcrumb_ld(crumbs), service_ld(h1, lead, pr), faq_ld(d["faqs"]), local_business_ld()]
-        page("manipulyatory/%d-tonn/index.html" % t, "%s в Москве — цена %s | КРАН365" % (h1, money(pr).lower()),
-             "Манипулятор %d тонн в Москве и МО: вылет стрелы, грузоподъёмность борта, что возит, "
-             "когда выгоднее крана. %s Звоните %s." % (
-                 t, ("Цена "+money(pr).lower()+"/смена.") if pr else "Стоимость по расчёту.", PHONE_DISP),
+        page("manipulyatory/%d-tonn/index.html" % t,
+             seo_title(h1, "в Москве", "цена %s" % money(pr).lower()),
+             seo_desc("Манипулятор %d тонн в Москве и области: вылет стрелы, грузоподъёмность борта" % t,
+                      ("Цена %s/смена" % money(pr).lower()) if pr else "Стоимость по расчёту",
+                      "Когда выгоднее автокрана"),
              crumbs, hero("Манипуляторы · %d т" % t, h1, d["focus"], pr), body(prose, rel), ld)
         pages += 1
 
@@ -940,9 +1011,10 @@ def build():
         rel = related_marki(slug) + related_tonnages(-1) + related_geo()
         ld = [breadcrumb_ld(crumbs), service_ld(h1, lead, 16300), faq_ld(d["faqs"]), local_business_ld()]
         page("avtokrany/marki/%s/index.html" % slug,
-             "%s в Москве — модели, цены, что учесть | КРАН365" % h1,
-             "Аренда автокранов %s (%s): какие модели есть в аренде, сильные и слабые стороны в работе, "
-             "запчасти и сервис, цены по тоннажу. Звоните %s." % (name, d["origin"], PHONE_DISP),
+             seo_title(h1, "в Москве", "модели и цены"),
+             seo_desc("Автокраны %s в аренду: какие модели доступны, сильные и слабые стороны" % name,
+                      "Запчасти и сервис, цены по тоннажу",
+                      "Оператор в стоимости смены"),
              crumbs, hero("Автокраны · %s" % name, h1, d["focus"], 16300), body(prose, rel), ld)
         pages += 1
 
@@ -953,8 +1025,11 @@ def build():
         prose = task_prose(slug, tech, faqs)
         rel = related_tasks(slug) + related_types() + related_geo()
         ld = [breadcrumb_ld(crumbs), service_ld(name, lead, pr), faq_ld(faqs), local_business_ld()]
-        page("uslugi/%s/index.html" % slug, "%s — цена %s | КРАН365" % (name, money(pr).lower()),
-             "%s в Москве и МО. %s Оператор в стоимости, подача от 1 дня. Звоните %s." % (name, lead[:90].rsplit(" ",1)[0]+".", PHONE_DISP),
+        page("uslugi/%s/index.html" % slug,
+             seo_title(name, "в Москве", "цена %s" % money(pr).lower()),
+             seo_desc("%s в Москве и области: %s" % (name, lc_first(TASKS_DATA[slug]["angle"])),
+                      "Как проходит работа и что подготовить",
+                      "Оператор в стоимости, подача от 1 дня"),
              crumbs, hero("Услуги", h1, TASKS_DATA[slug]["angle"], pr), body(prose, rel) + TRUST, ld)
         pages += 1
 
@@ -1003,7 +1078,8 @@ def build():
     prose += "<h2>Частые вопросы</h2>" + faq_html(faqs_u)
     ld = [breadcrumb_ld(crumbs), service_ld("Услуги спецтехники","Аренда спецтехники под конкретные задачи в Москве и области",16300), faq_ld(faqs_u), local_business_ld()]
     page("uslugi/index.html", "Услуги спецтехники в Москве — монтаж, подъём, вывоз | КРАН365",
-         "Монтаж ангаров и металлоконструкций, установка бытовок, подъём оборудования на крышу, разгрузка фур, вывоз грунта. Техника с оператором, подача в день заявки. %s" % PHONE_DISP,
+         seo_desc("Монтаж ангаров и металлоконструкций, установка бытовок, подъём на крышу, разгрузка фур, вывоз грунта",
+                  "Техника с оператором, подача в день заявки"),
          crumbs, hero("Услуги", "Услуги спецтехники под вашу задачу",
                       "Не нужно разбираться, какой кран заказать — опишите задачу, подберём технику и назовём точную цену. Работаем по Москве и всей области круглосуточно.", 16300),
          body(prose, related_tasks() + related_types()) + TRUST, ld)
@@ -1019,9 +1095,10 @@ def build():
         rel = related_param(STRELA,"/avtokrany/strela-",("метров","metrov"),m_,"Другие длины стрелы") + related_tonnages(-1) + related_geo()
         ld = [breadcrumb_ld(crumbs), service_ld(h1, lead, pr), faq_ld(d["faqs"]), local_business_ld()]
         page("avtokrany/strela-%d-metrov/index.html" % m_,
-             "%s — цена %s | КРАН365" % (h1, money(pr).lower()),
-             "Автокран со стрелой %d м в Москве и области: %s. %s Высота подъёма, вылет, расчёт геометрии. Звоните %s." % (
-                 m_, d["focus"].lower(), ("Цена "+money(pr).lower()+"/смена.") if pr else "Стоимость по расчёту.", PHONE_DISP),
+             seo_title(h1, None, "цена %s" % money(pr).lower()),
+             seo_desc("Автокран со стрелой %d м: %s" % (m_, lc_first(d["focus"])),
+                      "Высота подъёма, вылет, расчёт геометрии",
+                      ("Цена %s/смена" % money(pr).lower()) if pr else "Стоимость по расчёту"),
              crumbs, hero("Автокраны · стрела %d м" % m_, h1, d["focus"], pr), body(prose, rel), ld)
         pages += 1
 
@@ -1042,9 +1119,11 @@ def build():
             rel = ('<div class="related"><h3>Другая техника этого класса</h3><div class="related-grid">%s</div></div>' %
                    "".join('<a href="%s%s/">%s</a>' % (base, s2, esc(n2)) for s2, n2, _, _ in items if s2 != s)) + related_tasks() + related_geo()
             ld = [breadcrumb_ld(crumbs), service_ld(n, lead, p), faq_ld(dd["faqs"]), local_business_ld()]
-            page("%s/%s/index.html" % (group, s), "%s в Москве — цена %s | КРАН365" % (n, money(p).lower()),
-                 "%s в аренду в Москве и МО: %s. %s Цена %s/смена с оператором и топливом. Звоните %s." % (
-                     n, d_, dd["focus"], money(p).lower(), PHONE_DISP),
+            page("%s/%s/index.html" % (group, s),
+                 seo_title(n, "в Москве", "цена %s" % money(p).lower()),
+                 seo_desc("%s в аренду в Москве и области: %s" % (n, d_),
+                          dd["focus"],
+                          "Цена %s/смена с оператором" % money(p).lower()),
                  crumbs, hero(kicker, h1, dd["focus"], p), body(prose, rel), ld)
             pages += 1
 
@@ -1071,7 +1150,7 @@ def build():
                "publisher":{"@type":"Organization","name":"КРАН365"},
                "mainEntityOfPage":SITE+"/blog/%s/" % s},
               local_business_ld()]
-        page("blog/%s/index.html" % s, "%s | КРАН365" % t, lead[:180], crumbs,
+        page("blog/%s/index.html" % s, seo_title(t), seo_desc(lead), crumbs,
              hero("Блог", t, lead, None), body(prose, rel), ld)
         pages += 1
 
@@ -1095,9 +1174,10 @@ def build():
         d = GEO_MO_DATA[slug]
         crumbs = [home, ("Зона работы","/#geo"), ("Аренда в %s" % prep, "/geo/%s/" % slug)]
         h1 = "Аренда крана и спецтехники в %s" % prep
-        title = "%s — подача, сроки, местные условия | КРАН365" % h1
-        desc = "Аренда спецтехники в %s: %s. Сроки подачи, что учесть на месте, какую технику берут чаще всего. %s" % (
-            prep, d["angle"].lower(), PHONE_DISP)
+        title = seo_title(h1, None, "подача и сроки")
+        desc = seo_desc("Аренда спецтехники в %s: %s" % (prep, lc_first(d["angle"])),
+                        "Сроки подачи, что учесть на месте",
+                        "Какую технику берут чаще всего")
         lead = d["intro"][0]
         prose = geo_mo_prose(slug, prep, neigh)
         rel = related_geo(slug) + related_tasks() + related_types()
@@ -1111,9 +1191,10 @@ def build():
         d = GEO_RF_DATA[slug]
         crumbs = [home, ("Зона работы","/#geo"), ("Аренда в %s" % prep, "/geo/%s/" % slug)]
         h1 = "Аренда крана и спецтехники в %s" % prep
-        title = "%s — условия, сроки, местная специфика | КРАН365" % h1
-        desc = ("Аренда спецтехники в %s: %s. Организуем подачу через партнёрскую сеть в регионе, "
-                "договор и закрывающие документы. %s") % (prep, d["angle"].lower(), PHONE_DISP)
+        title = seo_title(h1, None, "условия и сроки")
+        desc = seo_desc("Аренда спецтехники в %s: %s" % (prep, lc_first(d["angle"])),
+                        "Подача через партнёрскую сеть в регионе",
+                        "Договор и закрывающие документы")
         lead = d["intro"][0]
         prose = geo_rf_prose(slug, prep, neigh)
         rel = related_geo(slug) + related_tasks() + related_types()
@@ -1143,9 +1224,10 @@ def build():
                  '<h2>Частые вопросы</h2>%s') % (esc(c["intro"]), table, faq_html(faqs))
         rel = related_types() + related_tasks()
         ld = [breadcrumb_ld(crumbs), service_ld(c["h1"], c["lead"], c.get("price_from")), faq_ld(faqs), local_business_ld()]
-        title = "%s в Москве и по России — цена %s | КРАН365" % (c["h1"], money(c.get("price_from")).lower())
-        desc = ("%s: подберём и подадим из проверенной сети, оператор в стоимости, договор и ЭДО. Звоните %s." %
-                (c["h1"], PHONE_DISP))
+        title = seo_title(c["h1"], "в Москве", "цена %s" % money(c.get("price_from")).lower())
+        desc = seo_desc("%s: подберём и подадим технику из проверенной сети" % c["h1"],
+                        "Оператор и топливо в стоимости смены",
+                        "Договор, счёт и закрывающие документы")
         page("%s/index.html" % c["slug"], title, desc, crumbs,
              hero("Спецтехника", c["h1"], c["lead"], c.get("price_from")), body(prose, rel) + TRUST, ld)
         pages += 1
