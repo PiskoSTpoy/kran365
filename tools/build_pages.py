@@ -340,6 +340,7 @@ from data_tonnage import TONNAGE      # уникальный контент ст
 from data_strela import STRELA_DATA   # уникальный контент страниц по длине стрелы (ось: геометрия)
 from data_marki import MARKI_DATA     # уникальный контент страниц марок (ось: эксплуатация)
 from data_vysh_manip import VYSHKI_DATA, MANIP_DATA  # автовышки (ось: работа на высоте) и манипуляторы (ось: экономика рейса)
+from data_zemlya import EKSK_DATA, SAMOSVAL_DATA     # экскаваторы (ось: грунт и производительность) и самосвалы (ось: экономика вывоза)
 BLOG = BLOG + BLOG_RF
 
 # Марки автокранов
@@ -698,6 +699,39 @@ def manip_prose(t_, pr):
     out += "<h2>Частые вопросы</h2>%s" % faq_html(d["faqs"])
     return out
 
+
+def zemlya_prose(group, slug, name, price, table):
+    """Уникальный текст страниц экскаваторов и самосвалов."""
+    d = (EKSK_DATA if group == "ekskavatory" else SAMOSVAL_DATA)[slug]
+    out = ""
+    for p in d["intro"]:
+        out += "<p>%s</p>" % esc(p)
+
+    if group == "ekskavatory":
+        out += "<h2>Характеристики и производительность</h2>"
+        out += spec_table(d["specs"], ["Параметр", "Значение"])
+        out += "<p><small>Производительность указана для грунта II–III категории при нормальном подъезде "\
+               "и достаточном числе самосвалов под погрузкой. Если самосвал один, реальная выработка "\
+               "будет заметно ниже — машина простаивает между рейсами.</small></p>"
+        out += "<h2>Для каких работ</h2><ul>%s</ul>" % "".join("<li>%s</li>" % esc(x) for x in d["works"])
+        out += "<h2>По какому грунту работает</h2><p>%s</p>" % esc(d["ground"])
+    else:
+        out += "<h2>Что вмещает и что вывозит</h2>"
+        out += spec_table(d["specs"], ["Параметр", "Значение"])
+        out += "<p><small>Объём грунта «в плотном теле» — это сколько кубов вынутого котлована "\
+               "помещается в кузов. Он меньше объёма кузова, потому что при выемке грунт разрыхляется "\
+               "и занимает на 20–30 % больше места.</small></p>"
+        out += "<h2>Что возим</h2><ul>%s</ul>" % "".join("<li>%s</li>" % esc(x) for x in d["cargo"])
+        out += "<h2>Как считать вывоз</h2><p>%s</p>" % esc(d["logistics"])
+
+    out += "<h2>Стоимость аренды</h2>"
+    out += "<p>Смена до 10 часов — %s, оператор и топливо включены. Подача считается отдельно, "\
+           "по расстоянию до объекта.</p>" % money(price).lower()
+    out += table
+
+    out += "<h2>Частые вопросы</h2>%s" % faq_html(d["faqs"])
+    return out
+
 # ---------------------------------------------------------------- генерация
 def build():
     pages = 0
@@ -883,30 +917,22 @@ def build():
         ("ekskavatory", EKSK, "/ekskavatory/", "Экскаваторы", "Экскаваторы"),
         ("samosvaly", SAMOSVAL, "/samosvaly/", "Самосвалы", "Самосвалы")):
         rows = "".join('<tr><td><a href="%s%s/" style="color:var(--ink)">%s</a></td><td>%s</td><td><b>%s</b> <span style="color:var(--muted-2);font-size:.82rem">/ смена</span></td></tr>' % (
-            base, s, esc(n), esc(d), money(p)) for s, n, d, p in items)
+            base, s, esc(n), esc(d_), money(p)) for s, n, d_, p in items)
         table = '<div class="ptable-wrap"><table class="ptable"><thead><tr><th>Техника</th><th>Параметры</th><th>Цена</th></tr></thead><tbody>%s</tbody></table></div>' % rows
-        for s, n, d, p in items:
+        data = EKSK_DATA if group == "ekskavatory" else SAMOSVAL_DATA
+        for s, n, d_, p in items:
+            dd = data[s]
             crumbs = [home, (parent, base), (n, base + s + "/")]
             h1 = "Аренда: %s" % n
-            lead = ("%s — %s. Работа в Москве и области, оператор и топливо в стоимости смены, подача в день заявки.") % (n, d)
-            if group == "ekskavatory":
-                faqs = [("Что входит в смену?", "Смена — до 10 часов работы, включая оператора и топливо. Подача считается отдельно по километражу."),
-                        ("Есть ли гидромолот?", "Да, на большинство машин ставится гидромолот для разрушения бетона и мёрзлого грунта. Уточните при заказе — подадим с нужным навесным."),
-                        ("Вывозите грунт?", "Да, можем подать самосвалы вместе с экскаватором и вывезти грунт на лицензированный полигон с документами.")]
-                extra = '<h2>Для каких работ</h2><ul><li>Разработка котлованов и траншей</li><li>Планировка и обратная засыпка</li><li>Демонтаж и разрушение конструкций</li><li>Погрузка грунта и мусора в самосвалы</li></ul>'
-            else:
-                faqs = [("Сколько кубов вывезет за рейс?", "%s. При расчёте помните: разрыхлённый грунт занимает на 20–30%% больше объёма, чем в котловане." % d.capitalize()),
-                        ("Как считается стоимость вывоза?", "По объёму в кубометрах и расстоянию до полигона. Удобнее считать в рейсах — так проще сравнивать предложения."),
-                        ("Даёте документы на утилизацию?", "Да, вывозим на лицензированные полигоны и предоставляем документы о размещении отходов.")]
-                extra = '<h2>Что вывозим</h2><ul><li>Грунт с котлованов и траншей</li><li>Строительный мусор и бой</li><li>Снег в зимний период</li><li>Доставка песка, щебня, ПГС</li></ul>'
-            prose = ('<p>%s</p><h2>Стоимость аренды</h2><p>Смена — %s, оператор и топливо включены.</p>%s%s<h2>Частые вопросы</h2>%s') % (
-                     esc(lead), money(p).lower(), table, extra, faq_html(faqs))
+            lead = dd["intro"][0]
+            prose = zemlya_prose(group, s, n, p, table)
             rel = ('<div class="related"><h3>Другая техника этого класса</h3><div class="related-grid">%s</div></div>' %
                    "".join('<a href="%s%s/">%s</a>' % (base, s2, esc(n2)) for s2, n2, _, _ in items if s2 != s)) + related_tasks() + related_geo()
-            ld = [breadcrumb_ld(crumbs), service_ld(n, lead, p), faq_ld(faqs), local_business_ld()]
+            ld = [breadcrumb_ld(crumbs), service_ld(n, lead, p), faq_ld(dd["faqs"]), local_business_ld()]
             page("%s/%s/index.html" % (group, s), "%s в Москве — цена %s | КРАН365" % (n, money(p).lower()),
-                 "%s в аренду в Москве и МО: %s. Цена %s/смена с оператором и топливом, подача в день заявки. %s" % (n, d, money(p).lower(), PHONE_DISP),
-                 crumbs, hero(kicker, h1, lead, p), body(prose, rel), ld)
+                 "%s в аренду в Москве и МО: %s. %s Цена %s/смена с оператором и топливом. Звоните %s." % (
+                     n, d_, dd["focus"], money(p).lower(), PHONE_DISP),
+                 crumbs, hero(kicker, h1, dd["focus"], p), body(prose, rel), ld)
             pages += 1
 
     # --- блог
