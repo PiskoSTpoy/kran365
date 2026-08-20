@@ -25,7 +25,7 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
 <meta property="og:image" content="https://kran365.ru/assets/img/og-cover.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="КРАН365 — аренда спецтехники и кранов в Москве и области"><meta name="twitter:description" content="Автокраны 16–500 т, автовышки, манипуляторы, экскаваторы и самосвалы. Подача от 1 дня, договор и ЭДО."><meta name="twitter:image" content="https://kran365.ru/assets/img/og-cover.jpg">
 <link rel="preconnect" href="https://mc.yandex.ru" crossorigin>
-<link rel="preload" href="assets/img/hero-crane.jpg" as="image">
+<link rel="preload" href="assets/img/hero-crane.webp" as="image" type="image/webp" fetchpriority="high">
 <link rel="stylesheet" href="assets/style.css?v=6">
 <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://kran365.ru/#org","name":"КРАН365","url":"https://kran365.ru/","logo":"https://kran365.ru/assets/img/crane-100.jpg","image":"https://kran365.ru/assets/img/crane-100.jpg","email":"info@kran365.ru","telephone":"+79055535869","sameAs":["https://t.me/usdctrc2o","https://wa.me/79055535869"],"contactPoint":{"@type":"ContactPoint","telephone":"+79055535869","contactType":"sales","areaServed":"RU","availableLanguage":"Russian"}},{"@type":"WebSite","@id":"https://kran365.ru/#website","name":"КРАН365 — аренда спецтехники","url":"https://kran365.ru/","inLanguage":"ru","publisher":{"@id":"https://kran365.ru/#org"}},{"@type":"LocalBusiness","@id":"https://kran365.ru/#business","name":"КРАН365 — аренда спецтехники и кранов","image":"https://kran365.ru/assets/img/crane-100.jpg","url":"https://kran365.ru/","telephone":"+79055535869","email":"info@kran365.ru","priceRange":"₽₽","currenciesAccepted":"RUB","paymentAccepted":"Наличный и безналичный расчёт","address":{"@type":"PostalAddress","addressLocality":"Москва","streetAddress":"проспект Андропова, 10","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":55.6767,"longitude":37.6654},"areaServed":"Москва и Московская область","openingHours":"Mo-Su 00:00-24:00","sameAs":["https://t.me/usdctrc2o","https://wa.me/79055535869"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://kran365.ru/"}]}]}</script>
@@ -84,7 +84,7 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
 <!-- ======================= HERO ======================= -->
 <section class="hero" id="top">
   <div class="hero__bg">
-    <div class="hero__poster" style="background-image:url('assets/img/hero-crane.jpg')"></div>
+    <div class="hero__poster" style="background-image:image-set(url('assets/img/hero-crane.webp') type('image/webp'),url('assets/img/hero-crane.jpg') type('image/jpeg'));background-image:-webkit-image-set(url('assets/img/hero-crane.webp') type('image/webp'),url('assets/img/hero-crane.jpg') type('image/jpeg'))"></div>
     <video class="hero__video" data-src="assets/hero.mp4" poster="assets/img/hero-crane.jpg"
            autoplay muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
   </div>
@@ -178,7 +178,7 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
 
     <div class="cat-grid">
       <a class="cat reveal" href="/avtokrany/">
-        <img class="cat__bg" src="assets/img/crane-100.jpg" alt="Автокран Liebherr в работе" loading="lazy">
+        <picture><source srcset="assets/img/crane-100.webp" type="image/webp"><img class="cat__bg"  alt="Автокран Liebherr в работе" width="650" height="430" fetchpriority="high" decoding="async" src="assets/img/crane-100.jpg"></picture>
         <svg class="cat__ico"><use href="#i-crane"/></svg>
         <h3>Автокраны</h3>
         <span class="cat__meta">16 – 500 тонн · стрела до 96 м</span>
@@ -186,7 +186,7 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
         <span class="cat__go"><svg width="22" height="22"><use href="#i-go"/></svg></span>
       </a>
       <a class="cat reveal" href="/gusenichnye-krany/">
-        <img class="cat__bg" src="assets/img/gusenichnyj.jpg" alt="Гусеничный кран с решётчатой стрелой" loading="lazy">
+        <picture><source srcset="assets/img/gusenichnyj.webp" type="image/webp"><img class="cat__bg"  alt="Гусеничный кран с решётчатой стрелой" loading="lazy" width="900" height="711" decoding="async" src="assets/img/gusenichnyj.jpg"></picture>
         <svg class="cat__ico"><use href="#i-crane"/></svg>
         <h3>Гусеничные краны</h3>
         <span class="cat__meta">50 – 750 тонн · тяжёлый монтаж</span>
@@ -194,7 +194,7 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
         <span class="cat__go"><svg width="22" height="22"><use href="#i-go"/></svg></span>
       </a>
       <a class="cat reveal" href="/bashennye-krany/">
-        <img class="cat__bg" src="assets/img/bashennyj.jpg" alt="Башенный кран на строительной площадке" loading="lazy">
+        <picture><source srcset="assets/img/bashennyj.webp" type="image/webp"><img class="cat__bg"  alt="Башенный кран на строительной площадке" loading="lazy" width="900" height="675" decoding="async" src="assets/img/bashennyj.jpg"></picture>
         <svg class="cat__ico"><use href="#i-tower"/></svg>
         <h3>Башенные краны</h3>
         <span class="cat__meta">монтаж и аренда на объект</span>
@@ -202,7 +202,7 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
         <span class="cat__go"><svg width="22" height="22"><use href="#i-go"/></svg></span>
       </a>
       <a class="cat reveal" href="/manipulyatory/">
-        <img class="cat__bg" src="assets/img/manip-7.jpg" alt="Кран-манипулятор КамАЗ" loading="lazy">
+        <picture><source srcset="assets/img/manip-7.webp" type="image/webp"><img class="cat__bg"  alt="Кран-манипулятор КамАЗ" loading="lazy" width="650" height="430" decoding="async" src="assets/img/manip-7.jpg"></picture>
         <svg class="cat__ico"><use href="#i-manip"/></svg>
         <h3>Манипуляторы</h3>
         <span class="cat__meta">стрела 7 – 8 т · с люлькой, вездеход</span>
@@ -210,7 +210,7 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
         <span class="cat__go"><svg width="22" height="22"><use href="#i-go"/></svg></span>
       </a>
       <a class="cat reveal" href="/avtovyshki/">
-        <img class="cat__bg" src="assets/img/lift-28.jpg" alt="Автовышка Hyundai 28 метров" loading="lazy">
+        <picture><source srcset="assets/img/lift-28.webp" type="image/webp"><img class="cat__bg"  alt="Автовышка Hyundai 28 метров" loading="lazy" width="650" height="430" decoding="async" src="assets/img/lift-28.jpg"></picture>
         <svg class="cat__ico"><use href="#i-lift"/></svg>
         <h3>Автовышки</h3>
         <span class="cat__meta">высота подъёма 18 – 56 м</span>
@@ -218,7 +218,7 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
         <span class="cat__go"><svg width="22" height="22"><use href="#i-go"/></svg></span>
       </a>
       <a class="cat reveal" href="/ekskavatory/">
-        <img class="cat__bg" src="assets/img/excloader.jpg" alt="Экскаватор-погрузчик Hyundai" loading="lazy">
+        <picture><source srcset="assets/img/excloader.webp" type="image/webp"><img class="cat__bg"  alt="Экскаватор-погрузчик Hyundai" loading="lazy" width="650" height="418" decoding="async" src="assets/img/excloader.jpg"></picture>
         <svg class="cat__ico"><use href="#i-exc"/></svg>
         <h3>Экскаваторы</h3>
         <span class="cat__meta">мини, колёсные, гусеничные, погрузчики</span>
@@ -226,7 +226,7 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
         <span class="cat__go"><svg width="22" height="22"><use href="#i-go"/></svg></span>
       </a>
       <a class="cat reveal" href="/samosvaly/">
-        <img class="cat__bg" src="assets/img/samosval.jpg" alt="Самосвал Volvo FMX" loading="lazy">
+        <picture><source srcset="assets/img/samosval.webp" type="image/webp"><img class="cat__bg"  alt="Самосвал Volvo FMX" loading="lazy" width="650" height="430" decoding="async" src="assets/img/samosval.jpg"></picture>
         <svg class="cat__ico"><use href="#i-truck"/></svg>
         <h3>Самосвалы</h3>
         <span class="cat__meta">10 – 20 м³ · вывоз грунта и мусора</span>
@@ -234,7 +234,7 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
         <span class="cat__go"><svg width="22" height="22"><use href="#i-go"/></svg></span>
       </a>
       <a class="cat reveal" href="/traly/">
-        <img class="cat__bg" src="assets/img/tral.jpg" alt="Низкорамный трал для перевозки техники" loading="lazy">
+        <picture><source srcset="assets/img/tral.webp" type="image/webp"><img class="cat__bg"  alt="Низкорамный трал для перевозки техники" loading="lazy" width="650" height="430" decoding="async" src="assets/img/tral.jpg"></picture>
         <svg class="cat__ico"><use href="#i-tral"/></svg>
         <h3>Тралы и негабарит</h3>
         <span class="cat__meta">перевозка 20 – 40 тонн</span>
@@ -368,12 +368,12 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
       <p>Монтаж металлоконструкций, разгрузка фур, установка модульных зданий, подъём оборудования на кровлю, вывоз грунта. Фотоотчёты с реальных объектов — сюда добавим ваши фото.</p>
     </div>
     <div class="gallery reveal">
-      <div class="gal gal--wide gal--tall"><img class="gal__img" src="assets/img/obj-4.jpg" alt="Работа автокрана у ЛЭП" loading="lazy"><span class="gal__cap">Работа автокрана у ЛЭП</span></div>
-      <div class="gal"><img class="gal__img" src="assets/img/obj-1.jpg" alt="Земляные работы" loading="lazy"><span class="gal__cap">Земляные работы</span></div>
-      <div class="gal"><img class="gal__img" src="assets/img/obj-3.jpg" alt="Разработка и вывоз грунта" loading="lazy"><span class="gal__cap">Разработка и вывоз грунта</span></div>
-      <div class="gal gal--wide"><img class="gal__img" src="assets/img/obj-2.jpg" alt="Устройство котлована" loading="lazy"><span class="gal__cap">Устройство котлована · арматура</span></div>
-      <div class="gal"><img class="gal__img" src="assets/img/obj-6.jpg" alt="Погрузочные работы" loading="lazy"><span class="gal__cap">Погрузочные работы</span></div>
-      <div class="gal"><img class="gal__img" src="assets/img/obj-5.jpg" alt="Автовышка на объекте" loading="lazy"><span class="gal__cap">Автовышка на объекте</span></div>
+      <div class="gal gal--wide gal--tall"><picture><source srcset="assets/img/obj-4.webp" type="image/webp"><img class="gal__img"  alt="Работа автокрана у ЛЭП" loading="lazy" width="900" height="675" decoding="async" src="assets/img/obj-4.jpg"></picture><span class="gal__cap">Работа автокрана у ЛЭП</span></div>
+      <div class="gal"><picture><source srcset="assets/img/obj-1.webp" type="image/webp"><img class="gal__img"  alt="Земляные работы" loading="lazy" width="900" height="675" decoding="async" src="assets/img/obj-1.jpg"></picture><span class="gal__cap">Земляные работы</span></div>
+      <div class="gal"><picture><source srcset="assets/img/obj-3.webp" type="image/webp"><img class="gal__img"  alt="Разработка и вывоз грунта" loading="lazy" width="900" height="675" decoding="async" src="assets/img/obj-3.jpg"></picture><span class="gal__cap">Разработка и вывоз грунта</span></div>
+      <div class="gal gal--wide"><picture><source srcset="assets/img/obj-2.webp" type="image/webp"><img class="gal__img"  alt="Устройство котлована" loading="lazy" width="900" height="675" decoding="async" src="assets/img/obj-2.jpg"></picture><span class="gal__cap">Устройство котлована · арматура</span></div>
+      <div class="gal"><picture><source srcset="assets/img/obj-6.webp" type="image/webp"><img class="gal__img"  alt="Погрузочные работы" loading="lazy" width="650" height="430" decoding="async" src="assets/img/obj-6.jpg"></picture><span class="gal__cap">Погрузочные работы</span></div>
+      <div class="gal"><picture><source srcset="assets/img/obj-5.webp" type="image/webp"><img class="gal__img"  alt="Автовышка на объекте" loading="lazy" width="650" height="430" decoding="async" src="assets/img/obj-5.jpg"></picture><span class="gal__cap">Автовышка на объекте</span></div>
     </div>
   </div>
 </section>

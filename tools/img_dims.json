@@ -1,0 +1,96 @@
+{
+ "dims": {
+  "bashennyj.jpg": [
+   900,
+   675
+  ],
+  "crane-100.jpg": [
+   650,
+   430
+  ],
+  "crane-25.jpg": [
+   650,
+   430
+  ],
+  "crane-500.jpg": [
+   650,
+   430
+  ],
+  "excloader.jpg": [
+   650,
+   418
+  ],
+  "gusenichnyj.jpg": [
+   900,
+   711
+  ],
+  "hero-crane.jpg": [
+   1600,
+   1058
+  ],
+  "lift-28.jpg": [
+   650,
+   430
+  ],
+  "manip-7.jpg": [
+   650,
+   430
+  ],
+  "obj-1.jpg": [
+   900,
+   675
+  ],
+  "obj-2.jpg": [
+   900,
+   675
+  ],
+  "obj-3.jpg": [
+   900,
+   675
+  ],
+  "obj-4.jpg": [
+   900,
+   675
+  ],
+  "obj-5.jpg": [
+   650,
+   430
+  ],
+  "obj-6.jpg": [
+   650,
+   430
+  ],
+  "og-cover.jpg": [
+   1200,
+   630
+  ],
+  "samosval.jpg": [
+   650,
+   430
+  ],
+  "tral.jpg": [
+   650,
+   430
+  ]
+ },
+ "webp": {
+  "bashennyj.jpg": true,
+  "crane-100.jpg": true,
+  "crane-25.jpg": true,
+  "crane-500.jpg": true,
+  "excloader.jpg": true,
+  "gusenichnyj.jpg": true,
+  "hero-crane.jpg": true,
+  "lift-28.jpg": true,
+  "manip-7.jpg": true,
+  "obj-1.jpg": true,
+  "obj-2.jpg": true,
+  "obj-3.jpg": true,
+  "obj-4.jpg": true,
+  "obj-5.jpg": true,
+  "obj-6.jpg": true,
+  "og-cover.jpg": true,
+  "samosval.jpg": true,
+  "tral.jpg": true
+ }
+}
