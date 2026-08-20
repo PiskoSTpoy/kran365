@@ -66,3 +66,6 @@
   .page-cols{ grid-template-columns:1fr; }
   .aside{ position:static; }
 }
+
+/* сноски-оговорки под таблицами характеристик */
+.prose small{ display:block; color:var(--muted-2); font-size:.84rem; line-height:1.5; margin-top:-6px; }
