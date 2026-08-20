@@ -303,7 +303,8 @@ from data_marki import MARKI_DATA     # уникальный контент ст
 from data_vysh_manip import VYSHKI_DATA, MANIP_DATA  # автовышки (ось: работа на высоте) и манипуляторы (ось: экономика рейса)
 from data_zemlya import EKSK_DATA, SAMOSVAL_DATA     # экскаваторы (ось: грунт и производительность) и самосвалы (ось: экономика вывоза)
 from data_geo_mo import GEO_MO_DATA   # гео Москвы и области (ось: логистика подачи и местные условия)
-from data_hubs import HUBS_DATA       # хабы без своей ветки: тралы, гусеничные и башенные краны
+from data_tasks import TASKS_DATA     # страницы услуг (ось: ход работы, а не список техники)
+from data_hubs import HUBS_DATA, HUB_EXTRA       # хабы без своей ветки: тралы, гусеничные и башенные краны
 from data_geo_rf import GEO_RF_DATA   # гео городов России (ось: региональная специфика, честно про партнёрскую сеть)
 from data_blog_base import BLOG_BASE   # 6 базовых статей, переписанных из коротких заготовок
 BLOG = list(BLOG_BASE) + BLOG_RF
@@ -778,6 +779,38 @@ def hub_prose(slug, lead):
     out += "<h2>Частые вопросы</h2>%s" % faq_html(d["faqs"])
     return out
 
+
+def task_prose(slug, tech, faqs):
+    """Уникальный текст страницы услуги. Ось — ход самой работы:
+    этапы, что готовит заказчик, где ошибаются, из чего складывается цена."""
+    d = TASKS_DATA[slug]
+    out = ""
+    for p in d["intro"]:
+        out += "<p>%s</p>" % esc(p)
+
+    out += "<h2>Как проходит работа</h2><ol>%s</ol>" % "".join("<li>%s</li>" % esc(x) for x in d["stages"])
+
+    out += "<h2>Что нужно подготовить заказчику</h2><ul>%s</ul>" % "".join("<li>%s</li>" % esc(x) for x in d["need"])
+
+    out += "<h2>Где чаще всего ошибаются</h2><p>%s</p>" % esc(d["mistake"])
+
+    out += "<h2>Какая техника нужна</h2>"
+    out += ("<p>Обычно для этой задачи подходит <b>%s</b>. Точный выбор зависит от массы груза, "
+            "высоты подъёма и подъезда к объекту — подберём бесплатно по фото или чертежу.</p>" % esc(tech))
+
+    out += "<h2>Из чего складывается цена</h2><p>%s</p>" % d["price"]
+
+    out += "<h2>Частые вопросы</h2>%s" % faq_html(faqs)
+    return out
+
+
+def hub_extra_intro(slug):
+    """Уникальный вводный блок хаба: два абзаца плюс практическое замечание."""
+    d = HUB_EXTRA[slug]
+    out = "".join("<p>%s</p>" % esc(p) for p in d["intro"])
+    out += "<h2>Что важно учесть при выборе</h2><p>%s</p>" % esc(d["note"])
+    return out
+
 # ---------------------------------------------------------------- генерация
 def build():
     pages = 0
@@ -803,16 +836,16 @@ def build():
             rel = (related_tonnages(-1) + related_param(STRELA,"/avtokrany/strela-",("метров","metrov"),-1,"Длина стрелы")
                    + related_marki() + related_tasks() + related_geo() + related_types(t["slug"]))
         elif t["slug"] == "avtovyshki":
-            prose = ('<p>%s</p><h2>Аренда автовышки по высоте подъёма</h2>'
+            prose = hub_extra_intro("avtovyshki") + ('<h2>Аренда автовышки по высоте подъёма</h2>'
                      '<p>Подберём автовышку по рабочей высоте и вылету. Цены «от», за смену, оператор и топливо включены.</p>%s'
                      '<h2>Для каких работ</h2><ul><li>Монтаж и обслуживание освещения</li><li>Работы на фасадах и остеклении</li><li>Установка вывесок и рекламных конструкций</li><li>Обрезка деревьев, клининг высотных объектов</li></ul>'
-                     '<h2>Частые вопросы</h2>%s') % (esc(t["lead"]), param_table(VYSHKI,"/avtovyshki/",("метров","metrov")), faq_html(faqs))
+                     '<h2>Частые вопросы</h2>%s') % (param_table(VYSHKI,"/avtovyshki/",("метров","metrov")), faq_html(faqs))
             rel = related_param(VYSHKI,"/avtovyshki/",("метров","metrov"),-1,"Высота подъёма") + related_types(t["slug"]) + related_geo()
         elif t["slug"] == "manipulyatory":
-            prose = ('<p>%s</p><h2>Аренда манипулятора по грузоподъёмности стрелы</h2>'
+            prose = hub_extra_intro("manipulyatory") + ('<h2>Аренда манипулятора по грузоподъёмности стрелы</h2>'
                      '<p>Кран-борт привезёт, разгрузит и установит груз за один выезд. Цены «от», за смену, с оператором и топливом.</p>%s'
                      '<h2>Что возят манипулятором</h2><ul><li>Бытовки, модульные здания, посты охраны</li><li>Ёмкости, септики, кессоны</li><li>Стройматериалы, ЖБИ, поддоны</li><li>Спецтехника и оборудование</li></ul>'
-                     '<h2>Частые вопросы</h2>%s') % (esc(t["lead"]), param_table(MANIP,"/manipulyatory/",("тонн","tonn")), faq_html(faqs))
+                     '<h2>Частые вопросы</h2>%s') % (param_table(MANIP,"/manipulyatory/",("тонн","tonn")), faq_html(faqs))
             rel = related_param(MANIP,"/manipulyatory/",("тонн","tonn"),-1,"Грузоподъёмность стрелы") + related_tasks() + related_types(t["slug"]) + related_geo()
         elif t["slug"] in ("ekskavatory", "samosvaly"):
             items = EKSK if t["slug"] == "ekskavatory" else SAMOSVAL
@@ -820,9 +853,9 @@ def build():
             rows = "".join('<tr><td><a href="%s%s/" style="color:var(--ink)">%s</a></td><td>%s</td><td><b>%s</b> <span style="color:var(--muted-2);font-size:.82rem">/ смена</span></td></tr>' % (
                 base, s2, esc(n2), esc(d2), money(p2)) for s2, n2, d2, p2 in items)
             tbl = '<div class="ptable-wrap"><table class="ptable"><thead><tr><th>Техника</th><th>Параметры</th><th>Цена</th></tr></thead><tbody>%s</tbody></table></div>' % rows
-            prose = ('<p>%s</p><h2>Модели и цены</h2><p>Стоимость указана «от», за смену — включает работу оператора и топливо.</p>%s'
+            prose = hub_extra_intro(t["slug"]) + ('<h2>Модели и цены</h2><p>Стоимость указана «от», за смену — включает работу оператора и топливо.</p>%s'
                      '<h2>Вся техника КРАН365</h2>%s<h2>Частые вопросы</h2>%s') % (
-                     esc(t["lead"]), tbl, price_table_types(t["slug"]), faq_html(faqs))
+                     tbl, price_table_types(t["slug"]), faq_html(faqs))
             rel = ('<div class="related"><h3>Модели</h3><div class="related-grid">%s</div></div>' %
                    "".join('<a href="%s%s/">%s</a>' % (base, s2, esc(n2)) for s2, n2, _, _ in items)) + related_tasks() + related_types(t["slug"]) + related_geo()
         elif t["slug"] in HUBS_DATA:
@@ -917,14 +950,12 @@ def build():
     for slug, name, rod, lead, tech, pr, faqs in TASKS:
         crumbs = [home, ("Услуги","/uslugi/"), (name, "/uslugi/%s/" % slug)]
         h1 = name + " краном в Москве и области"
-        prose = ('<p>%s</p><h2>Какая техника нужна</h2><p>Обычно для этой задачи подходит <b>%s</b>. Точный выбор зависит от массы груза, высоты подъёма и подъезда к объекту — подберём бесплатно по фото или чертежу.</p>'
-                 '<h2>Цены на технику</h2>%s<h2>Как работаем</h2><ul><li>Принимаем заявку и уточняем задачу — круглосуточно</li><li>Подбираем технику и называем точную цену</li><li>Подаём на объект в день обращения</li><li>Оформляем договор, счёт и закрывающие документы</li></ul>'
-                 '<h2>Частые вопросы</h2>%s') % (esc(lead), esc(tech), price_table_types(), faq_html(faqs))
+        prose = task_prose(slug, tech, faqs)
         rel = related_tasks(slug) + related_types() + related_geo()
         ld = [breadcrumb_ld(crumbs), service_ld(name, lead, pr), faq_ld(faqs), local_business_ld()]
         page("uslugi/%s/index.html" % slug, "%s — цена %s | КРАН365" % (name, money(pr).lower()),
              "%s в Москве и МО. %s Оператор в стоимости, подача от 1 дня. Звоните %s." % (name, lead[:90].rsplit(" ",1)[0]+".", PHONE_DISP),
-             crumbs, hero("Услуги", h1, lead, pr), body(prose, rel) + TRUST, ld)
+             crumbs, hero("Услуги", h1, TASKS_DATA[slug]["angle"], pr), body(prose, rel) + TRUST, ld)
         pages += 1
 
     # --- хаб услуг
