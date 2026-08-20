@@ -69,3 +69,13 @@
 
 /* сноски-оговорки под таблицами характеристик */
 .prose small{ display:block; color:var(--muted-2); font-size:.84rem; line-height:1.5; margin-top:-6px; }
+
+/* блок «плюсы / что учесть» на страницах марок */
+.pc{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:18px 0 8px; }
+.pc__col{ border:1px solid var(--line,rgba(0,0,0,.1)); border-radius:14px; padding:16px 18px; }
+.pc__col h3{ margin:0 0 8px; font-size:1.02rem; }
+.pc__col ul{ margin:0; padding-left:18px; }
+.pc__col li{ margin:6px 0; }
+.pc__col--plus{ background:rgba(255,106,0,.05); border-color:rgba(255,106,0,.25); }
+.pc__col--minus{ background:rgba(0,0,0,.03); }
+@media (max-width:760px){ .pc{ grid-template-columns:1fr; } }
