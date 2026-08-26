@@ -8,6 +8,12 @@
 """
 import os, json, html, re
 
+# Разметка чекбокса согласия, поля-ловушки и правовой строки подвала живёт
+# в patch_forms_legal.py — там же, где ею правят уже существующие страницы.
+# Импортируем оттуда, чтобы генератор и патчер не разошлись со временем:
+# иначе после ближайшей пересборки сайт снова остался бы без согласия на ПД.
+from patch_forms_legal import CONSENT, HONEYPOT, FOOTER_LEGAL, POLICY_URL, CONSENT_URL, CONTACTS_URL
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://kran365.ru"
 PHONE_TEL = "+79055535869"
@@ -50,6 +56,7 @@ NAV = '''<header class="nav nav--solid" id="nav">
     <a href="/#how">Как работаем</a>
     <a href="/blog/">Блог</a>
     <a href="/#geo">Зона работы</a>
+    <a href="/kontakty/">Контакты</a>
     <a class="nav__phone" href="tel:%s">%s</a>
   </nav>
   <a class="nav__cta" href="#order">Заказать технику</a>
@@ -82,10 +89,10 @@ FOOTER = '''<footer class="footer">
         <a href="/blog/">Блог</a><a href="/#reviews">Отзывы</a><a href="/#geo">Зона работы</a></div>
       <div><h4>Заказать</h4><p style="font-size:.9rem">Приём заявок круглосуточно. Расчёт и консультация — бесплатно.</p>
         <a class="btn btn--primary" style="margin-top:14px" href="#order">Оставить заявку <span class="arr">→</span></a></div>
-    </div>
+    </div>%s
     <div class="footer__bottom"><span>© 2026 КРАН365 · kran365.ru</span><span>Аренда спецтехники в Москве и Московской области</span></div>
   </div>
-</footer>''' % (PHONE_TEL, PHONE_DISP)
+</footer>''' % (PHONE_TEL, PHONE_DISP, FOOTER_LEGAL)
 
 def cta_section():
     return '''<section class="cta" id="order">
@@ -100,12 +107,13 @@ def cta_section():
         <div class="field"><label for="f-phone">Телефон *</label><input class="input" id="f-phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel" required></div>
       </div>
       <div class="field"><label for="f-comment">Задача, объект, сроки</label><input class="input" id="f-comment" name="comment" type="text" placeholder="Напр.: монтаж на 30 июля, ЮАО, груз 8 тонн"></div>
+      %s
+      %s
       <button class="btn btn--primary btn--block btn--lg" type="submit">Отправить заявку <span class="arr">→</span></button>
-      <small>Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных.</small>
       <div class="form__ok" id="formOk">✓ Заявка принята! Мы перезвоним в ближайшее время.</div>
     </form>
   </div></div>
-</section>''' % (PHONE_TEL, PHONE_DISP)
+</section>''' % (PHONE_TEL, PHONE_DISP, HONEYPOT, CONSENT)
 
 def cta_band():
     return '''<section class="cta"><div class="wrap"><div class="cta__grid">
@@ -161,13 +169,15 @@ def aside_form():
     return '''<aside class="aside reveal" id="order">
   <h3>Быстрый расчёт</h3><p>Оставьте номер — перезвоним за 15 минут, назовём цену и сроки подачи.</p>
   <form class="form" id="orderForm" novalidate style="background:none;border:0;padding:0">
-    <div class="field"><input class="input" id="f-phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel" required></div>
-    <div class="field" style="margin-top:12px"><input class="input" id="f-comment" name="comment" type="text" placeholder="Что нужно / объект"></div>
+    <div class="field"><label for="f-phone">Ваш телефон</label><input class="input" id="f-phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel" required></div>
+    <div class="field" style="margin-top:12px"><label for="f-comment">Что нужно и на какой объект</label><input class="input" id="f-comment" name="comment" type="text" placeholder="Что нужно / объект"></div>
+    %s
+    <div class="field" style="margin-top:12px">%s</div>
     <button class="btn btn--primary btn--block" type="submit" style="margin-top:12px">Получить расчёт <span class="arr">→</span></button>
     <small style="color:var(--muted-2);font-size:.78rem;display:block;text-align:center;margin-top:10px">Или звоните: <a href="tel:%s" style="color:var(--orange)">%s</a></small>
     <div class="form__ok" id="formOk">✓ Заявка принята!</div>
   </form>
-</aside>''' % (PHONE_TEL, PHONE_DISP)
+</aside>''' % (HONEYPOT, CONSENT, PHONE_TEL, PHONE_DISP)
 
 def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
     canonical = SITE + "/" + rel_path.rsplit("index.html",1)[0]
@@ -1330,6 +1340,9 @@ def build():
         urls.append("/geo/%s/" % g[0])
     for c in CATS:
         urls.append("/%s/" % c["slug"])
+    # Страницы, которые этот генератор не собирает, но которые обязаны быть
+    # в карте сайта: контакты и правовые документы (см. tools/make_legal_pages.py).
+    urls += [CONTACTS_URL, POLICY_URL, CONSENT_URL]
     import datetime as _dt
     _today = _dt.date.today().isoformat()
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
