@@ -13,6 +13,7 @@ import os, json, html, re
 # Импортируем оттуда, чтобы генератор и патчер не разошлись со временем:
 # иначе после ближайшей пересборки сайт снова остался бы без согласия на ПД.
 from patch_forms_legal import CONSENT, HONEYPOT, FOOTER_LEGAL, POLICY_URL, CONSENT_URL, CONTACTS_URL
+import fix_schema
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://kran365.ru"
@@ -224,6 +225,11 @@ def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
               canonical, esc(title), esc(desc),
               METRIKA + "\n" + jsonld(ld_objs), SPRITE, NAV, crumbs_html, hero_html, body_html,
               cta_band(), FOOTER, FAB)
+    # Разметку Offer и узел организации доводит fix_schema — тот же код, что
+    # правит уже лежащие на диске страницы. Генератор не знает, аренда на этой
+    # странице или услуга: это решение живёт одним списком в fix_schema, иначе
+    # правило пришлось бы держать в двух местах и они бы разошлись.
+    doc = fix_schema.patch_html(doc, rel_path.rsplit("/index.html", 1)[0])[0]
     out = os.path.join(ROOT, rel_path)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
