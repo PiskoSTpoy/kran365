@@ -77,16 +77,27 @@ def business_function(page: str) -> str:
     return PROVIDE_SERVICE if page in PROVIDE_SERVICE_PAGES else LEASE_OUT
 
 
+# Свойства, в которых организация упоминается второй раз: у Service это
+# исполнитель, у Article — автор и издатель. Везде это одна и та же КРАН365,
+# и везде она была продублирована узлом-пустышкой без @id.
+ORG_REFS = {"Service": ("provider",), "Article": ("author", "publisher")}
+
+
 def patch_node(node: dict, page: str) -> bool:
     """Правит один узел JSON-LD на месте. True — если что-то изменилось."""
     changed = False
-    if str(node.get("@type")) != "Service":
+    node_type = str(node.get("@type"))
+    if node_type not in ORG_REFS:
         return changed
 
-    provider = node.get("provider")
-    if isinstance(provider, dict) and provider.get("@type") in ("LocalBusiness", "Organization"):
-        node["provider"] = {"@id": ORG_ID}
-        changed = True
+    for prop in ORG_REFS[node_type]:
+        val = node.get(prop)
+        if isinstance(val, dict) and val.get("@type") in ("LocalBusiness", "Organization"):
+            node[prop] = {"@id": ORG_ID}
+            changed = True
+
+    if node_type != "Service":
+        return changed
 
     offer = node.get("offers")
     if isinstance(offer, dict) and str(offer.get("@type")) == "Offer":
@@ -127,9 +138,8 @@ def main() -> int:
     for p in sorted(ROOT.rglob("index.html")):
         page = slug(p)
         src = htmlio.read(p)
-        if '"@type":"Service"' not in src.replace(" ", ""):
-            continue
-        kinds[business_function(page)] += 1
+        if '"@type":"Service"' in src.replace(" ", ""):
+            kinds[business_function(page)] += 1
         out, hit = patch_html(src, page)
         if hit:
             touched.append(page)
