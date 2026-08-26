@@ -18,6 +18,15 @@
      (?utm_source=…): тогда все варианты ссылки сойдутся к одному адресу.
      Если noindex когда-нибудь снимут, канонический адрес уже будет верным. -->
 <link rel="canonical" href="https://kran365.ru/rosilka/">
+<!-- og-теги нужны именно этой странице, хотя она закрыта от индексации: КП
+     рассылают ссылкой в Telegram и WhatsApp, и мессенджер строит превью
+     по ним. Без og в чате появляется голый адрес — на холодном контакте
+     это заметно снижает шанс, что ссылку вообще откроют. -->
+<meta property="og:title" content="Росилка — заявка сама уходит по чатам спецтехники">
+<meta property="og:description" content="Заявка пишется один раз и сама расходится по профильным группам в Telegram, MAX и WhatsApp. Подключение — 10 минут, программист не нужен.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kran365.ru/rosilka/">
+<meta property="og:locale" content="ru_RU">
 <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <!-- Разметка описывает страницу как коммерческое предложение отдельного
      продукта, а не как раздел сайта про аренду кранов. Издатель — тот же
@@ -150,7 +159,7 @@
   .two { display:grid; grid-template-columns:1fr 1fr; gap:26px; align-items:start; }
   .why { display:flex; flex-direction:column; gap:18px; }
   .why-item { border-left:3px solid var(--acc); padding:2px 0 2px 18px; }
-  .why-item h4 { margin:0; font-size:15.5px; font-weight:700; }
+  .why-item h3 { margin:0; font-size:15.5px; font-weight:700; }
   .why-item p { margin-top:5px; font-size:14.5px; color:var(--mute); }
 
   /* --- маршрутизация --- */
@@ -163,7 +172,7 @@
   .rt { background:var(--cell); padding:20px 22px; }
   .rt .st { font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
             padding:3px 8px; display:inline-block; }
-  .rt h4 { margin:12px 0 0; font-size:15px; }
+  .rt h3 { margin:12px 0 0; font-size:15px; }
   .rt p { margin-top:7px; font-size:13.5px; color:var(--mute); }
   .rt .cnt { margin-top:12px; font-family:var(--mono); font-size:22px; font-weight:800; }
   .st-go { background:var(--ok-bg); color:var(--ok-ink); }
@@ -427,23 +436,23 @@
 
       <div class="why">
         <div class="why-item">
-          <h4>Видно, кто реально работает</h4>
+          <h3>Видно, кто реально работает</h3>
           <p>Слева — настоящий отчёт клиента за 10 августа. Два менеджера, заявок сопоставимо:
             14 и 10. А сообщений — <b>514 против 92</b>. Первый охватывает впятеро больше рынка
             почти той же работой. Без отчёта об этом не знал никто, включая владельца.</p>
         </div>
         <div class="why-item">
-          <h4>Видно, что заявка не зависла</h4>
+          <h3>Видно, что заявка не зависла</h3>
           <p>Заявки делятся на закрытые и открытые. Открытая неделю — повод спросить сегодня,
             а не обнаружить в конце месяца.</p>
         </div>
         <div class="why-item">
-          <h4>Отчёт не нужно просить</h4>
+          <h3>Отчёт не нужно просить</h3>
           <p>Приходит сам, каждый день. Если заявок за день не было — сообщение не приходит,
             чтобы не приучать себя пролистывать пустые уведомления.</p>
         </div>
         <div class="why-item">
-          <h4>Есть срез за неделю и месяц</h4>
+          <h3>Есть срез за неделю и месяц</h3>
           <p>С разбивкой по менеджерам и выгрузкой таблицей — для разговора о премии
             цифры уже посчитаны.</p>
         </div>
@@ -471,14 +480,14 @@
       <div class="route-grid">
         <div class="rt">
           <span class="st st-go">Уходит</span>
-          <h4>Чаты по автокранам</h4>
+          <h3>Чаты по автокранам</h3>
           <p>Включая те, где автокран назван вместе с другой техникой —
             «Аренда кранов, автовышек, манипуляторов» получит эту заявку тоже.</p>
           <div class="cnt tnum" style="color:var(--acc-ink);">115 чатов</div>
         </div>
         <div class="rt">
           <span class="st st-no">Не уходит</span>
-          <h4>Тралы, катки, миксеры, чаты своих машинистов</h4>
+          <h3>Тралы, катки, миксеры, чаты своих машинистов</h3>
           <p>Чужая тема — прямой путь к бану номера. Внутренние чаты бригады (18 групп),
             чёрные списки (27) и «свободная техника» (46) отделены совсем: туда идут только
             свои метки.</p>

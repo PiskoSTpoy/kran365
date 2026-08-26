@@ -397,7 +397,7 @@ select.input{ appearance:none; background-image:linear-gradient(45deg,transparen
 /* ======================= FOOTER ======================= */
 .footer{ background:var(--paper-2); border-top:1px solid var(--line); padding-block:56px 30px; color:var(--muted); }
 .footer__top{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1.2fr; gap:28px; }
-.footer h4{ color:var(--ink); font-size:.95rem; margin:0 0 14px; font-weight:800; }
+.footer h3,.footer h4{ color:var(--ink); font-size:.95rem; margin:0 0 14px; font-weight:800; }
 .footer a{ display:block; padding:5px 0; color:var(--muted); transition:color .2s; }
 .footer a:hover{ color:var(--orange); }
 .footer__brand{ font-weight:900; font-size:1.3rem; letter-spacing:-.03em; color:var(--ink); }
@@ -546,7 +546,7 @@ select.input{ appearance:none; background-image:linear-gradient(45deg,transparen
 /* ===== Полировка: карточки, футер, выравнивание ===== */
 .cat h3{ min-height:2.15em; display:flex; align-items:flex-end; line-height:1.12; }
 .cat__meta{ display:block; min-height:2.7em; line-height:1.32; }
-.footer h4{ font-size:1.05rem; }
+.footer h3,.footer h4{ font-size:1.05rem; }
 .footer a{ font-size:.92rem; }
 .footer .btn{ display:inline-flex; width:auto; padding:13px 22px; color:#fff; border-radius:100px; margin-top:14px; }
 .footer .btn:hover{ color:#fff; }

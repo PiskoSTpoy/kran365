@@ -43,7 +43,7 @@
 /* auto-fit + minmax, а не две фиксированные колонки: на 320px колонки встают
    друг под друга сами, без отдельной медиазапросной ветки и без переполнения */
 .price-terms__cols{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:8px 28px; }
-.price-terms h3{ font-size:.82rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:0 0 8px; }
+.price-terms__label{ font-size:.82rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:0 0 8px; }
 .price-terms ul{ margin:0; padding-left:20px; color:var(--ink-2); }
 .price-terms li{ margin:4px 0; }
 .price-terms__note{ margin:16px 0 0; padding-top:14px; border-top:1px solid var(--line-2); color:var(--muted); font-size:.86rem; line-height:1.55; }

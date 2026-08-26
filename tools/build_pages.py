@@ -83,13 +83,13 @@ FOOTER = '''<footer class="footer">
         <div class="footer__nap">Москва, проспект Андропова, 10<br>Работаем круглосуточно, 24/7<br>
           <a href="tel:%s" style="display:inline;padding:0">%s</a> · <a href="mailto:info@kran365.ru" style="display:inline;padding:0">info@kran365.ru</a></div>
       </div>
-      <div><h4>Техника</h4>
+      <div><h3>Техника</h3>
         <a href="/avtokrany/">Автокраны</a><a href="/avtovyshki/">Автовышки</a><a href="/manipulyatory/">Манипуляторы</a>
         <a href="/ekskavatory/">Экскаваторы</a><a href="/samosvaly/">Самосвалы</a><a href="/traly/">Тралы</a></div>
-      <div><h4>Компания</h4>
+      <div><h3>Компания</h3>
         <a href="/#how">Как работаем</a><a href="/#live">Свободная техника</a><a href="/uslugi/">Услуги</a>
         <a href="/blog/">Блог</a><a href="/#reviews">Отзывы</a><a href="/#geo">Зона работы</a></div>
-      <div><h4>Заказать</h4><p style="font-size:.9rem">Приём заявок круглосуточно. Расчёт и консультация — бесплатно.</p>
+      <div><h3>Заказать</h3><p style="font-size:.9rem">Приём заявок круглосуточно. Расчёт и консультация — бесплатно.</p>
         <a class="btn btn--primary" style="margin-top:14px" href="#order">Оставить заявку <span class="arr">→</span></a></div>
     </div>%s
     <div class="footer__bottom"><span>© 2026 КРАН365 · kran365.ru</span><span>Аренда спецтехники в Москве и Московской области</span></div>
@@ -512,11 +512,15 @@ PRICE_UPDATED_HUMAN = "4 августа 2026"
 
 def price_terms():
     return (
+      # Подписи колонок — <p>, а не заголовки. Это ярлыки к двум коротким
+      # спискам, а не разделы страницы: на /uslugi/ блок стоит выше первого h2,
+      # и заголовок здесь дал бы в оглавлении скачок h1 → h3. Тот, кто идёт по
+      # странице скринридером, проваливался бы через несуществующий уровень.
       '<div class="price-terms">'
         '<div class="price-terms__cols">'
-          '<div><h3>Что входит в стоимость смены</h3>'
+          '<div><p class="price-terms__label">Что входит в стоимость смены</p>'
             '<ul><li>работа оператора</li><li>топливо</li></ul></div>'
-          '<div><h3>Оплачивается отдельно</h3>'
+          '<div><p class="price-terms__label">Оплачивается отдельно</p>'
             '<ul><li>подача техники до объекта</li>'
                 '<li>переработка сверх смены</li></ul></div>'
         '</div>'
@@ -1356,7 +1360,9 @@ def build():
          "Практические статьи об аренде спецтехники: выбор автокрана, стоимость смены, кран или манипулятор, подготовка площадки, расчёт вывоза грунта.",
          crumbs, hero("Блог", "Блог о спецтехнике",
                       "Практические разборы для тех, кто заказывает технику: что спросить, как посчитать и на чём не стоит экономить.", None),
-         body(prose, '<div class="related"><h3>Все статьи</h3><div class="related-grid">%s</div></div>' % blog_links + related_types()), ld)
+         body(prose, # «Все статьи» — главный раздел хаба блога, а не подраздел: до него на
+         # странице нет ни одного h2, и h3 давал скачок h1 → h3.
+         '<div class="related"><h2>Все статьи</h2><div class="related-grid">%s</div></div>' % blog_links + related_types()), ld)
     pages += 1
 
     # --- гео-страницы
