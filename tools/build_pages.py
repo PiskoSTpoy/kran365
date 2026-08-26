@@ -184,14 +184,18 @@ def aside_form():
 def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
     canonical = SITE + "/" + rel_path.rsplit("index.html",1)[0]
 
-    # Условия под первой таблицей цен: читатель видит, что входит в смену и что
-    # оплачивается сверх, там же, где цифры, — а не в FAQ через два экрана.
-    # Только на страницах, где цена действительно есть: без рубля в таблице
-    # оговорка про оферту повисает в воздухе.
-    if 'class="ptable"' in body_html and "₽" in body_html:
-        end = body_html.find("</table></div>")
+    # Условия ставим на каждую страницу, где названа цена, — и там, где она в
+    # таблице, и там, где только в плашке под заголовком (страницы услуг).
+    # Место выбираем по странице: сразу под первой таблицей цен, а если таблицы
+    # нет — перед FAQ, то есть всё равно до того, как читатель уйдёт со страницы.
+    if "₽" in (hero_html or "") + body_html:
+        end = body_html.find("</table></div>") if 'class="ptable"' in body_html else -1
         if end != -1:
             end += len("</table></div>")
+        else:
+            faq = body_html.find('<div class="faq">')
+            end = faq if faq != -1 else -1
+        if end != -1:
             body_html = body_html[:end] + price_terms() + body_html[end:]
 
     crumbs_html = ""
