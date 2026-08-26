@@ -51,6 +51,7 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
     <a href="/#how">Как работаем</a>
     <a href="/blog/">Блог</a>
     <a href="/#geo">Зона работы</a>
+    <a href="/kontakty/">Контакты</a>
     <a class="nav__phone" href="tel:+79055535869">+7 (905) 553-58-69</a>
   </nav>
   <a class="nav__cta" href="#order">Заказать технику</a>
@@ -69,8 +70,10 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
   <aside class="aside reveal" id="order">
   <h3>Быстрый расчёт</h3><p>Оставьте номер — перезвоним за 15 минут, назовём цену и сроки подачи.</p>
   <form class="form" id="orderForm" novalidate style="background:none;border:0;padding:0">
-    <div class="field"><input class="input" id="f-phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel" required></div>
-    <div class="field" style="margin-top:12px"><input class="input" id="f-comment" name="comment" type="text" placeholder="Что нужно / объект"></div>
+    <div class="field"><label for="f-phone">Ваш телефон</label><input class="input" id="f-phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel" required></div>
+    <div class="field" style="margin-top:12px"><label for="f-comment">Что нужно и на какой объект</label><input class="input" id="f-comment" name="comment" type="text" placeholder="Что нужно / объект"></div>
+    <div class="hp" aria-hidden="true"><input class="hp__f" id="f-site-url" name="site-url" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"></div>
+    <div class="field" style="margin-top:12px"><div class="consent"><input class="consent__box" id="f-consent" name="consent" type="checkbox" required aria-describedby="f-consent-err"><label class="consent__label" for="f-consent">Я даю согласие на обработку моих персональных данных</label><span class="consent__docs"><a href="/politika-obrabotki-personalnyh-dannyh/">Политика обработки данных</a><a href="/soglasie-na-obrabotku-personalnyh-dannyh/">Текст согласия</a></span><p class="consent__err" id="f-consent-err" role="alert" hidden>Чтобы отправить заявку, отметьте согласие на обработку персональных данных.</p></div></div>
     <button class="btn btn--primary btn--block" type="submit" style="margin-top:12px">Получить расчёт <span class="arr">→</span></button>
     <small style="color:var(--muted-2);font-size:.78rem;display:block;text-align:center;margin-top:10px">Или звоните: <a href="tel:+79055535869" style="color:var(--orange)">+7 (905) 553-58-69</a></small>
     <div class="form__ok" id="formOk">✓ Заявка принята!</div>
@@ -104,6 +107,7 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
       <div><h4>Заказать</h4><p style="font-size:.9rem">Приём заявок круглосуточно. Расчёт и консультация — бесплатно.</p>
         <a class="btn btn--primary" style="margin-top:14px" href="#order">Оставить заявку <span class="arr">→</span></a></div>
     </div>
+    <!--legal-links--><nav class="footer__legal" aria-label="Правовая информация"><a href="/kontakty/">Контакты</a><a href="/politika-obrabotki-personalnyh-dannyh/">Политика обработки персональных данных</a><a href="/soglasie-na-obrabotku-personalnyh-dannyh/">Согласие на обработку персональных данных</a></nav>
     <div class="footer__bottom"><span>© 2026 КРАН365 · kran365.ru</span><span>Аренда спецтехники в Москве и Московской области</span></div>
   </div>
 </footer>

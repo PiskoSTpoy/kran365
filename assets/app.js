@@ -141,18 +141,46 @@
       if (d.length >= 9) out += '-' + d.slice(9, 11);
       phone.value = out;
       phone.classList.remove('err');
+      phone.removeAttribute('aria-invalid');
     });
+
+    // Согласие на обработку ПД. Форма помечена novalidate, поэтому браузер
+    // required не проверит — проверяем сами, иначе заявка уйдёт без согласия.
+    var consent = document.getElementById('f-consent');
+    var consentErr = document.getElementById('f-consent-err');
+    if (consent) {
+      consent.addEventListener('change', function () {
+        consent.classList.remove('err');
+        consent.removeAttribute('aria-invalid');
+        if (consentErr) consentErr.hidden = true;
+      });
+    }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+
+      // Ловушка для ботов: поле уведено за экран и недоступно с клавиатуры,
+      // человек его не заполнит. Заполнено — значит форму отправил робот.
+      // Молча отбрасываем: ни отправки, ни сообщения, чтобы не подсказывать.
+      var hp = form.querySelector('input[name="site-url"]');
+      if (hp && hp.value !== '') return;
+
       var digits = phone.value.replace(/\D/g, '');
       if (digits.length < 11) {
         phone.classList.add('err');
+        phone.setAttribute('aria-invalid', 'true');
         phone.focus();
         return;
       }
+      if (consent && !consent.checked) {
+        consent.classList.add('err');
+        consent.setAttribute('aria-invalid', 'true');
+        if (consentErr) consentErr.hidden = false;
+        consent.focus();
+        return;
+      }
       // ДЕМО: здесь на боевом сайте — отправка на бэкенд / CRM / Telegram.
-      form.querySelectorAll('.field, .btn, small').forEach(function (el) { el.style.display = 'none'; });
+      form.querySelectorAll('.field, .btn, small, .consent').forEach(function (el) { el.style.display = 'none'; });
       ok.style.display = 'block';
     });
   }
