@@ -14,6 +14,7 @@ import os, json, html, re
 # иначе после ближайшей пересборки сайт снова остался бы без согласия на ПД.
 from patch_forms_legal import CONSENT, HONEYPOT, FOOTER_LEGAL, POLICY_URL, CONSENT_URL, CONTACTS_URL
 import fix_schema
+import fix_sitemap_lastmod
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://kran365.ru"
@@ -237,6 +238,33 @@ def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
     return canonical
 
 def money(p): return "под запрос" if not p else "от %s ₽" % format(p, ",d").replace(",", " ")
+
+# Поисковые ассистенты, которым нужен именной блок Allow.
+#
+# Формально «User-agent: *» их и так пускает, и сегодня эти блоки ничего не
+# меняют. Смысл в другом: когда в шаблон однажды добавят общий Disallow —
+# скрытый раздел, стенд, что угодно, — именные блоки продолжат действовать,
+# и канал ответов ассистентов не отключится молча вместе с ним. Обычную
+# органику такая ошибка не задевает, поэтому замечают её очень нескоро.
+#
+# Это боты ПОИСКА (показывают ссылку на источник в ответе), а не краулеры
+# обучающих выборок: GPTBot, ClaudeBot, CCBot сюда намеренно не входят —
+# пускать их или нет, решает владелец, и по умолчанию за него это не решается.
+AI_SEARCH_BOTS = [
+    "OAI-SearchBot",        # ответы ChatGPT со ссылками
+    "PerplexityBot",        # Perplexity
+    "Claude-SearchBot",     # поиск Claude
+    "YandexAdditionalBot",  # быстрые ответы и Алиса
+    "YandexAdditional",
+]
+
+def robots_txt():
+    lines = ["User-agent: *", "Allow: /", ""]
+    for bot in AI_SEARCH_BOTS:
+        lines += ["User-agent: %s" % bot, "Allow: /", ""]
+    lines.append("Sitemap: %s/sitemap.xml" % SITE)
+    return "\n".join(lines) + "\n"
+
 
 # Заголовки статей, которые сами по себе длиннее лимита выдачи. Автоматическая
 # обрезка ставит многоточие и съедает конец фразы — в выдаче это выглядит как
@@ -1381,13 +1409,16 @@ def build():
     # Страницы, которые этот генератор не собирает, но которые обязаны быть
     # в карте сайта: контакты и правовые документы (см. tools/make_legal_pages.py).
     urls += [CONTACTS_URL, POLICY_URL, CONSENT_URL]
-    import datetime as _dt
-    _today = _dt.date.today().isoformat()
+    # lastmod здесь не проставляется: дата сборки — не дата изменения страницы.
+    # Её подставляет fix_sitemap_lastmod по git-истории, отдельно для каждого
+    # адреса. Страница, которой в истории ещё нет, останется без lastmod —
+    # это честнее, чем поставить ей сегодняшнее число.
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    sm += "".join('<url><loc>%s%s</loc><lastmod>%s</lastmod></url>\n' % (SITE, u, _today) for u in urls) + "</urlset>\n"
+    sm += "".join('<url><loc>%s%s</loc></url>\n' % (SITE, u) for u in urls) + "</urlset>\n"
     with open(os.path.join(ROOT,"sitemap.xml"),"w",encoding="utf-8") as f: f.write(sm)
+    fix_sitemap_lastmod.apply(quiet=True)
     with open(os.path.join(ROOT,"robots.txt"),"w",encoding="utf-8") as f:
-        f.write("User-agent: *\nAllow: /\nSitemap: %s/sitemap.xml\n" % SITE)
+        f.write(robots_txt())
 
     print("OK: %d страниц + sitemap.xml (%d URL) + robots.txt" % (pages, len(urls)))
 

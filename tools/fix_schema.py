@@ -111,6 +111,44 @@ def patch_node(node: dict, page: str) -> bool:
     return changed
 
 
+def merge_homepage_org(data: dict) -> bool:
+    """Схлопнуть два узла организации на главной в один.
+
+    На главной лежал @graph с двумя описаниями одной компании: Organization
+    с @id …/#org (логотип, contactPoint) и LocalBusiness с @id …/#business
+    (адрес, координаты, часы, приём оплаты). Разные @id — значит, для парсера
+    это две разные организации, и ни у одной нет полного набора сведений.
+
+    Остаётся LocalBusiness с @id …/#business: именно на него ссылаются
+    остальные 168 страниц сайта. Свойства Organization переносятся в него,
+    publisher у WebSite переводится на тот же @id. LocalBusiness — подтип
+    Organization, так что ничего не теряется.
+    """
+    graph = data.get("@graph")
+    if not isinstance(graph, list):
+        return False
+
+    org = next((n for n in graph if n.get("@id") == "https://kran365.ru/#org"), None)
+    biz = next((n for n in graph if n.get("@id") == ORG_ID), None)
+    if org is None or biz is None:
+        return False
+
+    for key, value in org.items():
+        # Название берём короткое («КРАН365») — такое же, как на всех
+        # остальных страницах; длинный вариант был описанием, а не именем.
+        if key in ("@type", "@id"):
+            continue
+        biz.setdefault(key, value)
+    biz["name"] = org.get("name", biz.get("name"))
+
+    graph.remove(org)
+    for node in graph:
+        for prop in ("publisher", "author", "provider"):
+            if isinstance(node.get(prop), dict) and node[prop].get("@id") == org["@id"]:
+                node[prop] = {"@id": ORG_ID}
+    return True
+
+
 def patch_html(text: str, page: str) -> tuple[str, bool]:
     hit = False
 
@@ -122,7 +160,18 @@ def patch_html(text: str, page: str) -> tuple[str, bool]:
         except json.JSONDecodeError:
             return m.group(0)
         nodes = data if isinstance(data, list) else [data]
-        if not any(patch_node(n, page) for n in nodes if isinstance(n, dict)):
+        # Узлы главной лежат внутри @graph, а не отдельными скриптами.
+        flat = [n for n in nodes if isinstance(n, dict)]
+        for node in list(flat):
+            inner = node.get("@graph")
+            if isinstance(inner, list):
+                flat += [x for x in inner if isinstance(x, dict)]
+        # list(), а не any(): any останавливается на первом True и оставляет
+        # остальные узлы страницы неисправленными.
+        results = [patch_node(n, page) for n in flat]
+        if isinstance(data, dict):
+            results.append(merge_homepage_org(data))
+        if not any(results):
             return m.group(0)
         hit = True
         return open_tag + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + close_tag
