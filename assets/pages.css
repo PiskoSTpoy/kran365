@@ -128,3 +128,132 @@
   background-size:26px 100%, 26px 100%, 18px 100%, 18px 100%;
   background-attachment:local, local, scroll, scroll;
 }
+
+/* ════════════════════════════════════════════════════════════════════════
+   ТЕЛЕФОН В РУКЕ · ВОЛНА 2
+   Правки этого блока сделаны по кадрам 375×812 и 320×720, а не по замерам.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ---------- Жирный в ячейке ≠ цена ----------
+   Прошлая волна поставила всем `b` в таблице `white-space:nowrap`, чтобы
+   «от 16 300 ₽» не разваливалось на две строки. Но `b` в этих таблицах —
+   не только сумма: на /kontakty/ в такой же ячейке лежит «круглосуточно,
+   без выходных», и запрет переноса растягивал таблицу за край экрана.
+   На кадре 320 px было видно «круглосуточно, без вых…», «принимается
+   круглосуто…», «в течение 15 ми…» — обрезано ровно посреди слова.
+   Неразрывной оставляем только ячейку с ценой: её узнаём по «≈ N ₽/час»,
+   который стоит рядом с суммой и нигде больше не встречается. */
+@media (max-width:560px){
+  .ptable td b{ white-space:normal; }
+  .ptable td:has(.price-hour) b{ white-space:nowrap; }
+}
+
+/* ---------- Мотив сайта на внутренних странице ----------
+   На кадрах внутренняя страница открывалась белым листом с чёрным текстом:
+   ни фотографии, ни цвета, ни знака. Из 172 страниц сайта картинка была
+   ровно на одной — на главной; на остальных 171 единственный <img> — это
+   счётчик 1×1 пикс. Человек, пришедший из поиска сразу на /avtokrany/,
+   не видел ни фирменного тёмного героя, ни техники — только документ.
+   Тёмный герой — собственный код этого сайта, он записан в шапке style.css
+   («тёмный герой на фото, дальше — воздух и свет»), просто жил только
+   на главной. Поднимаем его на первый экран внутренних страниц.
+   Правка мобильная: десктоп 1280 остаётся ровно таким, каким был. */
+@media (max-width:760px){
+  .page-top{
+    padding-top:84px; padding-bottom:0;
+    background:#0C1118;
+  }
+  .crumbs{ color:rgba(255,255,255,.5); }
+  .crumbs a{ color:rgba(255,255,255,.72); }
+  .crumbs span{ opacity:1; }
+  /* инлайновый цвет крошки-«текущей» в разметке — var(--muted), на тёмном
+     он проваливается; перебиваем важностью, разметку не трогаем */
+  .crumbs span[style]{ color:rgba(255,255,255,.5)!important; }
+
+  .page-hero{
+    position:relative; isolation:isolate; overflow:hidden;
+    background:#0C1118; color:#fff;
+    padding-block:12px 30px;
+  }
+  /* Фирменный знак крана из логотипа — тот же контур, что в шапке.
+     Он держит правый край, который иначе оставался пустым, и связывает
+     страницу с главной без единого лишнего килобайта картинок. */
+  .page-hero::after{
+    content:""; position:absolute; z-index:-1; pointer-events:none;
+    right:-74px; bottom:-56px; width:206px; height:206px; opacity:.055;
+    background-repeat:no-repeat; background-size:contain; background-position:bottom right;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='%23ffffff' stroke-linecap='round'%3E%3Cpath d='M13 29V7' stroke-width='2.6'/%3E%3Cpath d='M4.5 7h22' stroke-width='2.6'/%3E%3Cpath d='M13 3.5 24 7' stroke-width='1.7'/%3E%3Cpath d='M13 3.5 6.5 7' stroke-width='1.7'/%3E%3Cpath d='M13 3.5V7' stroke-width='1.7'/%3E%3Crect x='3.2' y='5.4' width='3.4' height='3.2' rx='.7' fill='%23ffffff' stroke='none'/%3E%3Cpath d='M21.5 7v5.5' stroke-width='1.6'/%3E%3Cpath d='M19.6 12.5h3.8' stroke-width='2.2'/%3E%3Cpath d='M8.5 29h9' stroke-width='2.4'/%3E%3C/svg%3E");
+  }
+
+  .page-hero h1{ color:#fff; }
+  .page-hero .lead{ color:rgba(255,255,255,.80); }
+  .page-hero .lead a{ color:#fff; }
+
+  /* Цена на тёмном — та же стеклянная карточка, что в цифрах главной,
+     а не белый прямоугольник: белое пятно на тёмной полосе читается
+     как чужеродная заплатка. */
+  .page-hero .price-badge{
+    border-color:rgba(255,255,255,.20);
+    background:rgba(255,255,255,.07);
+    backdrop-filter:blur(8px);
+    box-shadow:none;
+  }
+  .page-hero .price-badge span{ color:rgba(255,255,255,.72); }
+  .page-hero .price-badge .price-hour{ color:rgba(255,255,255,.55)!important; }
+
+  /* Второй кнопкой на этих страницах стоит телефон — белая «призрачная»
+     кнопка на тёмном светится ярче оранжевой основной и перетягивает
+     на себя взгляд. Ведём её так же, как на тёмном герое главной. */
+  .page-hero .btn--ghost{
+    background:rgba(255,255,255,.12); color:#fff;
+    border-color:rgba(255,255,255,.42); backdrop-filter:blur(6px);
+  }
+
+  /* Фотография техники в герое: тот же снимок, что стоит на карточке этого
+     раздела в каталоге главной, — ничего нового не придумано. Затемняющие
+     градиенты идут ПОВЕРХ снимка (первыми в списке), само фото не осветляем. */
+  /* Затемнение разделено по высоте, а не размазано ровным слоем. Верхние две
+     трети — там, где лежат надзаголовок, h1 и лид, — держим тёмными: на кадре
+     3× было видно, как слова «метров. Своя», «опытные», «подача» ложатся
+     на жёлтый корпус крана и белый текст на них проваливается. Нижняя треть,
+     где стоят цена и кнопки, отпущена: машина в кадре читается, а кнопки
+     непрозрачны и от фона не зависят. Само фото не осветляем. */
+  .page-hero--shot{
+    background-image:
+      linear-gradient(180deg, rgba(8,11,17,.86) 0%,  rgba(8,11,17,.82) 20%,
+                              rgba(8,11,17,.80) 55%, rgba(8,11,17,.52) 72%,
+                              rgba(8,11,17,.34) 100%),
+      linear-gradient(90deg,  rgba(8,11,17,.70) 0%,  rgba(8,11,17,.34) 55%,
+                              rgba(8,11,17,.16) 100%),
+      var(--shot);
+    background-size:cover; background-position:center; background-repeat:no-repeat;
+  }
+  .page-hero--shot .lead{ color:rgba(255,255,255,.88); }
+  /* Под фотографией знак не нужен — он спорит с машиной. */
+  .page-hero--shot::after{ display:none; }
+
+  /* Две кнопки шли столбиком разной ширины: «Заказать» 155 px, телефон 210 px —
+     ступенька по левому краю читается как недовёрстанный блок. Обе на всю
+     ширину колонки: край один, палец попадает в любую точку строки. */
+  .page-hero .actions{ display:grid; grid-template-columns:1fr; gap:10px; }
+  .page-hero .actions .btn{ width:100%; justify-content:center; }
+
+  /* Пустота между героем и первым заголовком. На /kontakty/, где в герое нет
+     ни цены, ни кнопок, между лидом и «Как связаться» лежало ~150 px белого
+     ничего: 44 px нижнего паддинга героя + 64 px верхнего у секции + отступ
+     заголовка. На телефоне такой провал стоит четверти экрана. */
+  .page-hero + section,
+  .page-hero + .section{ padding-top:30px; }
+}
+
+/* Снимки разделов: пары «раздел — фотография» взяты из карточек каталога
+   на главной, чтобы на странице автовышек не оказался кран. */
+.ph-crane-100{ --shot:image-set(url('img/crane-100.webp') type('image/webp'),url('img/crane-100.jpg') type('image/jpeg')); }
+.ph-crane-25 { --shot:image-set(url('img/crane-25.webp')  type('image/webp'),url('img/crane-25.jpg')  type('image/jpeg')); }
+.ph-gusen    { --shot:image-set(url('img/gusenichnyj.webp') type('image/webp'),url('img/gusenichnyj.jpg') type('image/jpeg')); }
+.ph-bashen   { --shot:image-set(url('img/bashennyj.webp') type('image/webp'),url('img/bashennyj.jpg') type('image/jpeg')); }
+.ph-manip    { --shot:image-set(url('img/manip-7.webp')  type('image/webp'),url('img/manip-7.jpg')  type('image/jpeg')); }
+.ph-lift     { --shot:image-set(url('img/lift-28.webp')  type('image/webp'),url('img/lift-28.jpg')  type('image/jpeg')); }
+.ph-exc      { --shot:image-set(url('img/excloader.webp') type('image/webp'),url('img/excloader.jpg') type('image/jpeg')); }
+.ph-samosval { --shot:image-set(url('img/samosval.webp') type('image/webp'),url('img/samosval.jpg') type('image/jpeg')); }
+.ph-tral     { --shot:image-set(url('img/tral.webp')     type('image/webp'),url('img/tral.jpg')     type('image/jpeg')); }

@@ -671,8 +671,12 @@ h1,h2{ hyphens:manual; -webkit-hyphens:manual; }
 
   .hero__sub{ margin-top:16px; }
   .hero__prices{ margin-top:18px; }
-  .hero__actions{ margin-top:22px; }
-  .hero__call{ margin-left:0; }
+  /* Кнопки вставали друг под друга разной ширины — «Заказать технику» 217 px,
+     «Рассчитать стоимость» 235 px: ступенька по правому краю читается
+     как недовёрстанный блок. Ширина одна на обе, край общий. */
+  .hero__actions{ margin-top:22px; gap:10px; }
+  .hero__actions .btn{ flex:1 1 100%; justify-content:center; }
+  .hero__call{ margin-left:0; margin-top:4px; }
 
   /* Подсказка прокрутки висела на абсолюте у низа героя, а герой выше экрана —
      надпись «Листайте вниз» ложилась поверх карточек с цифрами. */
