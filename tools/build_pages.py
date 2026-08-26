@@ -33,7 +33,7 @@ k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNo
 })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=111188532', 'ym');
 ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
 </script>
-<noscript><div><img src="https://mc.yandex.ru/watch/111188532" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<noscript><div><img src="https://mc.yandex.ru/watch/111188532" width="1" height="1" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->'''
 
 # ---------------------------------------------------------------- общие блоки
@@ -881,7 +881,7 @@ def hub_extra_intro(slug):
 
 
 # ---------------------------------------------------------------- SEO: длины сниппета
-TITLE_LIMIT = 62      # запас до 65: кириллица шире латиницы в пикселях
+TITLE_LIMIT = 60      # запас до 65: кириллица шире латиницы в пикселях
 DESC_LIMIT  = 158     # запас до 165
 
 BRAND = "КРАН365"
