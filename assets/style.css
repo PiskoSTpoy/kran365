@@ -598,3 +598,139 @@ select.input{ appearance:none; background-image:linear-gradient(45deg,transparen
   .nav__cta{ padding:9px 13px; font-size:.8rem; }
 }
 @media (max-width:359px){ .nav__cta{ display:none; } }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   ТЕЛЕФОН В РУКЕ: первый экран, контраст на фото, панель связи
+   Правки этого блока сделаны по кадрам 375×812, а не по замерам DOM.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* Якорные ссылки (#order, #calc, #catalog) уводили заголовок под фиксированную
+   шапку: браузер прокручивает к самому элементу и не знает про плашку сверху. */
+html{ scroll-padding-top:88px; }
+
+/* Крупные заголовки не переносим по слогам ни при каких настройках браузера:
+   разорванное посреди слова слово в 40px читается как опечатка. */
+h1,h2{ hyphens:manual; -webkit-hyphens:manual; }
+
+/* ---------- Цена на первом экране ---------- */
+.hero__prices{
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px; margin-top:22px; max-width:470px;
+}
+.hero__price{
+  position:relative; display:block; padding:12px 12px 13px 15px;
+  border:1px solid rgba(255,255,255,.18); border-radius:14px;
+  background:rgba(9,13,19,.5); backdrop-filter:blur(8px); color:#fff;
+  transition:border-color .2s ease, background .2s ease, transform .2s ease;
+}
+.hero__price::before{
+  content:""; position:absolute; left:0; top:13px; bottom:13px; width:3px;
+  border-radius:0 3px 3px 0; background:var(--orange);
+}
+.hero__price span{
+  display:block; font-size:.68rem; font-weight:800; letter-spacing:.13em;
+  text-transform:uppercase; color:rgba(255,255,255,.62); line-height:1.3;
+}
+.hero__price b{
+  display:block; margin-top:4px; font-size:clamp(1rem,4.3vw,1.4rem); font-weight:900;
+  letter-spacing:-.025em; color:var(--orange); white-space:nowrap; line-height:1.1;
+}
+.hero__price i{ display:block; font-style:normal; font-size:.76rem; color:rgba(255,255,255,.58); }
+.hero__price:hover{ border-color:var(--orange); background:rgba(9,13,19,.66); transform:translateY(-2px); }
+
+/* ---------- Первый экран телефона ---------- */
+@media (max-width:760px){
+  /* Шапка зафиксирована, а содержимое героя прижато к низу. Как только текста
+     становится больше экрана, герой растёт вверх — и надзаголовок уезжал ПОД
+     плашку, первая строка сливалась с кнопкой «Заказать технику».
+     Паддинг резервирует высоту шапки (38px знак + 2×16 паддинг) плюс воздух. */
+  .hero{ padding-top:92px; }
+  .hero .wrap{ display:flex; flex-direction:column; }
+
+  /* Подложка под текстовой колонкой. Фото само не осветляем: у кадра справа
+     жёлтое пятно кабины, и белые строки лида на нём проваливались по контрасту.
+     Градиент гасится к верхнему краю, чтобы стрела и небо остались видны. */
+  .hero .wrap::before{
+    content:""; position:absolute; z-index:-1; pointer-events:none;
+    inset:-18px 0 -26px;
+    background:linear-gradient(180deg,
+      rgba(6,9,14,0) 0%, rgba(6,9,14,.40) 8%, rgba(6,9,14,.66) 22%,
+      rgba(6,9,14,.72) 60%, rgba(6,9,14,.76) 100%);
+  }
+
+  /* Надзаголовок в одну строку: в две он занимал место первого экрана
+     и утыкался в шапку. */
+  .hero__kicker{ font-size:.63rem; letter-spacing:.115em; margin-bottom:14px; }
+  .hero__kicker::before{ width:18px; }
+
+  /* На первом экране остаётся короткий лид (что арендуем), хвост про сеть,
+     оператора и ЭДО человек дочитывает уже после карточек с цифрами. */
+  .hero__facts{ order:1; margin-top:26px; }
+  .hero__sub--more{ order:2; margin-top:18px; font-size:1rem; }
+
+  .hero__sub{ margin-top:16px; }
+  .hero__prices{ margin-top:18px; }
+  .hero__actions{ margin-top:22px; }
+  .hero__call{ margin-left:0; }
+
+  /* Подсказка прокрутки висела на абсолюте у низа героя, а герой выше экрана —
+     надпись «Листайте вниз» ложилась поверх карточек с цифрами. */
+  .scroll-hint{ display:none; }
+
+  .hero__fact{ padding:14px; }
+  .hero__fact span{ font-size:.78rem; line-height:1.35; }
+
+  /* Полоса доверия свёрстана как центрированный flex-wrap: на телефоне каждый
+     пункт вставал по центру своей строки, и пять галочек шли зигзагом —
+     список читался как случайно рассыпанный. Ставим в колонку по левому краю,
+     иконки выстраиваются в одну вертикаль. */
+  .trust__row{ flex-direction:column; align-items:flex-start; justify-content:flex-start; gap:11px; }
+}
+
+/* Ниже 375px заголовок в 43px не помещался: «спецтехника —» уходило за край,
+   а тире переносилось в начало строки. Кегль ведём от ширины экрана. */
+@media (max-width:374px){
+  .hero h1{ font-size:clamp(2rem,11.6vw,2.7rem); }
+}
+/* На 320px надзаголовок в 37 знаков не встаёт в строку даже поджатым трекингом
+   при прежнем кегле — а второй строкой он съедает высоту, которой на таком
+   экране и так нет. */
+@media (max-width:359px){
+  .hero__kicker{ font-size:.57rem; letter-spacing:.05em; }
+  .hero__kicker::before{ width:16px; }
+}
+
+/* ---------- Панель связи вместо плавающих кружков ---------- */
+/* Три круглых кнопки висели столбиком у правого края поверх контента и на
+   каждой странице что-нибудь закрывали: на главной — строки абзаца, в разделе
+   автокранов — колонку цен таблицы («от 44 9…»). На телефоне собираем их
+   в нижнюю панель: под неё зарезервирован отступ у body, поэтому она
+   не накрывает ничего и держит телефон на виду весь визит. */
+.fab__txt{ display:none; }
+@media (max-width:760px){
+  body{ padding-bottom:calc(76px + env(safe-area-inset-bottom,0px)); }
+  .fab{
+    left:0; right:0; bottom:0; flex-direction:row; align-items:center; gap:10px;
+    padding:9px 14px calc(9px + env(safe-area-inset-bottom,0px));
+    /* На широком телефоне и планшете «Позвонить» во всю ширину выглядит
+       как баннер, а не как кнопка: ограничиваем и центрируем всю тройку. */
+    justify-content:center;
+    background:rgba(255,255,255,.95);
+    backdrop-filter:saturate(1.5) blur(16px);
+    border-top:1px solid var(--line);
+    box-shadow:0 -16px 36px -24px rgba(18,28,45,.85);
+  }
+  .fab a{ width:50px; height:50px; flex:none; box-shadow:none; }
+  .fab a:hover{ transform:none; }
+  /* Селектор с элементом: у `.fab a` специфичность выше, чем у одного класса,
+     и `width:50px` перебивал `width:auto` — кнопка звонка не растягивалась,
+     а подпись вылезала на соседний кружок. */
+  .fab a.fab__call{
+    flex:1 1 auto; width:auto; max-width:400px; border-radius:100px;
+    grid-auto-flow:column; place-content:center; gap:10px; animation:none;
+    box-shadow:0 10px 22px -13px rgba(245,116,28,.95);
+  }
+  .fab__txt{ display:inline; font-weight:800; font-size:1rem; letter-spacing:-.01em; }
+}
+

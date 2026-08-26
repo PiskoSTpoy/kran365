@@ -96,3 +96,35 @@
 .pc__col--plus{ background:rgba(255,106,0,.05); border-color:rgba(255,106,0,.25); }
 .pc__col--minus{ background:rgba(0,0,0,.03); }
 @media (max-width:760px){ .pc{ grid-template-columns:1fr; } }
+
+/* ───── Таблица цен на телефоне ─────
+   min-width:420px не влезает в 337px контентной ширины: колонка «Цена»
+   обрезалась ровно по цифрам — на кадре видно «от 16 300 ₽ / с…», а чтобы
+   дочитать, таблицу надо тащить пальцем вбок. Цена — то, ради чего человек
+   открыл страницу, её нельзя прятать за жест. Отпускаем ширину и поджимаем
+   ячейки: две колонки помещаются целиком. */
+@media (max-width:560px){
+  .ptable{ min-width:0; font-size:.92rem; }
+  .ptable th,.ptable td{ padding:12px 10px; }
+  .ptable td b{ white-space:nowrap; }
+  .ptable thead th{ font-size:.72rem; letter-spacing:.03em; }
+  .ptable .price-hour{ white-space:normal; }
+}
+
+/* Таблицы характеристик (модель / шасси / стрела / особенности) в 337px
+   не влезают ни при каком поджатии — они и должны листаться вбок. Но на
+   кадре это выглядит как обрезанная колонка: человек видит «Самая распро…»
+   и думает, что вёрстка поехала. Тень у края появляется ровно тогда, когда
+   в ту сторону есть что листать: слои-«заглушки» прокручиваются вместе
+   с содержимым (local) и закрывают тень, когда таблица упёрлась в край. */
+.ptable-wrap{
+  background-image:
+    linear-gradient(to right, var(--card), rgba(255,255,255,0)),
+    linear-gradient(to left,  var(--card), rgba(255,255,255,0)),
+    linear-gradient(to right, rgba(18,28,45,.26), rgba(18,28,45,0)),
+    linear-gradient(to left,  rgba(18,28,45,.26), rgba(18,28,45,0));
+  background-position:left center, right center, left center, right center;
+  background-repeat:no-repeat;
+  background-size:26px 100%, 26px 100%, 18px 100%, 18px 100%;
+  background-attachment:local, local, scroll, scroll;
+}
