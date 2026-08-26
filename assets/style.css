@@ -22,6 +22,7 @@
   --green:   #12A66B;   /* «свободен» */
   --amber:   #E08600;   /* «частично занят» */
   --red:     #E23D57;   /* «занят» */
+  --red-ink: #C21F3A;   /* тот же красный, затемнён до контраста AA для текста */
 
   --line:    rgba(18,28,45,.12);
   --line-2:  rgba(18,28,45,.07);
@@ -429,7 +430,11 @@ select.input{ appearance:none; background-image:linear-gradient(45deg,transparen
   .geo__cols{ columns:2; }
   .hero__facts{ grid-template-columns:repeat(2,1fr); }
 }
-@media (max-width:640px){
+/* Горизонтальное меню в строку помещается только примерно с 900px: ниже шапка
+   вылезала за правый край, а пункты меню и телефон уезжали за экран. Бургер
+   раньше включался лишь на 640px, из-за чего полоса 641–900px была сломана.
+   Переносим порог на 900px — на планшетах меню открывается выпадающим списком. */
+@media (max-width:900px){
   .nav__links{ display:none; }
   .nav__links.open{
     display:flex; position:fixed; inset:64px 0 auto 0; flex-direction:column; align-items:flex-start;
@@ -439,6 +444,8 @@ select.input{ appearance:none; background-image:linear-gradient(45deg,transparen
   .nav__links.open a{ padding:11px 0; width:100%; border-bottom:1px solid var(--line-2); color:var(--ink); }
   .nav__links.open a.nav__phone{ color:var(--orange)!important; }
   .nav__burger{ display:block; }
+}
+@media (max-width:640px){
   .cat-grid,.live__grid,.reviews,.steps,.gallery{ grid-template-columns:1fr; }
   .gal--wide,.gal--tall{ grid-column:auto; grid-row:auto; }
   .gallery{ grid-auto-rows:160px; }
@@ -539,3 +546,51 @@ select.input{ appearance:none; background-image:linear-gradient(45deg,transparen
 .footer a{ font-size:.92rem; }
 .footer .btn{ display:inline-flex; width:auto; padding:13px 22px; color:#fff; border-radius:100px; margin-top:14px; }
 .footer .btn:hover{ color:#fff; }
+
+
+/* ═══════ Согласие на обработку ПД, ловушка для ботов, правовой подвал ═══════ */
+
+/* Чекбокс согласия. Две ссылки раздельные и вынесены из <label>: клик по ссылке
+   внутри метки одновременно переключал бы чекбокс — поведение неожиданное. */
+.consent{ display:grid; grid-template-columns:auto 1fr; gap:5px 10px; align-items:start; text-align:left; }
+.consent__box{ width:20px; height:20px; margin:1px 0 0; accent-color:var(--orange); cursor:pointer; }
+.consent__label{ font-size:.84rem; line-height:1.45; color:var(--muted); cursor:pointer; font-weight:400; }
+.consent__docs{ grid-column:2; display:flex; flex-wrap:wrap; gap:2px 16px; font-size:.78rem; }
+/* Ссылки на политику и согласие — обязательные, читаться должны без прищура:
+   на var(--muted-2) контраст 3.1:1, ниже порога AA 4.5:1 для мелкого текста. */
+.consent__docs a{ color:var(--muted); text-decoration:underline; text-underline-offset:2px; }
+.consent__docs a:hover{ color:var(--orange); }
+/* Специфичность выше, чем у .aside p и .prose p: иначе сообщение об ошибке
+   наследует приглушённый серый и перестаёт читаться как ошибка. */
+.form .consent__err, .consent .consent__err{
+  grid-column:1 / -1; margin:3px 0 0; font-size:.78rem; line-height:1.4; color:var(--red-ink); font-weight:600;
+}
+.consent__err[hidden]{ display:none; }
+.consent__box.err{ outline:2px solid var(--red); outline-offset:2px; border-radius:3px; }
+
+/* Поле-ловушка: человек его не видит и до него не дотабается, скринридер молчит.
+   position:absolute убирает поле из потока, поэтому gap формы не сдвигается. */
+.hp{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+
+/* Правовая строка подвала: политика и согласие обязаны быть на каждой странице. */
+.footer__legal{ display:flex; flex-wrap:wrap; gap:2px 24px; margin-top:36px; padding-top:22px;
+  border-top:1px solid var(--line-2); font-size:.85rem; }
+.footer__legal + .footer__bottom{ margin-top:14px; border-top:0; padding-top:0; }
+.footer__legal a{ color:var(--muted); }
+.footer__legal a:hover{ color:var(--orange); }
+
+/* Меню стало на пункт длиннее — поджимаем шаг, чтобы шапка не переполнялась
+   на планшетных ширинах, где бургер ещё не включился. */
+@media (max-width:1180px){ .nav__links{ gap:18px; font-size:.9rem; } }
+@media (max-width:900px){ .nav__links{ gap:13px; font-size:.85rem; } .nav{ gap:12px; } }
+
+/* На узком экране содержимое шапки не помещалось: логотип + кнопка «Заказать
+   технику» + бургер требуют ~404px, поэтому на 320–375px бургер уезжал за правый
+   край и мобильное меню было недоступно вовсе. Поджимаем подпись логотипа
+   и кнопку, а на самых узких экранах кнопку убираем — заказать можно из меню,
+   с плавающей кнопки звонка и из формы на странице. */
+@media (max-width:640px){
+  .brand__txt small{ display:none; }
+  .nav__cta{ padding:9px 13px; font-size:.8rem; }
+}
+@media (max-width:359px){ .nav__cta{ display:none; } }

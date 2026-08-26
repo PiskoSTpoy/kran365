@@ -66,6 +66,12 @@
   .page-cols{ grid-template-columns:1fr; }
   .aside{ position:static; }
 }
+/* Колонки — элементы грида, а у них min-width:auto: колонка не может стать уже
+   своего содержимого. Внутри лежит .ptable с min-width:420px, поэтому на узком
+   экране вся страница растягивалась до ~440px и ехала вбок вместе с шапкой,
+   хотя таблица завёрнута в .ptable-wrap с overflow-x:auto. min-width:0 разрешает
+   колонке сжиматься — и прокрутка остаётся внутри обёртки таблицы, как задумано. */
+.page-cols > *{ min-width:0; }
 
 /* сноски-оговорки под таблицами характеристик */
 .prose small{ display:block; color:var(--muted-2); font-size:.84rem; line-height:1.5; margin-top:-6px; }
