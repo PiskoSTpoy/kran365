@@ -238,6 +238,27 @@ def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
 
 def money(p): return "под запрос" if not p else "от %s ₽" % format(p, ",d").replace(",", " ")
 
+# Заголовки статей, которые сами по себе длиннее лимита выдачи. Автоматическая
+# обрезка ставит многоточие и съедает конец фразы — в выдаче это выглядит как
+# оборванная мысль. Для таких статей <title> задан вручную и собран из тех же
+# слов, что и заголовок, без новых утверждений. <h1> остаётся полным.
+BLOG_TITLE_SHORT = {
+    "avtovyshka-arenda-vysota-teleskop-ili-kolenchataya":
+        "Автовышка в аренду: высота, телескоп или коленчатая",
+    "perevozka-negabarita-tralom":
+        "Перевозка негабарита тралом: разрешения и сроки",
+}
+
+def title_price(p):
+    """Варианты ценового уточнения для title, от длинного к короткому.
+
+    Если не влезает даже «от 16 300 ₽» — уточнения не будет вовсе. Для техники
+    без цены вариант один: «цена под запрос» либо влезает, либо выкидывается.
+    Придумывать вместо неё сумму нельзя, а тянуть слово «цена» ради слова «цена»
+    незачем.
+    """
+    return ["цена " + money(p).lower(), money(p).lower()] if p else ["цена под запрос"]
+
 def hour_price(p):
     """Оценочная цена за час — из расчёта 8-часовой смены (мин. заказ всё равно смена)."""
     if not p: return None
@@ -903,9 +924,14 @@ def seo_title(core, geo=None, extra=None):
 
     core  — обязательная основа («Аренда автокрана 25 тонн»)
     geo   — регион, присоединяется без тире и только если его ещё нет в основе
-    extra — уточнение через тире («цена от 16 300 ₽»)
+    extra — уточнение через тире. Можно передать НЕСКОЛЬКО вариантов, от
+            длинного к короткому: («цена от 16 300 ₽», «от 16 300 ₽»).
+            Берётся первый поместившийся.
 
     Части, которые не помещаются, не добавляются вовсе — обрывов на полуслове нет.
+    Лесенка вариантов нужна там, где уточнение несёт факт, который жалко терять:
+    цену из title лучше сократить до «от 16 300 ₽», чем выкинуть совсем — в
+    выдаче она работает на клик, а слово «цена» рядом с суммой ничего не добавляет.
     """
     out = _clean(core)
     tail = " | " + BRAND
@@ -921,9 +947,12 @@ def seo_title(core, geo=None, extra=None):
             out = out + " " + geo
 
     if extra:
-        extra = _clean(extra)
-        if len(out) + 3 + len(extra) + len(tail) <= TITLE_LIMIT:
-            out = out + " — " + extra
+        variants = [extra] if isinstance(extra, str) else list(extra)
+        for variant in variants:
+            variant = _clean(variant)
+            if len(out) + 3 + len(variant) + len(tail) <= TITLE_LIMIT:
+                out = out + " — " + variant
+                break
 
     if len(out) + len(tail) <= TITLE_LIMIT:
         out += tail
@@ -1022,7 +1051,7 @@ def build():
             rel = related_types(t["slug"]) + related_geo()
         rel += related_cats(limit=8)
         h1 = "Аренда %s в Москве и области" % t["one"]
-        title = seo_title(h1, None, "цена %s" % money(t["price"]).lower())
+        title = seo_title(h1, None, title_price(t["price"]))
         desc = seo_desc("Аренда %s в Москве и области: %s" % (t["one"], t["meta"]),
                         "Цена %s/смена, оператор и топливо включены" % money(t["price"]).lower(),
                         "Подача от 1 дня, договор и ЭДО")
@@ -1038,7 +1067,7 @@ def build():
                 d = TONNAGE[tn]
                 crumbs2 = [home, ("Автокраны","/avtokrany/"), ("%d тонн" % tn, "/avtokrany/%d-tonn/" % tn)]
                 h1b = "Аренда автокрана %d тонн" % tn
-                title2 = seo_title(h1b, "в Москве", "цена %s" % money(pr).lower())
+                title2 = seo_title(h1b, "в Москве", title_price(pr))
                 desc2 = seo_desc("Автокран %d тонн в Москве и области: %s" % (tn, lc_first(d["klass"])),
                                  ("Цена %s/смена" % money(pr).lower()) if pr else "Стоимость по расчёту",
                                  "Грузоподъёмность по вылету, требования к площадке")
@@ -1061,7 +1090,7 @@ def build():
         rel = related_param(VYSHKI,"/avtovyshki/",("метров","metrov"),h,"Другие высоты") + related_geo() + related_types("avtovyshki")
         ld = [breadcrumb_ld(crumbs), service_ld(h1, lead, pr), faq_ld(d["faqs"]), local_business_ld()]
         page("avtovyshki/%d-metrov/index.html" % h,
-             seo_title(h1, "в Москве", "цена %s" % money(pr).lower()),
+             seo_title(h1, "в Москве", title_price(pr)),
              seo_desc("Автовышка %d м в Москве и области: %s" % (h, lc_first(d["focus"])),
                       "Высота и боковой вылет, грузоподъёмность люльки",
                       "Цена %s/смена с оператором" % money(pr).lower()),
@@ -1078,7 +1107,7 @@ def build():
         rel = related_param(MANIP,"/manipulyatory/",("тонн","tonn"),t,"Другая грузоподъёмность") + related_tasks() + related_geo()
         ld = [breadcrumb_ld(crumbs), service_ld(h1, lead, pr), faq_ld(d["faqs"]), local_business_ld()]
         page("manipulyatory/%d-tonn/index.html" % t,
-             seo_title(h1, "в Москве", "цена %s" % money(pr).lower()),
+             seo_title(h1, "в Москве", title_price(pr)),
              seo_desc("Манипулятор %d тонн в Москве и области: вылет стрелы, грузоподъёмность борта" % t,
                       ("Цена %s/смена" % money(pr).lower()) if pr else "Стоимость по расчёту",
                       "Когда выгоднее автокрана"),
@@ -1110,7 +1139,7 @@ def build():
         rel = related_tasks(slug) + related_types() + related_geo()
         ld = [breadcrumb_ld(crumbs), service_ld(name, lead, pr), faq_ld(faqs), local_business_ld()]
         page("uslugi/%s/index.html" % slug,
-             seo_title(name, "в Москве", "цена %s" % money(pr).lower()),
+             seo_title(name, "в Москве", title_price(pr)),
              seo_desc("%s в Москве и области: %s" % (name, lc_first(TASKS_DATA[slug]["angle"])),
                       "Как проходит работа и что подготовить",
                       "Оператор в стоимости, подача от 1 дня"),
@@ -1161,7 +1190,8 @@ def build():
               ("Можно ли объединить несколько работ в один выезд?","Можно и нужно, особенно на дальних направлениях: подача оплачивается один раз. Скажите обо всех задачах сразу — соберём их в одну смену.")]
     prose += "<h2>Частые вопросы</h2>" + faq_html(faqs_u)
     ld = [breadcrumb_ld(crumbs), service_ld("Услуги спецтехники","Аренда спецтехники под конкретные задачи в Москве и области",16300), faq_ld(faqs_u), local_business_ld()]
-    page("uslugi/index.html", "Услуги спецтехники в Москве — монтаж, подъём, вывоз | КРАН365",
+    page("uslugi/index.html", seo_title("Услуги спецтехники", "в Москве",
+                                        ["монтаж, подъём, вывоз", "монтаж и подъём"]),
          seo_desc("Монтаж ангаров и металлоконструкций, установка бытовок, подъём на крышу, разгрузка фур, вывоз грунта",
                   "Техника с оператором, подача в день заявки"),
          crumbs, hero("Услуги", "Услуги спецтехники под вашу задачу",
@@ -1179,7 +1209,7 @@ def build():
         rel = related_param(STRELA,"/avtokrany/strela-",("метров","metrov"),m_,"Другие длины стрелы") + related_tonnages(-1) + related_geo()
         ld = [breadcrumb_ld(crumbs), service_ld(h1, lead, pr), faq_ld(d["faqs"]), local_business_ld()]
         page("avtokrany/strela-%d-metrov/index.html" % m_,
-             seo_title(h1, None, "цена %s" % money(pr).lower()),
+             seo_title(h1, None, title_price(pr)),
              seo_desc("Автокран со стрелой %d м: %s" % (m_, lc_first(d["focus"])),
                       "Высота подъёма, вылет, расчёт геометрии",
                       ("Цена %s/смена" % money(pr).lower()) if pr else "Стоимость по расчёту"),
@@ -1204,7 +1234,7 @@ def build():
                    "".join('<a href="%s%s/">%s</a>' % (base, s2, esc(n2)) for s2, n2, _, _ in items if s2 != s)) + related_tasks() + related_geo()
             ld = [breadcrumb_ld(crumbs), service_ld(n, lead, p), faq_ld(dd["faqs"]), local_business_ld()]
             page("%s/%s/index.html" % (group, s),
-                 seo_title(n, "в Москве", "цена %s" % money(p).lower()),
+                 seo_title(n, "в Москве", title_price(p)),
                  seo_desc("%s в аренду в Москве и области: %s" % (n, d_),
                           dd["focus"],
                           "Цена %s/смена с оператором" % money(p).lower()),
@@ -1234,7 +1264,7 @@ def build():
                "publisher":{"@type":"Organization","name":"КРАН365"},
                "mainEntityOfPage":SITE+"/blog/%s/" % s},
               local_business_ld()]
-        page("blog/%s/index.html" % s, seo_title(t), seo_desc(lead), crumbs,
+        page("blog/%s/index.html" % s, seo_title(BLOG_TITLE_SHORT.get(s, t)), seo_desc(lead), crumbs,
              hero("Блог", t, lead, None), body(prose, rel), ld)
         pages += 1
 
@@ -1246,7 +1276,9 @@ def build():
              'как подготовить площадку и не переплатить за вывоз грунта. Пишем по опыту своих объектов.</p>'
              '<div class="ptable-wrap"><table class="ptable"><thead><tr><th>Статья</th><th>О чём</th></tr></thead><tbody>%s</tbody></table></div>' % cards)
     ld = [breadcrumb_ld(crumbs), local_business_ld()]
-    page("blog/index.html", "Блог о спецтехнике — как выбрать кран и не переплатить | КРАН365",
+    page("blog/index.html", seo_title("Блог о спецтехнике", None,
+                                      ["как выбрать кран и не переплатить",
+                                       "выбор крана и цены аренды"]),
          "Практические статьи об аренде спецтехники: выбор автокрана, стоимость смены, кран или манипулятор, подготовка площадки, расчёт вывоза грунта.",
          crumbs, hero("Блог", "Блог о спецтехнике",
                       "Практические разборы для тех, кто заказывает технику: что спросить, как посчитать и на чём не стоит экономить.", None),
@@ -1308,7 +1340,7 @@ def build():
                  '<h2>Частые вопросы</h2>%s') % (esc(c["intro"]), table, faq_html(faqs))
         rel = related_cats(c["slug"]) + related_types() + related_tasks()
         ld = [breadcrumb_ld(crumbs), service_ld(c["h1"], c["lead"], c.get("price_from")), faq_ld(faqs), local_business_ld()]
-        title = seo_title(c["h1"], "в Москве", "цена %s" % money(c.get("price_from")).lower())
+        title = seo_title(c["h1"], "в Москве", title_price(c.get("price_from")))
         desc = seo_desc("%s: подберём и подадим технику из проверенной сети" % c["h1"],
                         "Оператор и топливо в стоимости смены",
                         "Договор, счёт и закрывающие документы")
