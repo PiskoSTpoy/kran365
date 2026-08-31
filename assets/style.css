@@ -171,6 +171,16 @@ section{ position:relative; padding-block:clamp(64px,8vw,120px); }
 .hero__video.is-playing{ opacity:1; }
 @keyframes kenburns{ from{ transform:scale(1.02); } to{ transform:scale(1.07); } }
 @media (prefers-reduced-motion:reduce){ .hero__poster{ animation:none; } }
+/* LCP на мобильном: герою отдавался тот же файл 1600×1058 (132 КБ webp), что
+   и на десктопе 1920px, хотя реальная ширина картинки на телефоне — экран.
+   Lighthouse mobile (Moto G Power, Slow 4G) мерил LCP 5,1 с — вдвое хуже
+   порога 2,5 с — и первым делом называл причиной именно тяжёлые изображения.
+   !important — иначе не перебить background-image, заданный инлайн-стилем
+   в разметке (там же лежит десктопный источник, оставлен как есть).
+   Файлы 800×529: webp 56 КБ, jpg 71 КБ — вместо 132/304. */
+@media (max-width:760px){
+  .hero__poster{ background-image:image-set(url('img/hero-crane-mobile.webp') type('image/webp'),url('img/hero-crane-mobile.jpg') type('image/jpeg')) !important; }
+}
 .hero__scrim{
   position:absolute; inset:0; z-index:2;
   background:
