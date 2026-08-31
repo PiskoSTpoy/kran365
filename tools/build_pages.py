@@ -881,7 +881,9 @@ def geo_mo_prose(slug, prep, neigh):
 
     out += "<h2>Что чаще всего заказывают</h2><ul>%s</ul>" % "".join("<li>%s</li>" % esc(x) for x in d["objects"])
 
-    out += "<h2>Местная особенность</h2><p>%s</p>" % d["local"]
+    local = d["local"]
+    local_html = "".join("<p>%s</p>" % p for p in local) if isinstance(local, list) else "<p>%s</p>" % local
+    out += "<h2>Местная особенность</h2>%s" % local_html
 
     out += "<h2>Техника и цены</h2>"
     out += "<p>Ставки одинаковые по всей зоне работы — меняется только стоимость подачи, "\
@@ -911,7 +913,9 @@ def geo_rf_prose(slug, prep, neigh):
 
     out += "<h2>Типовые объекты и задачи</h2><ul>%s</ul>" % "".join("<li>%s</li>" % esc(x) for x in d["objects"])
 
-    out += "<h2>Местная особенность</h2><p>%s</p>" % d["local"]
+    local = d["local"]
+    local_html = "".join("<p>%s</p>" % p for p in local) if isinstance(local, list) else "<p>%s</p>" % local
+    out += "<h2>Местная особенность</h2>%s" % local_html
 
     out += "<h2>Как мы работаем в %s</h2>" % esc(prep)
     out += ("<p>Своего парка в городе у нас нет, и мы говорим об этом прямо: технику подбираем "
