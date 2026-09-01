@@ -280,3 +280,8 @@
    на любой ширине экрана, а не только на телефоне. */
 .blog-body-img{ margin:0 0 28px; border-radius:14px; overflow:hidden; }
 .blog-body-img img{ width:100%; height:auto; aspect-ratio:650/430; object-fit:cover; display:block; }
+/* На ≤760px у статьи уже есть то же самое фото фоном в героеt (.page-hero--shot,
+   мобильная волна выше) — вторая копия того же снимка сразу под героем читалась
+   бы как дубль, а не как вторая картинка. Прячем инлайн-версию только там, где
+   она реально повторяется; на десктопе, где у героя фото нет, показываем. */
+@media (max-width:760px){ .blog-body-img{ display:none; } }
