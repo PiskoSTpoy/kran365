@@ -48,6 +48,14 @@ SHOTS = {
     "kran-u-lep-ohrannaya-zona": "ph-crane-25",
     "zayavki-na-tehniku-teryayutsya-v-chatah": "ph-crane-100",
     "uchet-topliva-brigady-spectehniki": "ph-crane-100",
+    "kran-dlya-montazha-opor-osveshheniya": "ph-crane-25",
+    "dostavka-bytovki-manipulyatorom-cena": "ph-manip",
+    "avtovyshka-spil-vysokih-derevev": "ph-lift",
+    "podyom-vanny-kranom-na-etazh": "ph-crane-100",
+    "kran-dlya-ustanovki-bilborda": "ph-crane-25",
+    "evakuaciya-spectehniki-manipulyatorom": "ph-manip",
+    "uborka-snega-pogruzchikom-dvor": "ph-exc",
+    "avtokran-srochno-segodnya-moskva": "ph-crane-100",
 }
 
 MARK = 'class="page-hero"'

@@ -44,15 +44,16 @@ sys.path.insert(0, os.path.join(ROOT, "tools"))
 from data_blog_base import BLOG_BASE
 from data_rf import BLOG_RF
 from data_blog_new import BLOG_NEW
+from data_blog_seo_batch1 import BLOG_SEO_BATCH1
 
 SITE = "https://kran365.ru"
 IMG_DIR = os.path.join(ROOT, "assets", "img")
 DZEN_IMG_DIR = os.path.join(IMG_DIR, "dzen")
 MIN_WIDTH = 700
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1
 
-_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py"]
+_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py"]
 
 
 def _first_commit_date(slug):
@@ -109,6 +110,14 @@ IMG_MAP = {
     "kran-u-lep-ohrannaya-zona": "crane-25.jpg",
     "zayavki-na-tehniku-teryayutsya-v-chatah": "obj-2.jpg",
     "uchet-topliva-brigady-spectehniki": "obj-3.jpg",
+    "kran-dlya-montazha-opor-osveshheniya": "crane-25.jpg",
+    "dostavka-bytovki-manipulyatorom-cena": "manip-7.jpg",
+    "avtovyshka-spil-vysokih-derevev": "lift-28.jpg",
+    "podyom-vanny-kranom-na-etazh": "obj-4.jpg",
+    "kran-dlya-ustanovki-bilborda": "crane-25.jpg",
+    "evakuaciya-spectehniki-manipulyatorom": "manip-7.jpg",
+    "uborka-snega-pogruzchikom-dvor": "excloader.jpg",
+    "avtokran-srochno-segodnya-moskva": "crane-100.jpg",
 }
 
 DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]

@@ -27,8 +27,9 @@ sys.path.insert(0, os.path.join(ROOT, "tools"))
 from data_blog_base import BLOG_BASE
 from data_rf import BLOG_RF
 from data_blog_new import BLOG_NEW
+from data_blog_seo_batch1 import BLOG_SEO_BATCH1
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1
 
 
 def esc(s):

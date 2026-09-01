@@ -389,7 +389,8 @@ from data_hubs import HUBS_DATA, HUB_EXTRA       # хабы без своей в
 from data_geo_rf import GEO_RF_DATA   # гео городов России (ось: региональная специфика, честно про партнёрскую сеть)
 from data_blog_base import BLOG_BASE   # 6 базовых статей, переписанных из коротких заготовок
 from data_blog_new import BLOG_NEW     # автономный контент-конвейер, см. память kran365-media-strategy
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW
+from data_blog_seo_batch1 import BLOG_SEO_BATCH1   # партия 2: под проверенные SEO-возможности
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1
 
 # Марки автокранов
 MARKI = [

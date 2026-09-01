@@ -65,6 +65,14 @@ CARDS = {
     "kran-u-lep-ohrannaya-zona": ("Кран у ЛЭП: охранная зона и минимальные расстояния", "ДОКУМЕНТЫ"),
     "zayavki-na-tehniku-teryayutsya-v-chatah": ("Почему заявки на технику теряются в чатах", "НА ОБЪЕКТЕ"),
     "uchet-topliva-brigady-spectehniki": ("Кто теряет топливо, если бригаду никто не считает", "НА ОБЪЕКТЕ"),
+    "kran-dlya-montazha-opor-osveshheniya": ("Автокран для монтажа опор освещения: тоннаж и вылет", "ТЕХНИКА"),
+    "dostavka-bytovki-manipulyatorom-cena": ("Манипулятор для доставки бытовки: цена и как выбрать", "ВЫБОР И ЦЕНА"),
+    "avtovyshka-spil-vysokih-derevev": ("Автовышка для спила высоких деревьев", "ТЕХНИКА"),
+    "podyom-vanny-kranom-na-etazh": ("Сколько стоит поднять ванну краном на этаж", "ВЫБОР И ЦЕНА"),
+    "kran-dlya-ustanovki-bilborda": ("Какой автокран нужен для монтажа билборда", "ДОКУМЕНТЫ"),
+    "evakuaciya-spectehniki-manipulyatorom": ("Манипулятор для эвакуации спецтехники с объекта", "НА ОБЪЕКТЕ"),
+    "uborka-snega-pogruzchikom-dvor": ("Погрузчик для уборки снега во дворе МКД", "ДОКУМЕНТЫ"),
+    "avtokran-srochno-segodnya-moskva": ("Автокран срочно сегодня в Москве: цена и скорость", "ВЫБОР И ЦЕНА"),
 }
 
 # Фирменный знак сайта (#i-mark из index.html) — те же координаты, что в
