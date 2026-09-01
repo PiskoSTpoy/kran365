@@ -214,6 +214,7 @@ def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
 <title>%s</title>
 <meta name="description" content="%s">
 <link rel="canonical" href="%s">
+<link rel="alternate" type="application/rss+xml" title="Блог КРАН365" href="/feed.xml">
 <meta property="og:title" content="%s"><meta property="og:description" content="%s"><meta property="og:type" content="website">
 <meta property="og:url" content="%s"><meta property="og:site_name" content="КРАН365"><meta property="og:locale" content="ru_RU">
 <meta property="og:image" content="https://kran365.ru/assets/img/og-cover.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
