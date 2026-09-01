@@ -390,6 +390,8 @@ from data_geo_rf import GEO_RF_DATA   # гео городов России (ос
 from data_blog_base import BLOG_BASE   # 6 базовых статей, переписанных из коротких заготовок
 from data_blog_new import BLOG_NEW     # автономный контент-конвейер, см. память kran365-media-strategy
 from data_blog_seo_batch1 import BLOG_SEO_BATCH1   # партия 2: под проверенные SEO-возможности
+from data_cat_deepdive import CAT_DEEPDIVE   # доп. контент 24 категорий — Яндекс пометил малоценными 01.09.2026
+from data_task_deepdive import TASK_DEEPDIVE # доп. контент 10 услуг — тот же заход
 BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1
 
 # Марки автокранов
@@ -966,6 +968,8 @@ def task_prose(slug, tech, faqs):
     for p in d["intro"]:
         out += "<p>%s</p>" % esc(p)
 
+    out += task_deepdive_html(slug)
+
     out += "<h2>Как проходит работа</h2><ol>%s</ol>" % "".join("<li>%s</li>" % esc(x) for x in d["stages"])
 
     out += "<h2>Что нужно подготовить заказчику</h2><ul>%s</ul>" % "".join("<li>%s</li>" % esc(x) for x in d["need"])
@@ -980,6 +984,26 @@ def task_prose(slug, tech, faqs):
 
     out += "<h2>Частые вопросы</h2>%s" % faq_html(faqs)
     return out
+
+
+def cat_deepdive_html(slug):
+    """Доп. блок реального контента для категорий (data_cat.py), которые
+    Яндекс.Вебмастер 01.09.2026 пометил «малоценная/маловостребованная
+    страница» — интро+таблица+FAQ давали ~250-300 слов прозы. Написано
+    воркфлоу kran365-thin-page-deepdive через WebSearch, факты перепроверены
+    (см. докстринг data_cat_deepdive.py). Пусто, если для слага нет записи."""
+    items = CAT_DEEPDIVE.get(slug)
+    if not items:
+        return ""
+    return "".join("<h2>%s</h2><p>%s</p>" % (esc(h), t if "<a " in t else esc(t)) for h, t in items)
+
+
+def task_deepdive_html(slug):
+    """То же самое, для услуг (data_tasks.py) — см. cat_deepdive_html()."""
+    items = TASK_DEEPDIVE.get(slug)
+    if not items:
+        return ""
+    return "".join("<h2>%s</h2><p>%s</p>" % (esc(h), t if "<a " in t else esc(t)) for h, t in items)
 
 
 def hub_extra_intro(slug):
@@ -1466,7 +1490,7 @@ def build():
             rows += '<tr><td>%s</td><td>%s</td><td><b>%s</b>%s</td></tr>' % (esc(it["name"]), specs, money(it.get("price")), price_hour_html(it.get("price")))
         table = ('<div class="ptable-wrap"><table class="ptable"><thead><tr><th>Модель</th><th>Характеристики</th>'
                  '<th>Цена</th></tr></thead><tbody>%s</tbody></table></div>') % rows
-        prose = ('<p>%s</p>'
+        prose = ('<p>%s</p>%s'
                  '<h2>Модели и цены</h2>'
                  '<p>Ниже — варианты, которые подбираем под задачу. Цена «от», за смену; окончательную называем после уточнения объёма и площадки.</p>%s'
                  '<h2>Как мы работаем</h2><ul>'
@@ -1474,7 +1498,7 @@ def build():
                  '<li>Подбираем класс машины под ваш объём, грунт и задачу</li>'
                  '<li>Договор, счёт, закрывающие документы, ЭДО для юрлиц</li>'
                  '<li>Работаем по Москве, области и регионам России</li></ul>'
-                 '<h2>Частые вопросы</h2>%s') % (esc(c["intro"]), table, faq_html(faqs))
+                 '<h2>Частые вопросы</h2>%s') % (esc(c["intro"]), cat_deepdive_html(c["slug"]), table, faq_html(faqs))
         rel = related_cats(c["slug"]) + related_types() + related_tasks()
         ld = [breadcrumb_ld(crumbs), service_ld(c["h1"], c["lead"], c.get("price_from")), faq_ld(faqs), local_business_ld()]
         title = seo_title(c["h1"], "в Москве", title_price(c.get("price_from")))
