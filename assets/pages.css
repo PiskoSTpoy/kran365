@@ -273,3 +273,10 @@
 .bt-more{ display:inline-flex; align-items:center; gap:8px; margin-top:26px; font-weight:800; color:var(--ink); }
 .bt-more:hover{ color:var(--orange); }
 @media (max-width:860px){ .bt-grid{ grid-template-columns:1fr; } }
+
+/* Фото техники прямо в теле статьи блога (не в герое — герой с фото есть
+   только на мобильном, см. .page-hero--shot выше). Одна и та же
+   реальная фотография парка, что уже стоит в каталоге, просто здесь —
+   на любой ширине экрана, а не только на телефоне. */
+.blog-body-img{ margin:0 0 28px; border-radius:14px; overflow:hidden; }
+.blog-body-img img{ width:100%; height:auto; aspect-ratio:650/430; object-fit:cover; display:block; }
