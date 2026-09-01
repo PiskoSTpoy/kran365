@@ -52,7 +52,7 @@ MIN_WIDTH = 700
 
 BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW
 
-_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py"]
+_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py"]
 
 
 def _first_commit_date(slug):
