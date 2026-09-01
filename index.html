@@ -438,6 +438,46 @@ ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
   </div>
 </section>
 
+<!-- ======================= БЛОГ ======================= -->
+<section id="blog-teaser">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Блог</span>
+      <h2>Практические разборы аренды спецтехники</h2>
+      <p>Как выбрать кран, из чего складывается цена и на чём не стоит экономить — пишем по опыту своих объектов.</p>
+    </div>
+    <div class="bt-grid">
+      <a class="bt-card reveal" href="/blog/kak-vybrat-avtokran/">
+        <h3>Как выбрать автокран: 3 цифры, которые решают всё</h3>
+        <p>Масса груза, высота подъёма и вылет — почему кран «на 25 тонн» не всегда поднимает 25 тонн.</p>
+        <span class="bt-card__go">Читать <svg width="18" height="18"><use href="#i-go"/></svg></span>
+      </a>
+      <a class="bt-card reveal" href="/blog/skolko-stoit-arenda-krana/">
+        <h3>Сколько стоит аренда крана и из чего складывается цена</h3>
+        <p>Что входит в смену, за что берут отдельно и почему «цена за час» в объявлениях вводит в заблуждение.</p>
+        <span class="bt-card__go">Читать <svg width="18" height="18"><use href="#i-go"/></svg></span>
+      </a>
+      <a class="bt-card reveal" href="/blog/kran-ili-manipulyator/">
+        <h3>Кран или манипулятор: что дешевле для вашей задачи</h3>
+        <p>Одна и та же работа может стоить в полтора раза дороже — если заказать не ту технику.</p>
+        <span class="bt-card__go">Читать <svg width="18" height="18"><use href="#i-go"/></svg></span>
+      </a>
+    </div>
+    <a class="bt-more reveal" href="/blog/">Все статьи блога <svg width="18" height="18"><use href="#i-go"/></svg></a>
+  </div>
+</section>
+<style>
+  .bt-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .bt-card{ display:flex; flex-direction:column; gap:10px; padding:22px; border:1px solid var(--line); border-radius:16px; background:var(--surface,#fff); transition:.2s; }
+  .bt-card:hover{ border-color:var(--orange); transform:translateY(-3px); box-shadow:var(--shadow-lg); }
+  .bt-card h3{ font-size:1.05rem; font-weight:800; color:var(--ink); line-height:1.35; }
+  .bt-card p{ color:var(--muted); font-size:.9rem; line-height:1.5; }
+  .bt-card__go{ margin-top:auto; display:inline-flex; align-items:center; gap:6px; color:var(--orange); font-weight:700; font-size:.88rem; }
+  .bt-more{ display:inline-flex; align-items:center; gap:8px; margin-top:26px; font-weight:800; color:var(--ink); }
+  .bt-more:hover{ color:var(--orange); }
+  @media (max-width:860px){ .bt-grid{ grid-template-columns:1fr; } }
+</style>
+
 <!-- ======================= ФОРМА ЗАЯВКИ ======================= -->
 <section class="cta" id="order">
   <div class="wrap">
