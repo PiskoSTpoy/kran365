@@ -257,3 +257,19 @@
 .ph-exc      { --shot:image-set(url('img/excloader.webp') type('image/webp'),url('img/excloader.jpg') type('image/jpeg')); }
 .ph-samosval { --shot:image-set(url('img/samosval.webp') type('image/webp'),url('img/samosval.jpg') type('image/jpeg')); }
 .ph-tral     { --shot:image-set(url('img/tral.webp')     type('image/webp'),url('img/tral.jpg')     type('image/jpeg')); }
+
+/* Карточки блога с превью-картинкой (заголовок вшит в изображение,
+   tools/make_blog_cards.py) — используются на /blog/ и в тизере на
+   главной. Тот же .bt-card, что был инлайн на index.html: вынесено
+   сюда, чтобы не дублировать стиль на каждой странице. */
+.bt-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.bt-card{ display:flex; flex-direction:column; border:1px solid var(--line); border-radius:16px; background:var(--surface,#fff); transition:.2s; overflow:hidden; }
+.bt-card:hover{ border-color:var(--orange); transform:translateY(-3px); box-shadow:var(--shadow-lg); }
+.bt-card__img{ width:100%; aspect-ratio:8/5; object-fit:cover; display:block; }
+.bt-card__body{ display:flex; flex-direction:column; gap:10px; padding:20px 22px 22px; }
+.bt-card h3{ font-size:1.05rem; font-weight:800; color:var(--ink); line-height:1.35; }
+.bt-card p{ color:var(--muted); font-size:.9rem; line-height:1.5; }
+.bt-card__go{ margin-top:auto; display:inline-flex; align-items:center; gap:6px; color:var(--orange); font-weight:700; font-size:.88rem; }
+.bt-more{ display:inline-flex; align-items:center; gap:8px; margin-top:26px; font-weight:800; color:var(--ink); }
+.bt-more:hover{ color:var(--orange); }
+@media (max-width:860px){ .bt-grid{ grid-template-columns:1fr; } }
