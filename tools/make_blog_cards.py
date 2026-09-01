@@ -62,6 +62,9 @@ CARDS = {
     "perevozka-negabarita-tralom": ("Перевозка негабарита тралом", "ДОКУМЕНТЫ"),
     "arenda-ekskavatora-pogruzchika": ("Экскаватор-погрузчик: типовые задачи", "ТЕХНИКА"),
     "dogovor-arendy-spectehniki-s-ekipazhem": ("Договор аренды спецтехники с экипажем: что проверить", "ДОКУМЕНТЫ"),
+    "kran-u-lep-ohrannaya-zona": ("Кран у ЛЭП: охранная зона и минимальные расстояния", "ДОКУМЕНТЫ"),
+    "zayavki-na-tehniku-teryayutsya-v-chatah": ("Почему заявки на технику теряются в чатах", "НА ОБЪЕКТЕ"),
+    "uchet-topliva-brigady-spectehniki": ("Кто теряет топливо, если бригаду никто не считает", "НА ОБЪЕКТЕ"),
 }
 
 # Фирменный знак сайта (#i-mark из index.html) — те же координаты, что в

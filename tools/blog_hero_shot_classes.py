@@ -45,6 +45,9 @@ SHOTS = {
     "perevozka-negabarita-tralom": "ph-tral",
     "arenda-ekskavatora-pogruzchika": "ph-exc",
     "dogovor-arendy-spectehniki-s-ekipazhem": "ph-crane-100",
+    "kran-u-lep-ohrannaya-zona": "ph-crane-25",
+    "zayavki-na-tehniku-teryayutsya-v-chatah": "ph-crane-100",
+    "uchet-topliva-brigady-spectehniki": "ph-crane-100",
 }
 
 MARK = 'class="page-hero"'

@@ -43,13 +43,14 @@ sys.path.insert(0, os.path.join(ROOT, "tools"))
 
 from data_blog_base import BLOG_BASE
 from data_rf import BLOG_RF
+from data_blog_new import BLOG_NEW
 
 SITE = "https://kran365.ru"
 IMG_DIR = os.path.join(ROOT, "assets", "img")
 DZEN_IMG_DIR = os.path.join(IMG_DIR, "dzen")
 MIN_WIDTH = 700
 
-BLOG = list(BLOG_BASE) + BLOG_RF
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW
 
 _DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py"]
 
@@ -105,6 +106,9 @@ IMG_MAP = {
     "perevozka-negabarita-tralom": "tral.jpg",
     "arenda-ekskavatora-pogruzchika": "excloader.jpg",
     "dogovor-arendy-spectehniki-s-ekipazhem": "obj-1.jpg",
+    "kran-u-lep-ohrannaya-zona": "crane-25.jpg",
+    "zayavki-na-tehniku-teryayutsya-v-chatah": "obj-2.jpg",
+    "uchet-topliva-brigady-spectehniki": "obj-3.jpg",
 }
 
 DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]

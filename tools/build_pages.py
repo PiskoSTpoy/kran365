@@ -388,7 +388,8 @@ from data_tasks import TASKS_DATA     # страницы услуг (ось: х�
 from data_hubs import HUBS_DATA, HUB_EXTRA       # хабы без своей ветки: тралы, гусеничные и башенные краны
 from data_geo_rf import GEO_RF_DATA   # гео городов России (ось: региональная специфика, честно про партнёрскую сеть)
 from data_blog_base import BLOG_BASE   # 6 базовых статей, переписанных из коротких заготовок
-BLOG = list(BLOG_BASE) + BLOG_RF
+from data_blog_new import BLOG_NEW     # автономный контент-конвейер, см. память kran365-media-strategy
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW
 
 # Марки автокранов
 MARKI = [
