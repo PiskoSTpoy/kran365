@@ -45,15 +45,16 @@ from data_blog_base import BLOG_BASE
 from data_rf import BLOG_RF
 from data_blog_new import BLOG_NEW
 from data_blog_seo_batch1 import BLOG_SEO_BATCH1
+from data_blog_daily_20260902 import BLOG_DAILY_20260902
 
 SITE = "https://kran365.ru"
 IMG_DIR = os.path.join(ROOT, "assets", "img")
 DZEN_IMG_DIR = os.path.join(IMG_DIR, "dzen")
 MIN_WIDTH = 700
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902
 
-_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py"]
+_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py"]
 
 
 def _first_commit_date(slug):
@@ -118,6 +119,7 @@ IMG_MAP = {
     "evakuaciya-spectehniki-manipulyatorom": "manip-7.jpg",
     "uborka-snega-pogruzchikom-dvor": "excloader.jpg",
     "avtokran-srochno-segodnya-moskva": "crane-100.jpg",
+    "razgruzka-plit-perekrytiya-kranom": "crane-25.jpg",
 }
 
 DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]

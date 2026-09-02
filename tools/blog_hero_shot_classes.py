@@ -56,6 +56,7 @@ SHOTS = {
     "evakuaciya-spectehniki-manipulyatorom": "ph-manip",
     "uborka-snega-pogruzchikom-dvor": "ph-exc",
     "avtokran-srochno-segodnya-moskva": "ph-crane-100",
+    "razgruzka-plit-perekrytiya-kranom": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'

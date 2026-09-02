@@ -30,10 +30,17 @@ ORANGE_DIM = (120, 60, 20)
 WHITE = (255, 255, 255)
 MUTED = (150, 158, 168)
 
+# Windows-путь — исходное окружение автора скрипта. В облачной песочнице
+# (автономный конвейер без браузера/Windows) этого пути нет — берём
+# ближайший жирный шрифт с поддержкой кириллицы из системных шрифтов
+# Linux, чтобы скрипт не падал при перегенерации всех карточек.
 FONT_DIR = "C:/Windows/Fonts"
-F_HEAD = os.path.join(FONT_DIR, "segoeuib.ttf")   # заголовок — bold
-F_TAG = os.path.join(FONT_DIR, "segoeuib.ttf")    # плашка категории — bold, мельче
-F_MARK = os.path.join(FONT_DIR, "segoeuib.ttf")
+_WIN_BOLD = os.path.join(FONT_DIR, "segoeuib.ttf")
+_LINUX_BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+_BOLD = _WIN_BOLD if os.path.exists(_WIN_BOLD) else _LINUX_BOLD
+F_HEAD = _BOLD   # заголовок — bold
+F_TAG = _BOLD    # плашка категории — bold, мельче
+F_MARK = _BOLD
 
 # слаг → (заголовок карточки — короче h1, категория)
 # Категории — та же логика, что в content-style-guide.md: документы (профиль А),
@@ -73,6 +80,7 @@ CARDS = {
     "evakuaciya-spectehniki-manipulyatorom": ("Манипулятор для эвакуации спецтехники с объекта", "НА ОБЪЕКТЕ"),
     "uborka-snega-pogruzchikom-dvor": ("Погрузчик для уборки снега во дворе МКД", "ДОКУМЕНТЫ"),
     "avtokran-srochno-segodnya-moskva": ("Автокран срочно сегодня в Москве: цена и скорость", "ВЫБОР И ЦЕНА"),
+    "razgruzka-plit-perekrytiya-kranom": ("Кран для разгрузки плит перекрытия: тоннаж и цена", "ТЕХНИКА"),
 }
 
 # Фирменный знак сайта (#i-mark из index.html) — те же координаты, что в
