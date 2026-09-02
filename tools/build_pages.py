@@ -153,11 +153,11 @@ def local_business_ld():
         "geo":{"@type":"GeoCoordinates","latitude":55.6767,"longitude":37.6654},
         "openingHours":"Mo-Su 00:00-24:00","areaServed":"Москва и Московская область","sameAs":[TG,WA]}
 
-def service_ld(name, desc, price):
+def service_ld(name, desc, price, area="Москва и Московская область"):
     offer = {"@type":"Offer","priceCurrency":"RUB","availability":"https://schema.org/InStock"}
     if price: offer["price"] = str(price)
     return {"@context":"https://schema.org","@type":"Service","serviceType":name,"provider":{"@type":"LocalBusiness","name":"КРАН365"},
-        "areaServed":"Москва и Московская область","description":desc,"offers":offer}
+        "areaServed":area,"description":desc,"offers":offer}
 
 def faq_ld(faqs):
     return {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
@@ -1459,7 +1459,7 @@ def build():
         lead = d["intro"][0]
         prose = geo_mo_prose(slug, prep, neigh)
         rel = related_geo(slug) + related_tasks() + related_types()
-        ld = [breadcrumb_ld(crumbs), service_ld("Аренда спецтехники в %s" % prep, lead, 16300), faq_ld(d["faqs"]), local_business_ld()]
+        ld = [breadcrumb_ld(crumbs), service_ld("Аренда спецтехники в %s" % prep, lead, 16300, area=nom), faq_ld(d["faqs"]), local_business_ld()]
         page("geo/%s/index.html" % slug, title, desc, crumbs,
              hero("Зона работы", h1, d["angle"], 16300), body(prose, rel) + TRUST, ld)
         pages += 1
@@ -1476,7 +1476,7 @@ def build():
         lead = d["intro"][0]
         prose = geo_rf_prose(slug, prep, neigh)
         rel = related_geo_rf(slug) + related_tasks() + related_types()
-        ld = [breadcrumb_ld(crumbs), service_ld("Аренда спецтехники в %s" % prep, lead, None), faq_ld(d["faqs"]), local_business_ld()]
+        ld = [breadcrumb_ld(crumbs), service_ld("Аренда спецтехники в %s" % prep, lead, None, area=nom), faq_ld(d["faqs"]), local_business_ld()]
         page("geo/%s/index.html" % slug, title, desc, crumbs,
              hero("Зона работы", h1, d["angle"], None), body(prose, rel) + TRUST, ld)
         pages += 1
