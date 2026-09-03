@@ -164,7 +164,13 @@ def faq_ld(faqs):
         {"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faqs]}
 
 def faq_html(faqs):
-    rows = "".join('<details><summary>%s</summary><div>%s</div></details>' % (esc(q), esc(a)) for q,a in faqs)
+    # Ответ (a) НЕ экранируется через esc(): часть FAQ-ответов по всему сайту намеренно
+    # содержит доверенную разметку <a href="...">ссылка</a> на другие страницы сайта (весь
+    # контент авторский, не пользовательский ввод) — раньше esc(a) ломал такие ссылки,
+    # превращая их в видимый текст "<a href=...>...</a>" вместо кликабельной ссылки
+    # (баг найден 03.09.2026 при добавлении FAQ по вывозу снега, задевал уже существовавший
+    # ответ vyvoz-grunta на /geo/balashiha/ — исправлено для всех страниц разом).
+    rows = "".join('<details><summary>%s</summary><div>%s</div></details>' % (esc(q), a) for q,a in faqs)
     return '<div class="faq">%s</div>' % rows
 
 def aside_form():
