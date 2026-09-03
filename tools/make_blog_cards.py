@@ -81,6 +81,7 @@ CARDS = {
     "uborka-snega-pogruzchikom-dvor": ("Погрузчик для уборки снега во дворе МКД", "ДОКУМЕНТЫ"),
     "avtokran-srochno-segodnya-moskva": ("Автокран срочно сегодня в Москве: цена и скорость", "ВЫБОР И ЦЕНА"),
     "razgruzka-plit-perekrytiya-kranom": ("Кран для разгрузки плит перекрытия: тоннаж и цена", "ТЕХНИКА"),
+    "montazh-lestnichnyh-marshey-kranom": ("Кран для монтажа лестничных маршей: тоннаж и цена", "ТЕХНИКА"),
 }
 
 # Фирменный знак сайта (#i-mark из index.html) — те же координаты, что в

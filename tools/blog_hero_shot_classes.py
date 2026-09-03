@@ -57,6 +57,7 @@ SHOTS = {
     "uborka-snega-pogruzchikom-dvor": "ph-exc",
     "avtokran-srochno-segodnya-moskva": "ph-crane-100",
     "razgruzka-plit-perekrytiya-kranom": "ph-crane-25",
+    "montazh-lestnichnyh-marshey-kranom": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'

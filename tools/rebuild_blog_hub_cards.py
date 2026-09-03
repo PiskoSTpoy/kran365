@@ -29,8 +29,9 @@ from data_rf import BLOG_RF
 from data_blog_new import BLOG_NEW
 from data_blog_seo_batch1 import BLOG_SEO_BATCH1
 from data_blog_daily_20260902 import BLOG_DAILY_20260902
+from data_blog_daily_20260903 import BLOG_DAILY_20260903
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903
 
 
 def esc(s):
