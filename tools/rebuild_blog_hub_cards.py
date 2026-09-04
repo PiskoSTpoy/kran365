@@ -30,8 +30,9 @@ from data_blog_new import BLOG_NEW
 from data_blog_seo_batch1 import BLOG_SEO_BATCH1
 from data_blog_daily_20260902 import BLOG_DAILY_20260902
 from data_blog_daily_20260903 import BLOG_DAILY_20260903
+from data_blog_daily_20260904 import BLOG_DAILY_20260904
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904
 
 
 def esc(s):
@@ -55,11 +56,16 @@ def main():
     content = open(path, encoding="utf-8").read()
     # blog/index.html имеет свою структуру (не ту же, что тизер на главной):
     # сетка карточек стоит перед блоком <div class="related"><h2>Все статьи</h2>.
-    grid_only = re.search(r'<div class="bt-grid">.*?</div>(?=\s*<div class="related"><h2>Все статьи</h2>)', content, re.S)
-    if not grid_only:
+    # Якорь — конец вводного абзаца (<p>...</p> сразу после prose reveal), а не
+    # сам формат блока карточек: после "голого" build_pages.py (без последующего
+    # прогона этого скрипта) там оказывается устаревший ptable, а не bt-grid —
+    # оба случая должны замениться одинаково, по границам intro/related.
+    intro = re.search(r'<div class="prose reveal"><p>.*?</p>', content, re.S)
+    related_idx = content.find('<div class="related"><h2>Все статьи</h2>')
+    if not intro or related_idx == -1:
         print("PATTERN NOT FOUND — правь вручную")
         return 1
-    new_content = content[: grid_only.start()] + grid + content[grid_only.end():]
+    new_content = content[: intro.end()] + grid + content[related_idx:]
     open(path, "w", encoding="utf-8").write(new_content)
     print("blog/index.html: %d карточек" % len(BLOG))
     return 0
