@@ -48,15 +48,16 @@ from data_blog_seo_batch1 import BLOG_SEO_BATCH1
 from data_blog_daily_20260902 import BLOG_DAILY_20260902
 from data_blog_daily_20260903 import BLOG_DAILY_20260903
 from data_blog_daily_20260904 import BLOG_DAILY_20260904
+from data_blog_daily_20260905 import BLOG_DAILY_20260905
 
 SITE = "https://kran365.ru"
 IMG_DIR = os.path.join(ROOT, "assets", "img")
 DZEN_IMG_DIR = os.path.join(IMG_DIR, "dzen")
 MIN_WIDTH = 700
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905
 
-_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py"]
+_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py"]
 
 
 def _first_commit_date(slug):
@@ -124,6 +125,7 @@ IMG_MAP = {
     "razgruzka-plit-perekrytiya-kranom": "crane-25.jpg",
     "montazh-lestnichnyh-marshey-kranom": "crane-25.jpg",
     "montazh-ktp-kranom": "crane-25.jpg",
+    "kran-dlya-ustanovki-gazgoldera": "manip-7.jpg",
 }
 
 DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]

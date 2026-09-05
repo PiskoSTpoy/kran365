@@ -59,6 +59,7 @@ SHOTS = {
     "razgruzka-plit-perekrytiya-kranom": "ph-crane-25",
     "montazh-lestnichnyh-marshey-kranom": "ph-crane-25",
     "montazh-ktp-kranom": "ph-crane-25",
+    "kran-dlya-ustanovki-gazgoldera": "ph-manip",
 }
 
 MARK = 'class="page-hero"'
