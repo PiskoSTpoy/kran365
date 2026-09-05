@@ -88,7 +88,8 @@ FOOTER = '''<footer class="footer">
         <a href="/ekskavatory/">Экскаваторы</a><a href="/samosvaly/">Самосвалы</a><a href="/traly/">Тралы</a></div>
       <div><h3>Компания</h3>
         <a href="/#how">Как работаем</a><a href="/#live">Свободная техника</a><a href="/uslugi/">Услуги</a>
-        <a href="/blog/">Блог</a><a href="/#reviews">Отзывы</a><a href="/#geo">Зона работы</a></div>
+        <a href="/blog/">Блог</a><a href="/#reviews">Отзывы</a><a href="/#geo">Зона работы</a>
+        <a href="/rosilka/">Росилка — рассылка заявок по чатам</a></div>
       <div><h3>Заказать</h3><p style="font-size:.9rem">Приём заявок круглосуточно. Расчёт и консультация — бесплатно.</p>
         <a class="btn btn--primary" style="margin-top:14px" href="#order">Оставить заявку <span class="arr">→</span></a></div>
     </div>%s
