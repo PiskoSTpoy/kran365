@@ -214,7 +214,7 @@ def rss():
             "    <link>%s</link>\n"
             "    <guid>%s</guid>\n"
             "    <pubDate>%s</pubDate>\n"
-            "    <category>native-draft</category>\n"
+            "    <category>native-yes</category>\n"
             "    <category>format-article</category>\n"
             "    <category>index</category>\n"
             '    <enclosure url="%s" type="image/jpeg"/>\n'
