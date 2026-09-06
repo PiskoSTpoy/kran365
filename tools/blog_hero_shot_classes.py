@@ -60,6 +60,7 @@ SHOTS = {
     "montazh-lestnichnyh-marshey-kranom": "ph-crane-25",
     "montazh-ktp-kranom": "ph-crane-25",
     "kran-dlya-ustanovki-gazgoldera": "ph-manip",
+    "razreshenie-na-manipulyator-moskva": "ph-manip",
 }
 
 MARK = 'class="page-hero"'
