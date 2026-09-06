@@ -58,7 +58,7 @@ MIN_WIDTH = 700
 
 BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906
 
-_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py"]
+_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py"]
 
 
 def _first_commit_date(slug):
