@@ -61,6 +61,7 @@ SHOTS = {
     "montazh-ktp-kranom": "ph-crane-25",
     "kran-dlya-ustanovki-gazgoldera": "ph-manip",
     "razreshenie-na-manipulyator-moskva": "ph-manip",
+    "arenda-krana-bez-ekipazha": "ph-crane-100",
 }
 
 MARK = 'class="page-hero"'
