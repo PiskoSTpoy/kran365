@@ -281,6 +281,154 @@ AI_SEARCH_BOTS = [
     "YandexAdditional",
 ]
 
+def pricing_md():
+    """/pricing.md — машиночитаемый прайс для AI-агентов (ChatGPT/Claude/
+    Perplexity и т.п., см. скилл ai-seo). Генерируется из тех же таблиц, что
+    и сам сайт (AVTOKRAN/VYSHKI/MANIP/EKSK/SAMOSVAL/TASKS, все уже прошли
+    price_adj() — см. _apply_price_drift выше), поэтому никогда не расходится
+    с ценами на живых страницах. Раньше это был статический файл — если
+    редактируешь структуру/тон текста, редактируй эту функцию, а не
+    pricing.md напрямую: он перезаписывается каждым build_pages.py."""
+    def rub(p):
+        return "%s ₽" % format(p, ",d").replace(",", " ") if p else "цена под запрос"
+
+    TASK_BY_SLUG = {t[0]: t for t in TASKS}
+
+    def task_row(slug, name, machine, note=""):
+        t = TASK_BY_SLUG[slug]
+        price_cell = rub(t[5]) + (" " + note if note else "")
+        return "| %s | %s | %s |" % (name, machine, price_cell)
+
+    lines = []
+    lines.append("# Цены — КРАН365\n")
+    lines.append(
+        "Аренда спецтехники в Москве и Московской области. Цены указаны «от», "
+        "за смену, оператор и топливо включены. Точная стоимость — по телефону "
+        "или в заявке на сайте, с учётом адреса подачи, срока и задачи. При "
+        "аренде на несколько смен/недель/месяц действует скидка за срок.\n"
+    )
+    lines.append(
+        "Источник цен по собственному парку (автокраны, автовышки, "
+        "экскаваторы, самосвалы, тралы, МТЗ) — реальный прайс-лист Аркона от "
+        "19.03.2026, см. `arkona-price-list-2026-03-19.md`, с еженедельным "
+        "рыночным дрейфом ±1% (см. `tools/randomize_prices.py`) — сигнал живого "
+        "прайса, не искажение источника. Цены манипуляторов ниже 7-тонного "
+        "класса и раздел «Другая спецтехника» — старые ориентировочные "
+        "значения, прайсом Аркона не подтверждены (в нём есть только "
+        "манипулятор 7 т).\n"
+    )
+    lines.append("Последнее обновление: %s. Валюта: RUB.\n" % PRICE_UPDATED_HUMAN)
+
+    lines.append("## Автокраны\n")
+    lines.append("- От 25 до 300 тонн — от %s/смена" % rub(AVTOKRAN[0][1]))
+    lines.append("- По тоннажу: " + ", ".join("%d т — %s" % (t, rub(p)) for t, p in AVTOKRAN))
+    lines.append("- Подробнее и по длине стрелы: %s/avtokrany/\n" % SITE)
+
+    lines.append("## Автовышки\n")
+    lines.append("- Высота подъёма 18–60 м — от %s/смена" % rub(VYSHKI[0][1]))
+    lines.append("- По высоте: " + ", ".join("%d м — %s" % (h, rub(p)) for h, p in VYSHKI) +
+                  " (50 м как отдельного класса у Аркона нет — цена под запрос)")
+    lines.append("- Подробнее: %s/avtovyshki/\n" % SITE)
+
+    lines.append("## Манипуляторы (кран-борт)\n")
+    lines.append("- Стрела 3–10 т, борт до 20 т — от %s/смена" % rub(MANIP[0][1]))
+    manip_parts = []
+    for t, p in MANIP:
+        label = "%d т — %s" % (t, rub(p))
+        if t == 7:
+            label += " (подтверждено прайсом Аркона)"
+        manip_parts.append(label)
+    lines.append("- По грузоподъёмности стрелы: " + ", ".join(manip_parts))
+    lines.append(
+        "- ⚠️ Только 7 т — реальная цена Аркона. Остальные тоннажи (3/5/8/10 т) "
+        "пересчитаны пропорционально от неё (коэффициент ×2,048) — это оценка, "
+        "не отдельно подтверждённая Аркона цифра.")
+    lines.append("- Подробнее: %s/manipulyatory/\n" % SITE)
+
+    lines.append("## Экскаваторы и погрузчики\n")
+    lines.append("- Мини, колёсные, гусеничные, экскаваторы-погрузчики — от %s/смена" % rub(EKSK[0][3]))
+    lines.append("- " + ", ".join("%s — %s" % (n, rub(p)) for _, n, _, p in EKSK))
+    lines.append("- Подробнее: %s/ekskavatory/\n" % SITE)
+
+    lines.append("## Самосвалы\n")
+    lines.append("- Кузов 10–20 м³, вывоз грунта и мусора — от %s/смена" % rub(SAMOSVAL[0][3]))
+    lines.append("- По объёму: " + ", ".join("%s — %s" % (n, rub(p)) for _, n, _, p in SAMOSVAL))
+    lines.append("- Подробнее: %s/samosvaly/\n" % SITE)
+
+    lines.append("## Тралы и негабарит\n")
+    lines.append("- Перевозка 20–40 тонн — от %s/смена" % rub(TYPE_BY_SLUG["traly"]["price"]))
+    lines.append("- Подробнее: %s/traly/\n" % SITE)
+
+    lines.append("## Гусеничные краны\n")
+    lines.append("- 50–750 тонн, тяжёлый монтаж — цена под запрос (зависит от модели, монтажа/демонтажа и срока; в прайсе Аркона не отражены)")
+    lines.append("- Подробнее: %s/gusenichnye-krany/\n" % SITE)
+
+    lines.append("## Башенные краны\n")
+    lines.append("- Аренда на объект, подбор по вылету и высоте — цена под запрос (в прайсе Аркона не отражены)")
+    lines.append("- Подробнее: %s/bashennye-krany/\n" % SITE)
+
+    lines.append("## МТЗ и коммунальная техника\n")
+    lines.append("- МТЗ с дорожной щёткой — %s/смена" % rub(TASK_BY_SLUG["uborka-snega-mtz"][5]))
+    lines.append("- Подробнее: %s/uslugi/uborka-snega-mtz/\n" % SITE)
+
+    other_prices = [it["price"] for c in CATS for it in c.get("items", []) if it.get("price")]
+    if other_prices:
+        lines.append("## Другая спецтехника (партнёрская сеть)\n")
+        lines.append(
+            "Бульдозеры, автогрейдеры, дорожные катки, "
+            "фронтальные/телескопические/мини-погрузчики, автобетононасосы, "
+            "автобетоносмесители, ямобуры, вилочные погрузчики, бортовые "
+            "длинномеры и специальные типы кранов (пневмоколёсные, "
+            "вездеходные, короткобазные, на спецшасси, мини-краны, козловые, "
+            "мостовые, портальные, кран-балки, железнодорожные) — от %s до "
+            "%s ₽/смена в зависимости от класса техники, часть моделей — "
+            "цена под запрос. Это отдельный каталог (`tools/data_cat.py`) "
+            "через партнёрскую сеть, не собственный парк Аркона — прайсом "
+            "Аркона не сверялся и не участвует в еженедельном дрейфе. Полный "
+            "список: %s/\n" %
+            (format(min(other_prices), ",d").replace(",", " "),
+             format(max(other_prices), ",d").replace(",", " "), SITE)
+        )
+
+    lines.append("## Услуги под задачу\n")
+    lines.append("| Услуга | Техника | Цена от |")
+    lines.append("|---|---|---|")
+    lines.append(task_row("montazh-angara", "Монтаж ангара", "автокран 25–50 т"))
+    lines.append(task_row("ustanovka-bytovki", "Установка бытовки", "манипулятор 7–8 т", "⚠️ оценка (см. «Манипуляторы»)"))
+    lines.append(task_row("podem-na-kryshu", "Подъём оборудования на крышу", "автокран 25 т / автовышка"))
+    lines.append(task_row("razgruzka-fur", "Разгрузка фур", "манипулятор / автокран", "⚠️ оценка (см. «Манипуляторы»)"))
+    lines.append(task_row("montazh-metallokonstrukciy", "Монтаж металлоконструкций", "автокран 25–100 т"))
+    lines.append(task_row("ustanovka-septika", "Установка септика и ёмкостей", "манипулятор 7 т", "⚠️ оценка (см. «Манипуляторы»)"))
+    lines.append(task_row("ustanovka-stolbov", "Установка столбов и опор", "ямобур на базе КМУ"))
+    lines.append(task_row("takelazhnye-raboty", "Такелажные работы", "автокран + такелажники"))
+    lines.append(task_row("demontazh-zdaniy", "Демонтаж зданий", "экскаватор + самосвалы"))
+    lines.append(task_row("vyvoz-grunta", "Вывоз грунта", "экскаватор + самосвалы 20 м³"))
+    lines.append(task_row("vyvoz-snega", "Вывоз снега (сезон)", "погрузчик + самосвалы 20 м³"))
+    lines.append(task_row("uborka-snega-mtz", "Уборка снега трактором МТЗ", "МТЗ-82 с дорожной щёткой"))
+    lines.append("")
+    lines.append("Все услуги: %s/uslugi/\n" % SITE)
+
+    lines.append("## География и модель работы\n")
+    lines.append(
+        "Москва и Московская область — своя техника и проверенная "
+        "партнёрская сеть, подача от 1 дня. По другим регионам России "
+        "(Санкт-Петербург, Новосибирск, Екатеринбург, Казань и другие крупные "
+        "города) технику организуем через проверенную партнёрскую сеть в "
+        "регионе — сроки подачи и цена согласуются индивидуально, не "
+        "«сегодня своим транспортом».\n"
+    )
+
+    lines.append("## Контакты\n")
+    lines.append("- Телефон: +7 (905) 553-58-69")
+    lines.append("- E-mail: info@kran365.ru")
+    lines.append("- Telegram: https://t.me/usdctrc2o")
+    lines.append("- WhatsApp: https://wa.me/79055535869")
+    lines.append("- Адрес: Москва, проспект Андропова, 10")
+    lines.append("- Режим: круглосуточно, 24/7")
+
+    return "\n".join(lines) + "\n"
+
+
 def robots_txt():
     lines = ["User-agent: *", "Allow: /", ""]
     for bot in AI_SEARCH_BOTS:
@@ -410,30 +558,38 @@ SAMOSVAL = [
 # применяется здесь один раз при сборке, источник — tools/price_drift.json
 # (обновляет tools/randomize_prices.py раз в неделю). При pct=0 (файла нет
 # или значение 0) цены равны базовым один в один.
-def _apply_price_drift():
+def _read_price_drift_pct():
     import json as _json, os as _os
     path = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "price_drift.json")
-    pct = 0.0
     if _os.path.exists(path):
         with open(path, encoding="utf-8") as f:
-            pct = _json.load(f).get("pct", 0.0)
-    factor = 1 + pct / 100.0
-    def adj(p):
-        return int(round(p * factor / 10.0)) * 10 if p else p
+            return _json.load(f).get("pct", 0.0)
+    return 0.0
+
+_PRICE_DRIFT_PCT = _read_price_drift_pct()
+_PRICE_DRIFT_FACTOR = 1 + _PRICE_DRIFT_PCT / 100.0
+
+
+def price_adj(p):
+    """Применяет текущий недельный дрейф к базовой (Аркона) цене, округляя
+    до десятков рублей. При pct=0 возвращает p как есть."""
+    return int(round(p * _PRICE_DRIFT_FACTOR / 10.0)) * 10 if p else p
+
+
+def _apply_price_drift():
     global AVTOKRAN, VYSHKI, MANIP, STRELA, EKSK, SAMOSVAL
-    AVTOKRAN = [(t, adj(p)) for t, p in AVTOKRAN]
-    VYSHKI = [(h, adj(p)) for h, p in VYSHKI]
-    MANIP = [(t, adj(p)) for t, p in MANIP]
-    STRELA = [(m, adj(p), t) for m, p, t in STRELA]
-    EKSK = [(s, n, d, adj(p)) for s, n, d, p in EKSK]
-    SAMOSVAL = [(s, n, d, adj(p)) for s, n, d, p in SAMOSVAL]
+    AVTOKRAN = [(t, price_adj(p)) for t, p in AVTOKRAN]
+    VYSHKI = [(h, price_adj(p)) for h, p in VYSHKI]
+    MANIP = [(t, price_adj(p)) for t, p in MANIP]
+    STRELA = [(m, price_adj(p), t) for m, p, t in STRELA]
+    EKSK = [(s, n, d, price_adj(p)) for s, n, d, p in EKSK]
+    SAMOSVAL = [(s, n, d, price_adj(p)) for s, n, d, p in SAMOSVAL]
     # TYPES определён раньше по файлу — те же dict-объекты уже висят в
     # TYPE_BY_SLUG, мутируем на месте, чтобы обе ссылки видели новую цену.
     for t in TYPES:
-        t["price"] = adj(t["price"])
-    return pct
+        t["price"] = price_adj(t["price"])
 
-_PRICE_DRIFT_PCT = _apply_price_drift()
+_apply_price_drift()
 
 # Блог: (slug, заголовок, лид, содержимое-блоки)
 from data_rf import GEO_RF, BLOG_RF   # автоген: 30 городов РФ + 16 статей блога
@@ -562,6 +718,12 @@ TASKS = [
     ("Можно заказать регулярный объезд на сезон?","Да, это основной формат для дорог и больших парковок — объезд после каждого снегопада, а не разовые вызовы. Условия по графику обсуждаем на этапе заявки."),
     ("Работаете в Балашихе и области?","Да, вся ближняя и часть дальней зоны Подмосковья — то же направление, что и вывоз снега. Уточняйте конкретный город при заявке.")]),
 ]
+# TASKS определён только что — те же цены (24000, 19200, 20300 и т.д.)
+# зеркалят TYPES/AVTOKRAN по классу техники (см. комментарий у _apply_price_drift
+# выше), поэтому дрейф применяем и здесь тем же price_adj() — иначе цена
+# автокрана на /avtokrany/ разойдётся с ценой того же класса на /uslugi/.
+TASKS = [(slug, name, gf, desc, machine, price_adj(price), faqs)
+         for slug, name, gf, desc, machine, price, faqs in TASKS]
 
 # (slug, предложный падеж, именительный, шоссе/направление, соседние населённые пункты, характер застройки)
 GEO = [
@@ -1643,8 +1805,10 @@ def build():
     fix_sitemap_lastmod.apply(quiet=True)
     with open(os.path.join(ROOT,"robots.txt"),"w",encoding="utf-8") as f:
         f.write(robots_txt())
+    with open(os.path.join(ROOT,"pricing.md"),"w",encoding="utf-8") as f:
+        f.write(pricing_md())
 
-    print("OK: %d страниц + sitemap.xml (%d URL) + robots.txt" % (pages, len(urls)))
+    print("OK: %d страниц + sitemap.xml (%d URL) + robots.txt + pricing.md" % (pages, len(urls)))
 
 if __name__ == "__main__":
     build()
