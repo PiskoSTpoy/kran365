@@ -403,6 +403,38 @@ SAMOSVAL = [
   ("vezdehod","Самосвал-вездеход","полный привод, бездорожье",24000),
 ]
 
+# Еженедельный ценовой дрейф ±1% — сигнал "цены живые, сайт обновляется",
+# не выдумка новых цифр. Базовые цены выше (AVTOKRAN/VYSHKI/MANIP/STRELA/
+# EKSK/SAMOSVAL/TYPES) остаются РЕАЛЬНЫМ прайс-листом Аркона как есть —
+# ничего в них не переписывается. Дрейф — чисто презентационный множитель,
+# применяется здесь один раз при сборке, источник — tools/price_drift.json
+# (обновляет tools/randomize_prices.py раз в неделю). При pct=0 (файла нет
+# или значение 0) цены равны базовым один в один.
+def _apply_price_drift():
+    import json as _json, os as _os
+    path = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "price_drift.json")
+    pct = 0.0
+    if _os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            pct = _json.load(f).get("pct", 0.0)
+    factor = 1 + pct / 100.0
+    def adj(p):
+        return int(round(p * factor / 10.0)) * 10 if p else p
+    global AVTOKRAN, VYSHKI, MANIP, STRELA, EKSK, SAMOSVAL
+    AVTOKRAN = [(t, adj(p)) for t, p in AVTOKRAN]
+    VYSHKI = [(h, adj(p)) for h, p in VYSHKI]
+    MANIP = [(t, adj(p)) for t, p in MANIP]
+    STRELA = [(m, adj(p), t) for m, p, t in STRELA]
+    EKSK = [(s, n, d, adj(p)) for s, n, d, p in EKSK]
+    SAMOSVAL = [(s, n, d, adj(p)) for s, n, d, p in SAMOSVAL]
+    # TYPES определён раньше по файлу — те же dict-объекты уже висят в
+    # TYPE_BY_SLUG, мутируем на месте, чтобы обе ссылки видели новую цену.
+    for t in TYPES:
+        t["price"] = adj(t["price"])
+    return pct
+
+_PRICE_DRIFT_PCT = _apply_price_drift()
+
 # Блог: (slug, заголовок, лид, содержимое-блоки)
 from data_rf import GEO_RF, BLOG_RF   # автоген: 30 городов РФ + 16 статей блога
 from data_cat import CATS             # автоген: 12 новых категорий спецтехники
