@@ -17,3 +17,4 @@ User-agent: YandexAdditional
 Allow: /
 
 Sitemap: https://kran365.ru/sitemap.xml
+# llms.txt: https://kran365.ru/llms.txt

@@ -434,6 +434,10 @@ def robots_txt():
     for bot in AI_SEARCH_BOTS:
         lines += ["User-agent: %s" % bot, "Allow: /", ""]
     lines.append("Sitemap: %s/sitemap.xml" % SITE)
+    # llms.txt — не официальная директива robots.txt, но многие AI-краулеры
+    # (и генераторы вроде llmstxt.org) уже проверяют этот путь по конвенции —
+    # см. скилл ai-seo. Не вредит, если краулер её не понимает.
+    lines.append("# llms.txt: %s/llms.txt" % SITE)
     return "\n".join(lines) + "\n"
 
 
