@@ -49,15 +49,17 @@ from data_blog_daily_20260902 import BLOG_DAILY_20260902
 from data_blog_daily_20260903 import BLOG_DAILY_20260903
 from data_blog_daily_20260904 import BLOG_DAILY_20260904
 from data_blog_daily_20260905 import BLOG_DAILY_20260905
+from data_blog_daily_20260906 import BLOG_DAILY_20260906
+from data_blog_daily_20260907 import BLOG_DAILY_20260907
 
 SITE = "https://kran365.ru"
 IMG_DIR = os.path.join(ROOT, "assets", "img")
 DZEN_IMG_DIR = os.path.join(IMG_DIR, "dzen")
 MIN_WIDTH = 700
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907
 
-_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py"]
+_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py"]
 
 
 def _first_commit_date(slug):
@@ -126,6 +128,12 @@ IMG_MAP = {
     "montazh-lestnichnyh-marshey-kranom": "crane-site-23.jpg",
     "montazh-ktp-kranom": "truck-transformer.jpg",
     "kran-dlya-ustanovki-gazgoldera": "crane-tank-lift.jpg",
+    "razreshenie-na-manipulyator-moskva": "crane-500.jpg",
+    # Свежих неиспользованных фото на сайте не осталось (см. commit b47fe33 —
+    # у каждой статьи уже своя картинка): переиспользуем фото прямого
+    # тематического соседа — dogovor-arendy-spectehniki-s-ekipazhem тоже
+    # про схему договора аренды спецтехники, а не рисуем новый сток.
+    "arenda-krana-bez-ekipazha": "crane-site-08.jpg",
 }
 
 DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
