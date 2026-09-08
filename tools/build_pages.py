@@ -24,8 +24,18 @@ TG = "https://t.me/usdctrc2o"
 WA = "https://wa.me/79055535869"
 
 # Яндекс.Метрика (счётчик 111188532) — на всех страницах
+# 08.09.2026 — отложенная загрузка до window.load (фоллбэк 4с), тот же
+# паттерн, что и на kranneva.ru (сеть kran-network-v3, см. память
+# kran-network-core-web-vitals): webvisor:true — тяжёлая опция, tag.js
+# ощутимо грузит главный поток на throttled CPU, а к моменту load LCP/FCP
+# уже случились. Флаг __ymBooted — от двойного срабатывания (load +
+# таймаут). ym() в этом сайте больше нигде не вызывается (grep по tools/ —
+# ноль совпадений), очередь не нужно заводить раньше самого init.
 METRIKA = '''<!-- Yandex.Metrika counter -->
 <script type="text/javascript">
+function __ymBoot(){
+if (window.__ymBooted) return;
+window.__ymBooted = true;
 (function(m,e,t,r,i,k,a){
 m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
 m[i].l=1*new Date();
@@ -33,6 +43,8 @@ for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src =
 k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
 })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=111188532', 'ym');
 ym(111188532, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+}
+if (document.readyState === 'complete') { __ymBoot(); } else { window.addEventListener('load', __ymBoot); setTimeout(__ymBoot, 4000); }
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/111188532" width="1" height="1" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->'''
