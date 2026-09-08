@@ -130,15 +130,23 @@ IMG_MAP = {
     "montazh-ktp-kranom": "truck-transformer.jpg",
     "kran-dlya-ustanovki-gazgoldera": "crane-tank-lift.jpg",
     "razreshenie-na-manipulyator-moskva": "crane-500.jpg",
-    # Свежих неиспользованных фото на сайте не осталось (см. commit b47fe33 —
-    # у каждой статьи уже своя картинка): переиспользуем фото прямого
-    # тематического соседа — dogovor-arendy-spectehniki-s-ekipazhem тоже
-    # про схему договора аренды спецтехники, а не рисуем новый сток.
-    "arenda-krana-bez-ekipazha": "crane-site-08.jpg",
-    # Реюз того же принципа, что и выше: свежих неиспользованных фото нет,
-    # берём тематического соседа — общая стройплощадка/кран, тема тоже
-    # договорно-практическая, а не про конкретный класс техники.
-    "prostoy-tehniki-na-obekte-kto-platit": "crane-construction-1.jpg",
+    # Была реюз-заглушка crane-site-08.jpg (занята статьёй
+    # dogovor-arendy-spectehniki-s-ekipazhem) — заменена на НОВОЕ фото:
+    # грузовик Volvo FE с КМУ (кран-манипулятор) на Кремлёвской набережной
+    # в Москве, что точнее темы «кран ИЛИ манипулятор без экипажа».
+    # Wikimedia Commons, CC0 (Public Domain Dedication, атрибуция не
+    # требуется), автор Retired electrician, «own work», реальный снимок
+    # от 06.09.2025 с EXIF — не AI. 1400 px по широкой стороне, JPEG q85.
+    "arenda-krana-bez-ekipazha": "manipulyator-volvo-fe-moskva.jpg",
+    # Была реюз-заглушка crane-construction-1.jpg (уже занята статьёй
+    # skolko-stoit-arenda-krana) — заменена на НОВОЕ, ранее не
+    # использовавшееся на сайте фото: автокран КамАЗ-«Галичанин» стоит на
+    # набережной в Москве, что прямо отвечает теме простоя техники.
+    # Источник — Wikimedia Commons, лицензия CC0 (Public Domain Dedication,
+    # атрибуция не требуется), автор Retired electrician, «own work»,
+    # реальный снимок от 11.09.2025 с сохранённым EXIF — не AI-генерация.
+    # Скачано и уменьшено до 1400 px по широкой стороне, JPEG q85.
+    "prostoy-tehniki-na-obekte-kto-platit": "avtokran-kamaz-galichanin.jpg",
 }
 
 DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
