@@ -51,15 +51,16 @@ from data_blog_daily_20260904 import BLOG_DAILY_20260904
 from data_blog_daily_20260905 import BLOG_DAILY_20260905
 from data_blog_daily_20260906 import BLOG_DAILY_20260906
 from data_blog_daily_20260907 import BLOG_DAILY_20260907
+from data_blog_daily_20260908 import BLOG_DAILY_20260908
 
 SITE = "https://kran365.ru"
 IMG_DIR = os.path.join(ROOT, "assets", "img")
 DZEN_IMG_DIR = os.path.join(IMG_DIR, "dzen")
 MIN_WIDTH = 700
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908
 
-_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py"]
+_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py"]
 
 
 def _first_commit_date(slug):
@@ -134,6 +135,10 @@ IMG_MAP = {
     # тематического соседа — dogovor-arendy-spectehniki-s-ekipazhem тоже
     # про схему договора аренды спецтехники, а не рисуем новый сток.
     "arenda-krana-bez-ekipazha": "crane-site-08.jpg",
+    # Реюз того же принципа, что и выше: свежих неиспользованных фото нет,
+    # берём тематического соседа — общая стройплощадка/кран, тема тоже
+    # договорно-практическая, а не про конкретный класс техники.
+    "prostoy-tehniki-na-obekte-kto-platit": "crane-construction-1.jpg",
 }
 
 DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]

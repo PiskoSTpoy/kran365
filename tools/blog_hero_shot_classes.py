@@ -62,6 +62,7 @@ SHOTS = {
     "kran-dlya-ustanovki-gazgoldera": "ph-manip",
     "razreshenie-na-manipulyator-moskva": "ph-manip",
     "arenda-krana-bez-ekipazha": "ph-crane-100",
+    "prostoy-tehniki-na-obekte-kto-platit": "ph-crane-100",
 }
 
 MARK = 'class="page-hero"'
