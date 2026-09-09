@@ -64,6 +64,7 @@ SHOTS = {
     "arenda-krana-bez-ekipazha": "ph-crane-100",
     "prostoy-tehniki-na-obekte-kto-platit": "ph-crane-100",
     "kran-ili-manipulyator-dlya-kolec-septika": "ph-manip",
+    "kran-u-gazoprovoda-ohrannaya-zona": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'

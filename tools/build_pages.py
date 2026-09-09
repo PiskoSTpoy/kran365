@@ -630,9 +630,10 @@ from data_blog_daily_20260906 import BLOG_DAILY_20260906   # дневная ст
 from data_blog_daily_20260907 import BLOG_DAILY_20260907   # дневная статья автономного конвейера
 from data_blog_daily_20260908 import BLOG_DAILY_20260908   # дневная статья автономного конвейера
 from data_blog_daily_20260909 import BLOG_DAILY_20260909   # дневная статья автономного конвейера
+from data_blog_daily_20260909b import BLOG_DAILY_20260909B   # дневная статья автономного конвейера
 from data_cat_deepdive import CAT_DEEPDIVE   # доп. контент 24 категорий — Яндекс пометил малоценными 01.09.2026
 from data_task_deepdive import TASK_DEEPDIVE # доп. контент 10 услуг — тот же заход
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B
 
 # Марки автокранов
 MARKI = [
