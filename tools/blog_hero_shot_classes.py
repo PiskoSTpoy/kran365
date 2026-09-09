@@ -63,6 +63,7 @@ SHOTS = {
     "razreshenie-na-manipulyator-moskva": "ph-manip",
     "arenda-krana-bez-ekipazha": "ph-crane-100",
     "prostoy-tehniki-na-obekte-kto-platit": "ph-crane-100",
+    "kran-ili-manipulyator-dlya-kolec-septika": "ph-manip",
 }
 
 MARK = 'class="page-hero"'

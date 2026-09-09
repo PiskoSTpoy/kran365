@@ -87,6 +87,7 @@ CARDS = {
     "razreshenie-na-manipulyator-moskva": ("Нужен ли ордер ОАТИ на манипулятор", "ДОКУМЕНТЫ"),
     "arenda-krana-bez-ekipazha": ("Можно ли арендовать кран без экипажа", "ДОКУМЕНТЫ"),
     "prostoy-tehniki-na-obekte-kto-platit": ("Простой крана на объекте: кто платит и сколько это стоит", "ВЫБОР И ЦЕНА"),
+    "kran-ili-manipulyator-dlya-kolec-septika": ("Кран или манипулятор для колец септика: как выбрать", "ВЫБОР И ЦЕНА"),
 }
 
 # Фирменный знак сайта (#i-mark из index.html) — те же координаты, что в
