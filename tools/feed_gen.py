@@ -54,15 +54,16 @@ from data_blog_daily_20260907 import BLOG_DAILY_20260907
 from data_blog_daily_20260908 import BLOG_DAILY_20260908
 from data_blog_daily_20260909 import BLOG_DAILY_20260909
 from data_blog_daily_20260909b import BLOG_DAILY_20260909B
+from data_blog_daily_20260910 import BLOG_DAILY_20260910
 
 SITE = "https://kran365.ru"
 IMG_DIR = os.path.join(ROOT, "assets", "img")
 DZEN_IMG_DIR = os.path.join(IMG_DIR, "dzen")
 MIN_WIDTH = 700
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910
 
-_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py", "tools/data_blog_daily_20260909.py", "tools/data_blog_daily_20260909b.py"]
+_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py", "tools/data_blog_daily_20260909.py", "tools/data_blog_daily_20260909b.py", "tools/data_blog_daily_20260910.py"]
 
 
 def _first_commit_date(slug):
@@ -164,6 +165,12 @@ IMG_MAP = {
     # реальный любительский снимок улицы — не AI-генерация. Уменьшено
     # до 1400 px по широкой стороне, JPEG q85.
     "kran-u-gazoprovoda-ohrannaya-zona": "nadzemnyy-gazoprovod-nad-ulicey.jpg",
+    # hero-crane.jpg — единственное реально существующее в assets/img фото,
+    # ещё не занятое ни одной статьёй (весь остальной набор уже разобран по
+    # BLOG без дублей). Новое уникальное фото под тему не добавлено: в этой
+    # облачной песочнице egress-прокси блокирует Wikimedia Commons и другие
+    # источники изображений (проверено — connect_rejected), скачать нечем.
+    "kran-dlya-zameny-lifta-kapremont": "hero-crane.jpg",
 }
 
 DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
