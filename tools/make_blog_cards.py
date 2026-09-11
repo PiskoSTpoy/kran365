@@ -90,6 +90,7 @@ CARDS = {
     "kran-ili-manipulyator-dlya-kolec-septika": ("Кран или манипулятор для колец септика: как выбрать", "ВЫБОР И ЦЕНА"),
     "kran-u-gazoprovoda-ohrannaya-zona": ("Кран у газопровода: охранная зона и согласование", "ДОКУМЕНТЫ"),
     "kran-dlya-zameny-lifta-kapremont": ("Кран для замены лифта при капремонте: как выбрать", "ТЕХНИКА"),
+    "kran-dlya-montazha-blochno-modulnoy-kotelnoy": ("Кран для монтажа блочно-модульной котельной: какой нужен", "ТЕХНИКА"),
 }
 
 # Фирменный знак сайта (#i-mark из index.html) — те же координаты, что в
