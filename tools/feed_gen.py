@@ -172,12 +172,11 @@ IMG_MAP = {
     # облачной песочнице egress-прокси блокирует Wikimedia Commons и другие
     # источники изображений (проверено — connect_rejected), скачать нечем.
     "kran-dlya-zameny-lifta-kapremont": "hero-crane.jpg",
-    # Свободных уникальных фото в assets/img не осталось (egress-прокси в
-    # этой облачной песочнице блокирует Wikimedia Commons — подтверждено в
-    # истории предыдущих дневных статей). Переиспользована crane-tank-lift.jpg
-    # (подъём резервуара краном) — ближайшая по смыслу к подъёму
-    # контейнерного блок-модуля котельной краном.
-    "kran-dlya-montazha-blochno-modulnoy-kotelnoy": "crane-tank-lift.jpg",
+    # Уникальное фото, добавлено 11.09.2026 локальным прогоном (Wikimedia
+    # Commons доступен с домашней машины, в отличие от облачной песочницы):
+    # NMCB 11 Conducts Crane Operations, U.S. Navy, public domain —
+    # автокран и контейнерные блок-модули на площадке.
+    "kran-dlya-montazha-blochno-modulnoy-kotelnoy": "kran-montazh-blok-modulya.jpg",
 }
 
 DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
