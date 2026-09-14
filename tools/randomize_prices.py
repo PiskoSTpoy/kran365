@@ -14,7 +14,8 @@ TYPES) — этот скрипт его НЕ трогает и НЕ перепи
 4. Обновляет PRICE_UPDATED/PRICE_UPDATED_HUMAN в build_pages.py на сегодня —
    иначе оговорка "Цены актуальны на <дата>" на сайте станет враньём
    (см. комментарий в build_pages.py рядом с PRICE_UPDATED).
-5. Пересобирает сайт (build_pages.py) и RSS-ленту (feed_gen.py).
+5. Пересобирает сайт ПОЛНЫМ конвейером (build_pages.py + 7 пост-обработчиков,
+   см. PIPELINE ниже) и сверяет счётчики фото/героев до коммита.
 6. Коммитит и пушит в PiskoSTpoy/kran365, main.
 
 Использование: python tools/randomize_prices.py
@@ -36,6 +37,55 @@ MONTHS_RU = ["января", "февраля", "марта", "апреля", "м
 
 def human_date(d):
     return "%d %s %d" % (d.day, MONTHS_RU[d.month - 1], d.year)
+
+
+# Порядок важен: build_pages.py генерирует страницы с нуля, остальные
+# дописывают поверх. См. память kran365-build-pipeline-order.
+PIPELINE = [
+    ["build_pages.py"],
+    ["fix_sitemap_lastmod.py"],
+    ["feed_gen.py"],
+    ["make_blog_cards.py"],
+    ["rebuild_blog_hub_cards.py"],
+    ["insert_mid_images.py"],
+    ["hero_shot_classes.py", "--apply"],
+    ["blog_hero_shot_classes.py", "--apply"],
+]
+
+
+def snapshot():
+    """Счётчики того, что пропадает при неполной сборке."""
+    blog = os.path.join(ROOT, "blog")
+    articles = mid = blog_hero = 0
+    for slug in os.listdir(blog):
+        page = os.path.join(blog, slug, "index.html")
+        if not os.path.isfile(page):
+            continue
+        articles += 1
+        with open(page, encoding="utf-8") as f:
+            html = f.read()
+        mid += html.count("blog-body-img--mid")
+        blog_hero += "page-hero--shot" in html
+    other_hero = 0
+    for dirpath, dirnames, filenames in os.walk(ROOT):
+        dirnames[:] = [d for d in dirnames if d not in (".git", "node_modules", "blog")]
+        if "index.html" in filenames:
+            with open(os.path.join(dirpath, "index.html"), encoding="utf-8") as f:
+                other_hero += "page-hero--shot" in f.read()
+    return {"articles": articles, "mid": mid, "blog_hero": blog_hero, "other_hero": other_hero}
+
+
+def check_snapshot(before, after):
+    problems = []
+    if after["mid"] < before["mid"]:
+        problems.append("blog-body-img--mid: %d -> %d" % (before["mid"], after["mid"]))
+    if after["blog_hero"] != after["articles"]:
+        problems.append("page-hero--shot в блоге на %d из %d статей"
+                        % (after["blog_hero"], after["articles"]))
+    if after["other_hero"] < before["other_hero"]:
+        problems.append("page-hero--shot вне блога: %d -> %d"
+                        % (before["other_hero"], after["other_hero"]))
+    return problems
 
 
 def main():
@@ -85,13 +135,26 @@ def main():
 
     print("PRICE_UPDATED -> %s" % today.isoformat())
 
-    # Пересборка
-    for script in ("build_pages.py", "feed_gen.py"):
-        r = subprocess.run([sys.executable, os.path.join("tools", script)], cwd=ROOT)
+    # Пересборка — полный конвейер, не только build_pages.py: он затирает всё,
+    # что дописывают пост-обработчики. 14.09.2026 прогон с одним build_pages +
+    # feed_gen запушил сайт без 68 фото в статьях и без page-hero--shot.
+    before = snapshot()
+    env = dict(os.environ, PYTHONIOENCODING="utf-8")  # hero_shot_classes печатает «→»
+    for step in PIPELINE:
+        r = subprocess.run([sys.executable, os.path.join("tools", step[0])] + step[1:],
+                           cwd=ROOT, env=env)
         if r.returncode != 0:
             print("randomize_prices: %s упал с кодом %d, останавливаюсь до коммита." %
-                  (script, r.returncode), file=sys.stderr)
+                  (step[0], r.returncode), file=sys.stderr)
             sys.exit(1)
+
+    after = snapshot()
+    print("проверка сборки: было %s, стало %s" % (before, after))
+    problems = check_snapshot(before, after)
+    if problems:
+        print("randomize_prices: сборка потеряла пост-обработку, НЕ коммичу:\n  " +
+              "\n  ".join(problems), file=sys.stderr)
+        sys.exit(1)
 
     # Коммит и пуш
     subprocess.run(["git", "add", "-A"], cwd=ROOT, check=True)
