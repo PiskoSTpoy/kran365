@@ -67,6 +67,7 @@ SHOTS = {
     "kran-u-gazoprovoda-ohrannaya-zona": "ph-crane-25",
     "kran-dlya-zameny-lifta-kapremont": "ph-crane-25",
     "kran-dlya-montazha-blochno-modulnoy-kotelnoy": "ph-crane-25",
+    "kran-dlya-montazha-angara": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'

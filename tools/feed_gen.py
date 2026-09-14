@@ -56,15 +56,16 @@ from data_blog_daily_20260909 import BLOG_DAILY_20260909
 from data_blog_daily_20260909b import BLOG_DAILY_20260909B
 from data_blog_daily_20260910 import BLOG_DAILY_20260910
 from data_blog_daily_20260911 import BLOG_DAILY_20260911
+from data_blog_daily_20260914 import BLOG_DAILY_20260914
 
 SITE = "https://kran365.ru"
 IMG_DIR = os.path.join(ROOT, "assets", "img")
 DZEN_IMG_DIR = os.path.join(IMG_DIR, "dzen")
 MIN_WIDTH = 700
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910 + BLOG_DAILY_20260911
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910 + BLOG_DAILY_20260911 + BLOG_DAILY_20260914
 
-_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py", "tools/data_blog_daily_20260909.py", "tools/data_blog_daily_20260909b.py", "tools/data_blog_daily_20260910.py", "tools/data_blog_daily_20260911.py"]
+_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py", "tools/data_blog_daily_20260909.py", "tools/data_blog_daily_20260909b.py", "tools/data_blog_daily_20260910.py", "tools/data_blog_daily_20260911.py", "tools/data_blog_daily_20260914.py"]
 
 
 def _first_commit_date(slug):
@@ -177,6 +178,13 @@ IMG_MAP = {
     # NMCB 11 Conducts Crane Operations, U.S. Navy, public domain —
     # автокран и контейнерные блок-модули на площадке.
     "kran-dlya-montazha-blochno-modulnoy-kotelnoy": "kran-montazh-blok-modulya.jpg",
+    # Уникальное фото, добавлено 14.09.2026: Wikimedia Commons, файл
+    # «Truck crane lifts materials onto the roof.jpg», лицензия CC0 (Public
+    # Domain Dedication, атрибуция не требуется), автор Georg Pik, снимок
+    # от 16.04.2025 с EXIF камеры samsung SM-A037F — реальное фото, не AI.
+    # Автокран подаёт конструкции наверх при устройстве кровли — ровно
+    # сценарий монтажа каркаса ангара. 1400 px по широкой стороне, JPEG q85.
+    "kran-dlya-montazha-angara": "avtokran-podacha-konstrukciy-na-krovlyu.jpg",
 }
 
 DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
