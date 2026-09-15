@@ -57,15 +57,16 @@ from data_blog_daily_20260909b import BLOG_DAILY_20260909B
 from data_blog_daily_20260910 import BLOG_DAILY_20260910
 from data_blog_daily_20260911 import BLOG_DAILY_20260911
 from data_blog_daily_20260914 import BLOG_DAILY_20260914
+from data_blog_daily_20260915 import BLOG_DAILY_20260915
 
 SITE = "https://kran365.ru"
 IMG_DIR = os.path.join(ROOT, "assets", "img")
 DZEN_IMG_DIR = os.path.join(IMG_DIR, "dzen")
 MIN_WIDTH = 700
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910 + BLOG_DAILY_20260911 + BLOG_DAILY_20260914
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910 + BLOG_DAILY_20260911 + BLOG_DAILY_20260914 + BLOG_DAILY_20260915
 
-_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py", "tools/data_blog_daily_20260909.py", "tools/data_blog_daily_20260909b.py", "tools/data_blog_daily_20260910.py", "tools/data_blog_daily_20260911.py", "tools/data_blog_daily_20260914.py"]
+_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py", "tools/data_blog_daily_20260909.py", "tools/data_blog_daily_20260909b.py", "tools/data_blog_daily_20260910.py", "tools/data_blog_daily_20260911.py", "tools/data_blog_daily_20260914.py", "tools/data_blog_daily_20260915.py"]
 
 
 def _first_commit_date(slug):
@@ -185,6 +186,14 @@ IMG_MAP = {
     # Автокран подаёт конструкции наверх при устройстве кровли — ровно
     # сценарий монтажа каркаса ангара. 1400 px по широкой стороне, JPEG q85.
     "kran-dlya-montazha-angara": "avtokran-podacha-konstrukciy-na-krovlyu.jpg",
+    # Реюз-заглушка (см. докстринг data_blog_daily_20260915.py): новое фото
+    # добыть не удалось — egress-прокси в этой облачной песочнице блокирует
+    # Wikimedia Commons и профильные сайты про КНС (connect_rejected,
+    # проверено curl'ом и WebFetch на 5+ доменах). Ближайшее по теме фото
+    # на сайте — кран поднимает цилиндрическую ёмкость, уже занято статьёй
+    # kran-dlya-ustanovki-gazgoldera. Заменить на уникальное, когда в
+    # песочнице снова будет доступ к Wikimedia Commons.
+    "kran-dlya-montazha-kns": "crane-tank-lift.jpg",
 }
 
 DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
