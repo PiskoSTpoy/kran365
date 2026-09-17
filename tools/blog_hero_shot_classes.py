@@ -70,6 +70,7 @@ SHOTS = {
     "kran-dlya-montazha-angara": "ph-crane-25",
     "kran-dlya-montazha-kns": "ph-crane-25",
     "kran-dlya-montazha-itp": "ph-crane-25",
+    "kran-dlya-montazha-bashni-rozhnovskogo": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'

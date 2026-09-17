@@ -59,15 +59,16 @@ from data_blog_daily_20260911 import BLOG_DAILY_20260911
 from data_blog_daily_20260914 import BLOG_DAILY_20260914
 from data_blog_daily_20260915 import BLOG_DAILY_20260915
 from data_blog_daily_20260916 import BLOG_DAILY_20260916
+from data_blog_daily_20260917 import BLOG_DAILY_20260917
 
 SITE = "https://kran365.ru"
 IMG_DIR = os.path.join(ROOT, "assets", "img")
 DZEN_IMG_DIR = os.path.join(IMG_DIR, "dzen")
 MIN_WIDTH = 700
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910 + BLOG_DAILY_20260911 + BLOG_DAILY_20260914 + BLOG_DAILY_20260915 + BLOG_DAILY_20260916
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910 + BLOG_DAILY_20260911 + BLOG_DAILY_20260914 + BLOG_DAILY_20260915 + BLOG_DAILY_20260916 + BLOG_DAILY_20260917
 
-_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py", "tools/data_blog_daily_20260909.py", "tools/data_blog_daily_20260909b.py", "tools/data_blog_daily_20260910.py", "tools/data_blog_daily_20260911.py", "tools/data_blog_daily_20260914.py", "tools/data_blog_daily_20260915.py", "tools/data_blog_daily_20260916.py"]
+_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py", "tools/data_blog_daily_20260909.py", "tools/data_blog_daily_20260909b.py", "tools/data_blog_daily_20260910.py", "tools/data_blog_daily_20260911.py", "tools/data_blog_daily_20260914.py", "tools/data_blog_daily_20260915.py", "tools/data_blog_daily_20260916.py", "tools/data_blog_daily_20260917.py"]
 
 
 def _first_commit_date(slug):
@@ -202,6 +203,16 @@ IMG_MAP = {
     # модуль, уже занято статьёй про блочно-модульную котельную. Заменить на
     # уникальное, когда в песочнице снова будет доступ к Wikimedia Commons.
     "kran-dlya-montazha-itp": "kran-montazh-blok-modulya.jpg",
+    # НЕ реюз — до этой статьи hero-crane-mobile.jpg не было ни в одном
+    # значении IMG_MAP (проверено по всему словарю). Не съёмка конкретно
+    # башни Рожновского (Wikimedia Commons в этой облачной песочнице
+    # по-прежнему блокирует egress-прокси, EGRESS_BLOCKED — проверено
+    # curl'ом и WebFetch 17.09), но ближайшее уникальное на сайте фото
+    # автокрана с раскрытой стрелой — тематически про высоту подъёма,
+    # а не про третье использование crane-tank-lift.jpg. Заменить на
+    # уникальное фото самой башни, когда в песочнице будет доступ
+    # к Wikimedia Commons.
+    "kran-dlya-montazha-bashni-rozhnovskogo": "hero-crane-mobile.jpg",
 }
 
 DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
