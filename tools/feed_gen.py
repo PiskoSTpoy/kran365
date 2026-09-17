@@ -188,21 +188,17 @@ IMG_MAP = {
     # Автокран подаёт конструкции наверх при устройстве кровли — ровно
     # сценарий монтажа каркаса ангара. 1400 px по широкой стороне, JPEG q85.
     "kran-dlya-montazha-angara": "avtokran-podacha-konstrukciy-na-krovlyu.jpg",
-    # Реюз-заглушка (см. докстринг data_blog_daily_20260915.py): новое фото
-    # добыть не удалось — egress-прокси в этой облачной песочнице блокирует
-    # Wikimedia Commons и профильные сайты про КНС (connect_rejected,
-    # проверено curl'ом и WebFetch на 5+ доменах). Ближайшее по теме фото
-    # на сайте — кран поднимает цилиндрическую ёмкость, уже занято статьёй
-    # kran-dlya-ustanovki-gazgoldera. Заменить на уникальное, когда в
-    # песочнице снова будет доступ к Wikimedia Commons.
-    "kran-dlya-montazha-kns": "crane-tank-lift.jpg",
-    # Реюз-заглушка (см. докстринг data_blog_daily_20260916.py): новое фото
-    # добыть не удалось — egress-прокси в этой облачной песочнице блокирует
-    # Wikimedia Commons (connect_rejected, проверено curl'ом 16.09). Ближайшее
-    # по теме фото на сайте — кран поднимает инженерный блок-контейнерный
-    # модуль, уже занято статьёй про блочно-модульную котельную. Заменить на
-    # уникальное, когда в песочнице снова будет доступ к Wikimedia Commons.
-    "kran-dlya-montazha-itp": "kran-montazh-blok-modulya.jpg",
+    # Уникальное фото, заменило реюз crane-tank-lift.jpg 17.09.2026 локальным
+    # прогоном (Wikimedia Commons доступен с домашней машины, в отличие от
+    # облачной песочницы): «Installing fish screens at a pump plant on the
+    # Yellowstone River in Montana», USDA NRCS Montana, public domain — кран
+    # опускает 10-тонные конструкции на насосной станции. 1400px, q85.
+    "kran-dlya-montazha-kns": "kran-montazh-nasosnoy-stancii.jpg",
+    # Уникальное фото, заменило реюз kran-montazh-blok-modulya.jpg 17.09.2026
+    # локальным прогоном: «Naval Station Newport's central steam plant gets
+    # new boiler 141125-N-CQ687-002», U.S. Navy, public domain — автокран
+    # подаёт котёл в тепловую станцию. 1400px, q85.
+    "kran-dlya-montazha-itp": "kran-podem-kotla-teplovoy-punkt.jpg",
     # НЕ реюз — до этой статьи hero-crane-mobile.jpg не было ни в одном
     # значении IMG_MAP (проверено по всему словарю). Не съёмка конкретно
     # башни Рожновского (Wikimedia Commons в этой облачной песочнице
