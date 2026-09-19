@@ -61,15 +61,16 @@ from data_blog_daily_20260915 import BLOG_DAILY_20260915
 from data_blog_daily_20260916 import BLOG_DAILY_20260916
 from data_blog_daily_20260917 import BLOG_DAILY_20260917
 from data_blog_daily_20260918 import BLOG_DAILY_20260918
+from data_blog_daily_20260919 import BLOG_DAILY_20260919
 
 SITE = "https://kran365.ru"
 IMG_DIR = os.path.join(ROOT, "assets", "img")
 DZEN_IMG_DIR = os.path.join(IMG_DIR, "dzen")
 MIN_WIDTH = 700
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910 + BLOG_DAILY_20260911 + BLOG_DAILY_20260914 + BLOG_DAILY_20260915 + BLOG_DAILY_20260916 + BLOG_DAILY_20260917 + BLOG_DAILY_20260918
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910 + BLOG_DAILY_20260911 + BLOG_DAILY_20260914 + BLOG_DAILY_20260915 + BLOG_DAILY_20260916 + BLOG_DAILY_20260917 + BLOG_DAILY_20260918 + BLOG_DAILY_20260919
 
-_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py", "tools/data_blog_daily_20260909.py", "tools/data_blog_daily_20260909b.py", "tools/data_blog_daily_20260910.py", "tools/data_blog_daily_20260911.py", "tools/data_blog_daily_20260914.py", "tools/data_blog_daily_20260915.py", "tools/data_blog_daily_20260916.py", "tools/data_blog_daily_20260917.py", "tools/data_blog_daily_20260918.py"]
+_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py", "tools/data_blog_daily_20260909.py", "tools/data_blog_daily_20260909b.py", "tools/data_blog_daily_20260910.py", "tools/data_blog_daily_20260911.py", "tools/data_blog_daily_20260914.py", "tools/data_blog_daily_20260915.py", "tools/data_blog_daily_20260916.py", "tools/data_blog_daily_20260917.py", "tools/data_blog_daily_20260918.py", "tools/data_blog_daily_20260919.py"]
 
 
 def _first_commit_date(slug):
@@ -210,17 +211,24 @@ IMG_MAP = {
     # уникальное фото самой башни, когда в песочнице будет доступ
     # к Wikimedia Commons.
     "kran-dlya-montazha-bashni-rozhnovskogo": "hero-crane-mobile.jpg",
-    # Осознанный повтор (не новое фото): Wikimedia Commons и другие источники
-    # изображений в этой облачной песочнице по-прежнему заблокированы
-    # egress-прокси (EGRESS_BLOCKED, проверено 18.09.2026), а все 9 фото
-    # техники и все ранее скачанные уникальные фото сайта уже разобраны по
-    # этому словарю без единого свободного дубля (свободна только
-    # служебная og-cover.jpg). Взято kran-montazh-blok-modulya.jpg —
-    # визуально ближе всего к теме (контейнер на стропах под краном),
-    # хотя уже занято статьёй kran-dlya-montazha-blochno-modulnoy-kotelnoy.
-    # Заменить на уникальное фото дизель-генератора под краном, когда в
-    # песочнице будет доступ к Wikimedia Commons.
-    "kran-dlya-montazha-dizel-generatora": "kran-montazh-blok-modulya.jpg",
+    # Дубль расшит 19.09.2026 локальным прогоном: 18.09 в облачной песочнице
+    # Wikimedia Commons был заблокирован egress-прокси, и статье досталось
+    # уже занятое kran-montazh-blok-modulya.jpg. С домашней машины Commons
+    # доступен, поэтому выдано уникальное фото: FEMA-42525 «New Generators
+    # Arrive to Replace Flooded Power Plant in American Samoa», public domain,
+    # фотограф Richard O'Reilly, снимок от 14.11.2009 — контейнерная
+    # электростанция Aggreko висит на стропах крана, такелажники принимают
+    # груз. 1400 px по широкой стороне, JPEG q85.
+    "kran-dlya-montazha-dizel-generatora": "kontejnernaya-elektrostanciya-na-stropah.jpg",
+    # Уникальное фото, добавлено 19.09.2026: Wikimedia Commons, файл
+    # «Центральная (Орликовская) арка нового Каланчевского путепровода,
+    # май 2023 01(DXO).jpg», лицензия CC0 (Public Domain Dedication,
+    # атрибуция не требуется), автор Retired electrician, «own work»,
+    # реальный снимок от 18.05.2023 с EXIF — не AI. Два автокрана со
+    # стрелами работают у железнодорожного путепровода в Москве, на заднем
+    # плане — жёсткие поперечины контактной сети: ровно сюжет статьи.
+    # 1400 px по широкой стороне, JPEG q85.
+    "kran-u-zheleznoy-dorogi-ohrannaya-zona": "avtokrany-u-zh-d-putey-kalanchevskiy-putieprovod.jpg",
 }
 
 DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
