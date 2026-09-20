@@ -73,6 +73,7 @@ SHOTS = {
     "kran-dlya-montazha-bashni-rozhnovskogo": "ph-crane-25",
     "kran-dlya-montazha-dizel-generatora": "ph-crane-25",
     "kran-u-zheleznoy-dorogi-ohrannaya-zona": "ph-crane-25",
+    "yamobur-u-gazoprovoda-ohrannaya-zona": "ph-exc",
 }
 
 MARK = 'class="page-hero"'
