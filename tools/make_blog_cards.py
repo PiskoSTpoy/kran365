@@ -98,6 +98,7 @@ CARDS = {
     "kran-dlya-montazha-dizel-generatora": ("Кран для дизель-генератора: манипулятор или автокран", "ТЕХНИКА"),
     "kran-u-zheleznoy-dorogi-ohrannaya-zona": ("Кран у железной дороги: охранная зона и наряд-допуск", "ДОКУМЕНТЫ"),
     "yamobur-u-gazoprovoda-ohrannaya-zona": ("Ямобур у газопровода: охранная зона и разрешение на бурение", "ДОКУМЕНТЫ"),
+    "rabochiy-lyulki-avtovyshki-udostoverenie": ("Рабочий люльки автовышки: удостоверение и допуск", "ДОКУМЕНТЫ"),
 }
 
 # Фирменный знак сайта (#i-mark из index.html) — те же координаты, что в
