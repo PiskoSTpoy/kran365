@@ -122,11 +122,14 @@
   if ('requestIdleCallback' in window) requestIdleCallback(heroVideo, { timeout: 2500 });
   else setTimeout(heroVideo, 1200);
 
-  /* ---------- Валидация и демо-отправка формы ---------- */
+  /* ---------- Валидация и отправка формы ---------- */
   var form = document.getElementById('orderForm');
   if (form) {
     var phone = document.getElementById('f-phone');
     var ok = document.getElementById('formOk');
+    var fName = document.getElementById('f-name');
+    var fType = document.getElementById('f-type');
+    var fComment = document.getElementById('f-comment');
 
     // мягкая маска телефона
     phone.addEventListener('input', function () {
@@ -179,8 +182,26 @@
         consent.focus();
         return;
       }
-      // ДЕМО: здесь на боевом сайте — отправка на бэкенд / CRM / Telegram.
+      // У формы нет бэкенда/CRM — раньше здесь был демо-стаб, который сразу
+      // показывал "Заявка принята", ничего никуда не отправляя (реальные
+      // заявки терялись молча). Честная замена: открываем черновик письма на
+      // info@kran365.ru с данными формы и одновременно показываем работающие
+      // каналы (звонок/WhatsApp/Telegram) — так человек не остаётся один на
+      // один с непонятно кем "принятой" заявкой, если писем клиент не настроен.
+      var subject = encodeURIComponent('Заявка с сайта kran365.ru');
+      var bodyLines = ['Телефон: ' + phone.value];
+      if (fName && fName.value) bodyLines.push('Имя: ' + fName.value);
+      if (fType && fType.value) bodyLines.push('Техника: ' + fType.value);
+      if (fComment && fComment.value) bodyLines.push('Задача: ' + fComment.value);
+      var mailtoUrl = 'mailto:info@kran365.ru?subject=' + subject +
+        '&body=' + encodeURIComponent(bodyLines.join('\n'));
+      window.location.href = mailtoUrl;
+
       form.querySelectorAll('.field, .btn, small, .consent').forEach(function (el) { el.style.display = 'none'; });
+      ok.innerHTML = '✓ Открываем письмо с вашей заявкой на info@kran365.ru — отправьте его. ' +
+        'Не открылось само (нет почтового клиента)? Звоните: ' +
+        '<a href="tel:+79055535869">+7 (905) 553-58-69</a> или пишите в ' +
+        '<a href="https://wa.me/79055535869" target="_blank" rel="noopener">WhatsApp</a>.';
       ok.style.display = 'block';
     });
   }
