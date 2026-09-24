@@ -42,6 +42,14 @@ TAGS = re.compile(r"<[^>]+>")
 BOILERPLATE_TAGS = ("header", "footer", "aside", "nav")
 BOILERPLATE_BLOCKS = (('section', 'class="cta"'), ('div', 'class="fab"'))
 
+# Только у статей блога (JSON-LD "@type":"Article" стоит лишь на них):
+# блок «Ещё статьи» (div.related) — общий список ВСЕХ статей. Каждая новая
+# статья дописывает в него ссылку на всех остальных, и 24.09.2026 lastmod
+# всего блога разом прыгнул на дату новой статьи. На категориях и гео
+# div.related подобран под страницу — там его не трогаем, их даты те же.
+ARTICLE_MARK = '"@type":"Article"'
+ARTICLE_BOILERPLATE_BLOCKS = (('div', 'class="related"'),)
+
 
 def strip_element(raw: str, tag: str, start: int) -> str:
     """Вырезать элемент вместе с содержимым, считая вложенность одноимённых тегов."""
@@ -64,11 +72,12 @@ def strip_element(raw: str, tag: str, start: int) -> str:
     return raw[:start]
 
 
-def drop_boilerplate(raw: str) -> str:
+def drop_boilerplate(raw: str, article: bool = False) -> str:
     for tag in BOILERPLATE_TAGS:
         while (m := re.search(r"(?i)<%s\b" % tag, raw)) is not None:
             raw = strip_element(raw, tag, m.start())
-    for tag, marker in BOILERPLATE_BLOCKS:
+    blocks = BOILERPLATE_BLOCKS + (ARTICLE_BOILERPLATE_BLOCKS if article else ())
+    for tag, marker in blocks:
         while (m := re.search(r'(?i)<%s [^>]*%s' % (tag, re.escape(marker)), raw)) is not None:
             raw = strip_element(raw, tag, m.start())
     return raw
@@ -88,7 +97,8 @@ def visible_hash(raw: str) -> str:
     """
     title = " ".join(VISIBLE_HEAD.findall(raw))
     body_match = BODY.search(raw)
-    body = drop_boilerplate(body_match.group(1)) if body_match else ""
+    body = (drop_boilerplate(body_match.group(1), ARTICLE_MARK in raw)
+            if body_match else "")
     text = TAGS.sub(" ", DROP_BLOCKS.sub(" ", title + " " + body))
     text = re.sub(r"\s+", " ", html.unescape(text)).strip()
     return hashlib.sha1(text.encode("utf-8")).hexdigest()
