@@ -15,6 +15,7 @@ import os, json, html, re
 from patch_forms_legal import CONSENT, HONEYPOT, FOOTER_LEGAL, POLICY_URL, CONSENT_URL, CONTACTS_URL
 import fix_schema
 import fix_sitemap_lastmod
+import fix_geo2026
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://kran365.ru"
@@ -266,6 +267,7 @@ def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
     # странице или услуга: это решение живёт одним списком в fix_schema, иначе
     # правило пришлось бы держать в двух местах и они бы разошлись.
     doc = fix_schema.patch_html(doc, rel_path.rsplit("/index.html", 1)[0])[0]
+    doc = fix_geo2026.patch_html(doc, rel_path)[0]
     out = os.path.join(ROOT, rel_path)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
