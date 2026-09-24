@@ -75,6 +75,8 @@ SHOTS = {
     "kran-u-zheleznoy-dorogi-ohrannaya-zona": "ph-crane-25",
     "yamobur-u-gazoprovoda-ohrannaya-zona": "ph-exc",
     "rabochiy-lyulki-avtovyshki-udostoverenie": "ph-lift",
+    "kak-vybrat-avtobetononasos-dlina-strely": "ph-crane-25",
+    "kolesnyy-ili-gusenichnyy-ekskavator": "ph-exc",
 }
 
 MARK = 'class="page-hero"'

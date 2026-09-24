@@ -64,15 +64,16 @@ from data_blog_daily_20260918 import BLOG_DAILY_20260918
 from data_blog_daily_20260919 import BLOG_DAILY_20260919
 from data_blog_daily_20260920 import BLOG_DAILY_20260920
 from data_blog_daily_20260924 import BLOG_DAILY_20260924
+from data_blog_daily_20260924b import BLOG_DAILY_20260924B
 
 SITE = "https://kran365.ru"
 IMG_DIR = os.path.join(ROOT, "assets", "img")
 DZEN_IMG_DIR = os.path.join(IMG_DIR, "dzen")
 MIN_WIDTH = 700
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910 + BLOG_DAILY_20260911 + BLOG_DAILY_20260914 + BLOG_DAILY_20260915 + BLOG_DAILY_20260916 + BLOG_DAILY_20260917 + BLOG_DAILY_20260918 + BLOG_DAILY_20260919 + BLOG_DAILY_20260920 + BLOG_DAILY_20260924
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910 + BLOG_DAILY_20260911 + BLOG_DAILY_20260914 + BLOG_DAILY_20260915 + BLOG_DAILY_20260916 + BLOG_DAILY_20260917 + BLOG_DAILY_20260918 + BLOG_DAILY_20260919 + BLOG_DAILY_20260920 + BLOG_DAILY_20260924 + BLOG_DAILY_20260924B
 
-_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py", "tools/data_blog_daily_20260909.py", "tools/data_blog_daily_20260909b.py", "tools/data_blog_daily_20260910.py", "tools/data_blog_daily_20260911.py", "tools/data_blog_daily_20260914.py", "tools/data_blog_daily_20260915.py", "tools/data_blog_daily_20260916.py", "tools/data_blog_daily_20260917.py", "tools/data_blog_daily_20260918.py", "tools/data_blog_daily_20260919.py", "tools/data_blog_daily_20260920.py", "tools/data_blog_daily_20260924.py"]
+_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py", "tools/data_blog_daily_20260909.py", "tools/data_blog_daily_20260909b.py", "tools/data_blog_daily_20260910.py", "tools/data_blog_daily_20260911.py", "tools/data_blog_daily_20260914.py", "tools/data_blog_daily_20260915.py", "tools/data_blog_daily_20260916.py", "tools/data_blog_daily_20260917.py", "tools/data_blog_daily_20260918.py", "tools/data_blog_daily_20260919.py", "tools/data_blog_daily_20260920.py", "tools/data_blog_daily_20260924.py", "tools/data_blog_daily_20260924b.py"]
 
 
 def _first_commit_date(slug):
@@ -248,6 +249,15 @@ IMG_MAP = {
     # Москвы — сюжет статьи про того, кто в этой люльке работает.
     # 1400 px по широкой стороне, JPEG q85.
     "rabochiy-lyulki-avtovyshki-udostoverenie": "avtovyshka-s-pustoy-lyulkoy-moskva.jpg",
+    # Уникальные фото, добавлены 24.09.2026 (2-я и 3-я статьи дня):
+    # Wikimedia Commons «Moscow, SANY SYG5261THB concrete pump, Feb 2026 02.jpg»,
+    # CC0, автор Retired electrician, 18.02.2026 — автобетононасос со сложенной
+    # стрелой на Большой Серпуховской. 1400 px, JPEG q85.
+    "kak-vybrat-avtobetononasos-dlina-strely": "avtobetononasos-sany-na-ulice-moskvy.jpg",
+    # Wikimedia Commons «TVEKS EK-14 old but working wheeled excavator,
+    # Karelia, 2023.jpg», public domain, автор Андрей Крижановский —
+    # колёсный экскаватор на отвале в котловане. 1400 px, JPEG q85.
+    "kolesnyy-ili-gusenichnyy-ekskavator": "kolesnyy-ekskavator-tveks-ek-14.jpg",
 }
 
 DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
