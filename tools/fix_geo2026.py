@@ -64,8 +64,28 @@ def _git_dates(rel_path: str) -> tuple[str, str | None]:
     if not dates:
         today = datetime.date.today().isoformat()
         return today, None
-    updated, published = dates[0], dates[-1]
-    return published, (updated if updated != published else None)
+    published = dates[-1]
+    # «Обновлено» — по последнему коммиту, изменившему ВИДИМОЕ содержимое
+    # (та же логика, что у lastmod в sitemap), а не по любому коммиту файла:
+    # массовая правка разметки/этой самой строки иначе ставит «обновлено
+    # сегодня» всему сайту разом.
+    updated = _content_dates().get(rel_path, dates[0])
+    return published, (updated if updated > published else None)
+
+
+_CONTENT_DATES = None
+
+
+def _content_dates() -> dict:
+    global _CONTENT_DATES
+    if _CONTENT_DATES is None:
+        try:
+            sys.path.insert(0, str(Path(__file__).resolve().parent))
+            import fix_sitemap_lastmod
+            _CONTENT_DATES = fix_sitemap_lastmod.content_dates()
+        except Exception:
+            _CONTENT_DATES = {}
+    return _CONTENT_DATES
 
 
 def _fmt(iso: str) -> str:
