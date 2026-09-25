@@ -77,6 +77,9 @@ SHOTS = {
     "rabochiy-lyulki-avtovyshki-udostoverenie": "ph-lift",
     "kak-vybrat-avtobetononasos-dlina-strely": "ph-crane-25",
     "kolesnyy-ili-gusenichnyy-ekskavator": "ph-exc",
+    "kak-vybrat-strop-dlya-krana": "ph-crane-25",
+    "mini-ekskavator-ili-ekskavator-pogruzchik": "ph-exc",
+    "rabota-krana-nochyu-moskva": "ph-crane-100",
 }
 
 MARK = 'class="page-hero"'

@@ -101,6 +101,9 @@ CARDS = {
     "rabochiy-lyulki-avtovyshki-udostoverenie": ("Рабочий люльки автовышки: удостоверение и допуск", "ДОКУМЕНТЫ"),
     "kak-vybrat-avtobetononasos-dlina-strely": ("Как выбрать автобетононасос: длина стрелы и подача", "ТЕХНИКА"),
     "kolesnyy-ili-gusenichnyy-ekskavator": ("Колёсный или гусеничный экскаватор: что взять в аренду", "ТЕХНИКА"),
+    "kak-vybrat-strop-dlya-krana": ("Какой строп выбрать для подъёма груза краном", "ТЕХНИКА"),
+    "mini-ekskavator-ili-ekskavator-pogruzchik": ("Мини-экскаватор или экскаватор-погрузчик", "ТЕХНИКА"),
+    "rabota-krana-nochyu-moskva": ("Кран ночью в Москве: закон о тишине и штрафы", "ДОКУМЕНТЫ"),
 }
 
 # Фирменный знак сайта (#i-mark из index.html) — те же координаты, что в

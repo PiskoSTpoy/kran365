@@ -644,9 +644,14 @@ from data_blog_daily_20260919 import BLOG_DAILY_20260919   # дневная ст
 from data_blog_daily_20260920 import BLOG_DAILY_20260920   # дневная статья автономного конвейера
 from data_blog_daily_20260924 import BLOG_DAILY_20260924   # дневная статья автономного конвейера
 from data_blog_daily_20260924b import BLOG_DAILY_20260924B   # 2-я и 3-я статьи дня (норма 3/день)
+from data_blog_daily_20260925 import BLOG_DAILY_20260925, BLOG_EXTRA_20260925   # 3 статьи дня по seo-2026-playbook (FAQ + источники)
 from data_cat_deepdive import CAT_DEEPDIVE   # доп. контент 24 категорий — Яндекс пометил малоценными 01.09.2026
 from data_task_deepdive import TASK_DEEPDIVE # доп. контент 10 услуг — тот же заход
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910 + BLOG_DAILY_20260911 + BLOG_DAILY_20260914 + BLOG_DAILY_20260915 + BLOG_DAILY_20260916 + BLOG_DAILY_20260917 + BLOG_DAILY_20260918 + BLOG_DAILY_20260919 + BLOG_DAILY_20260920 + BLOG_DAILY_20260924 + BLOG_DAILY_20260924B
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910 + BLOG_DAILY_20260911 + BLOG_DAILY_20260914 + BLOG_DAILY_20260915 + BLOG_DAILY_20260916 + BLOG_DAILY_20260917 + BLOG_DAILY_20260918 + BLOG_DAILY_20260919 + BLOG_DAILY_20260920 + BLOG_DAILY_20260924 + BLOG_DAILY_20260924B + BLOG_DAILY_20260925
+# Поля статьи сверх кортежа BLOG (FAQ, источники, дата проверки фактов) — по
+# скелету статьи seo-2026-playbook. Кортеж не расширяем: его по четыре поля
+# распаковывают feed_gen, rebuild_blog_hub_cards и хаб блога.
+BLOG_EXTRA = dict(BLOG_EXTRA_20260925)
 
 # Марки автокранов
 MARKI = [
@@ -1722,6 +1727,13 @@ def build():
         content = "".join(parts)
         # лид уже выведен в шапке страницы — в тексте его не повторяем
         prose = content
+        extra = BLOG_EXTRA.get(s)
+        if extra:
+            checked = fix_geo2026._fmt(extra["checked"])
+            prose += "<h2>Частые вопросы</h2>" + faq_html(extra["faqs"])
+            prose += ('<h2>Источники · проверено %s</h2><ul>%s</ul>' % (checked, "".join(
+                '<li>%s — <a href="%s" rel="nofollow noopener" target="_blank">%s</a></li>' % (
+                    esc(n), esc(u), esc(u.split("/")[2])) for n, u in extra["sources"])))
         prose += ('<h2>Нужна техника под вашу задачу?</h2><p>Опишите задачу — подберём машину и назовём точную цену за 5 минут. '
                   'Консультация бесплатна, приём заявок круглосуточно: <a href="tel:%s">%s</a>.</p>' % (PHONE_TEL, PHONE_DISP))
         rel = ('<div class="related"><h3>Другие статьи</h3><div class="related-grid">%s</div></div>' %
@@ -1732,8 +1744,25 @@ def build():
                "publisher":{"@type":"Organization","name":"КРАН365"},
                "mainEntityOfPage":SITE+"/blog/%s/" % s},
               local_business_ld()]
+        hero_html = hero("Блог", t, lead, None)
+        if extra:
+            # Строка автора/дат своя, а не из fix_geo2026: в ней есть «факты
+            # проверены» и время чтения. fix_geo2026 видит meta-row и не дублирует.
+            published, updated = fix_geo2026._git_dates("blog/%s/index.html" % s)
+            ld[1]["datePublished"] = published
+            ld[1]["dateModified"] = updated or published
+            ld.append(faq_ld(extra["faqs"]))
+            words_n = len(re.sub(r"<[^>]+>", " ", lead + prose).split())
+            row = ["Редакция КРАН365",
+                   'опубликовано <time datetime="%s">%s</time>' % (published, fix_geo2026._fmt(published))]
+            if updated:
+                row.append('обновлено <time datetime="%s">%s</time>' % (updated, fix_geo2026._fmt(updated)))
+            row += ["факты проверены %s" % checked, "%d мин чтения" % max(1, round(words_n / 180.0))]
+            i = hero_html.find('<p class="lead">')
+            j = hero_html.find("</p>", i) + len("</p>")
+            hero_html = hero_html[:j] + '<p class="small muted meta-row">%s</p>' % " · ".join(row) + hero_html[j:]
         page("blog/%s/index.html" % s, seo_title(BLOG_TITLE_SHORT.get(s, t)), seo_desc(lead), crumbs,
-             hero("Блог", t, lead, None), body(prose, rel), ld)
+             hero_html, body(prose, rel), ld)
         pages += 1
 
     # --- хаб блога
