@@ -104,6 +104,9 @@ CARDS = {
     "kak-vybrat-strop-dlya-krana": ("Какой строп выбрать для подъёма груза краном", "ТЕХНИКА"),
     "mini-ekskavator-ili-ekskavator-pogruzchik": ("Мини-экскаватор или экскаватор-погрузчик", "ТЕХНИКА"),
     "rabota-krana-nochyu-moskva": ("Кран ночью в Москве: закон о тишине и штрафы", "ДОКУМЕНТЫ"),
+    "pri-kakom-vetre-nelzya-rabotat-kranom": ("При каком ветре нельзя работать краном", "ТЕХНИКА"),
+    "teleskopicheskiy-ili-vilochnyy-pogruzchik": ("Телескопический или вилочный погрузчик", "ТЕХНИКА"),
+    "kran-na-gazone-moskva-shtraf": ("Автокран на газоне в Москве: штраф 300 000 ₽", "ДОКУМЕНТЫ"),
 }
 
 # Фирменный знак сайта (#i-mark из index.html) — те же координаты, что в

@@ -80,6 +80,9 @@ SHOTS = {
     "kak-vybrat-strop-dlya-krana": "ph-crane-25",
     "mini-ekskavator-ili-ekskavator-pogruzchik": "ph-exc",
     "rabota-krana-nochyu-moskva": "ph-crane-100",
+    "pri-kakom-vetre-nelzya-rabotat-kranom": "ph-crane-100",
+    "teleskopicheskiy-ili-vilochnyy-pogruzchik": "ph-manip",
+    "kran-na-gazone-moskva-shtraf": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'
