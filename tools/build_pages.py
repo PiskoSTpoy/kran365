@@ -658,6 +658,15 @@ from data_blog_faq_backfill import BLOG_FAQ_BACKFILL   # FAQ-бэкфилл ст
 # запись с источниками, она перекроет бэкфилл-заглушку с одним FAQ.
 BLOG_EXTRA = dict(BLOG_FAQ_BACKFILL, **BLOG_EXTRA_20260925, **BLOG_EXTRA_20260926, **BLOG_EXTRA_20260927)
 
+# Источники под статьи, где в тексте уже названа конкретная норма (ГК/ФНП/ГОСТ/ПП).
+# Подмешиваем checked+sources в существующую запись FAQ, не затирая faqs.
+from data_blog_sources_backfill import BLOG_SOURCES_BACKFILL
+for _slug, _src in BLOG_SOURCES_BACKFILL.items():
+    if _slug in BLOG_EXTRA:
+        BLOG_EXTRA[_slug] = dict(BLOG_EXTRA[_slug], **_src)
+    else:
+        BLOG_EXTRA[_slug] = dict(_src)
+
 # Марки автокранов
 MARKI = [
   ("liebherr","Liebherr","Немецкие автокраны от 40 до 500 тонн — эталон надёжности для тяжёлого монтажа. Телескопическая стрела до 96 м, точная гидравлика, работа в стеснённых условиях."),
