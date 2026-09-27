@@ -1029,9 +1029,9 @@ def tonnage_prose(tn, pr):
     """Уникальный текст страницы автокрана по грузоподъёмности."""
     d = TONNAGE[tn]
     h = ""
-    for p in d["intro"]:
-        # Абзац с готовой ссылкой (как в "compare") не экранируем — иначе <a>
-        # превратится в текст. Обычный текст, как везде, экранируем как есть.
+    # intro[0] вынесен в hero-lead страницы (это intro-ответ). В теле — со второго абзаца,
+    # чтобы не дублировать. Абзац с готовой ссылкой не экранируем.
+    for p in d["intro"][1:]:
         h += "<p>%s</p>" % (p if "<a " in p else esc(p))
 
     h += "<h2>Какие машины выезжают на объект</h2>"
@@ -1077,7 +1077,8 @@ def strela_prose(m_, pr, tn):
     чтобы не дублировать страницы по грузоподъёмности (это та же машина)."""
     d = STRELA_DATA[m_]
     h = ""
-    for p in d["intro"]:
+    # intro[0] вынесен в hero-lead (intro-ответ) — в теле со второго абзаца, без дубля.
+    for p in d["intro"][1:]:
         h += "<p>%s</p>" % esc(p)
 
     h += "<h2>Что достанет стрела %d метров</h2>" % m_
@@ -1118,7 +1119,8 @@ def marka_prose(slug, name):
     модельный ряд в аренде, сильные и слабые стороны, сервис, кому подходит."""
     d = MARKI_DATA[slug]
     h = ""
-    for p in d["intro"]:
+    # intro[0] вынесен в hero-lead (intro-ответ) — в теле со второго абзаца.
+    for p in d["intro"][1:]:
         h += "<p>%s</p>" % esc(p)
 
     h += "<h2>Какие модели %s встречаются в аренде</h2>" % esc(name)
@@ -1151,7 +1153,8 @@ def vyshka_prose(h_, pr):
     """Уникальный текст страницы автовышки. Ось — работа человека на высоте."""
     d = VYSHKI_DATA[h_]
     out = ""
-    for p in d["intro"]:
+    # intro[0] вынесен в hero-lead (intro-ответ) — в теле со второго абзаца.
+    for p in d["intro"][1:]:
         out += "<p>%s</p>" % esc(p)
 
     out += "<h2>Характеристики вышки %d метров</h2>" % h_
@@ -1176,7 +1179,8 @@ def manip_prose(t_, pr):
     """Уникальный текст страницы манипулятора. Ось — экономика одного рейса."""
     d = MANIP_DATA[t_]
     out = ""
-    for p in d["intro"]:
+    # intro[0] вынесен в hero-lead (intro-ответ) — в теле со второго абзаца.
+    for p in d["intro"][1:]:
         out += "<p>%s</p>" % esc(p)
 
     out += "<h2>Что может манипулятор %d тонн</h2>" % t_
@@ -1205,7 +1209,8 @@ def zemlya_prose(group, slug, name, price, table):
     """Уникальный текст страниц экскаваторов и самосвалов."""
     d = (EKSK_DATA if group == "ekskavatory" else SAMOSVAL_DATA)[slug]
     out = ""
-    for p in d["intro"]:
+    # intro[0] вынесен в hero-lead (intro-ответ) — в теле со второго абзаца.
+    for p in d["intro"][1:]:
         out += "<p>%s</p>" % esc(p)
 
     if group == "ekskavatory":
@@ -1385,7 +1390,7 @@ TASK_TOP_BLOCK = {
 }
 
 
-def task_prose(slug, tech, faqs, rod=None):
+def task_prose(slug, tech, faqs, rod=None, skip_intro0=False):
     """Уникальный текст страницы услуги. Ось — ход самой работы:
     этапы, что готовит заказчик, где ошибаются, из чего складывается цена.
 
@@ -1398,7 +1403,7 @@ def task_prose(slug, tech, faqs, rod=None):
     # страницу услуги (например uborka-snega-mtz → vyvoz-snega) — тот же приём,
     # что в faq_html()/cat_deepdive_html()/task_deepdive_html(), иначе esc()
     # превращает такую ссылку в видимый текст "<a href=...>" на странице.
-    for p in d["intro"]:
+    for p in (d["intro"][1:] if skip_intro0 else d["intro"]):
         out += "<p>%s</p>" % (p if "<a " in p else esc(p))
 
     if slug in TASK_TOP_BLOCK:
@@ -1716,7 +1721,7 @@ def build():
                 rel2 = related_tonnages(tn) + related_geo()
                 ld2 = [breadcrumb_ld(crumbs2), service_ld(h1b, leadb, pr), faq_ld(d["faqs"]), local_business_ld()]
                 page("avtokrany/%d-tonn/index.html" % tn, title2, desc2, crumbs2,
-                     hero("Автокраны · %d тонн" % tn, h1b, d["klass"], pr),
+                     hero("Автокраны · %d тонн" % tn, h1b, leadb, pr),
                      body(prose2, rel2), ld2)
                 pages += 1
 
@@ -1734,7 +1739,7 @@ def build():
              seo_desc("Автовышка %d м в Москве и области: %s" % (h, lc_first(d["focus"])),
                       "Высота и боковой вылет, грузоподъёмность люльки",
                       "Цена %s/смена с оператором" % money(pr).lower()),
-             crumbs, hero("Автовышки · %d м" % h, h1, d["focus"], pr), body(prose, rel), ld)
+             crumbs, hero("Автовышки · %d м" % h, h1, lead, pr), body(prose, rel), ld)
         pages += 1
 
     # --- манипуляторы по грузоподъёмности стрелы
@@ -1751,7 +1756,7 @@ def build():
              seo_desc("Манипулятор %d тонн в Москве и области: вылет стрелы, грузоподъёмность борта" % t,
                       ("Цена %s/смена" % money(pr).lower()) if pr else "Стоимость по расчёту",
                       "Когда выгоднее автокрана"),
-             crumbs, hero("Манипуляторы · %d т" % t, h1, d["focus"], pr), body(prose, rel), ld)
+             crumbs, hero("Манипуляторы · %d т" % t, h1, lead, pr), body(prose, rel), ld)
         pages += 1
 
     # --- марки автокранов
@@ -1768,14 +1773,19 @@ def build():
              seo_desc("Автокраны %s в аренду: какие модели доступны, сильные и слабые стороны" % name,
                       "Запчасти и сервис, цены по тоннажу",
                       "Оператор в стоимости смены"),
-             crumbs, hero("Автокраны · %s" % name, h1, d["focus"], 24000), body(prose, rel), ld)
+             crumbs, hero("Автокраны · %s" % name, h1, lead, 24000), body(prose, rel), ld)
         pages += 1
 
     # --- страницы под задачи клиента
     for slug, name, rod, lead, tech, pr, faqs in TASKS:
         crumbs = [home, ("Услуги","/uslugi/"), (name, "/uslugi/%s/" % slug)]
         h1 = TASK_H1_OVERRIDE.get(slug, name + " краном в Москве и области")
-        prose = task_prose(slug, tech, faqs, rod)
+        # intro[0] — развёрнутый ответ с фактом; выносим его в hero-lead (это intro-ответ страницы),
+        # кроме случая с доверенной ссылкой в первом абзаце (hero экранирует). Тогда — angle.
+        _t_intro = TASKS_DATA[slug]["intro"]
+        _t_promote = bool(_t_intro) and "<a " not in _t_intro[0]
+        _hero_lead = _t_intro[0] if _t_promote else TASKS_DATA[slug]["angle"]
+        prose = task_prose(slug, tech, faqs, rod, skip_intro0=_t_promote)
         rel = related_tasks(slug) + related_types() + related_geo()
         ld = [breadcrumb_ld(crumbs), service_ld(name, lead, pr), faq_ld(faqs), local_business_ld()]
         page("uslugi/%s/index.html" % slug,
@@ -1783,7 +1793,7 @@ def build():
              seo_desc("%s в Москве и области: %s" % (name, lc_first(TASKS_DATA[slug]["angle"])),
                       "Как проходит работа и что подготовить",
                       "Оператор в стоимости, подача от 1 дня"),
-             crumbs, hero("Услуги", h1, TASKS_DATA[slug]["angle"], pr), body(prose, rel) + TRUST, ld)
+             crumbs, hero("Услуги", h1, _hero_lead, pr), body(prose, rel) + TRUST, ld)
         pages += 1
 
     # --- хаб услуг
@@ -1856,7 +1866,7 @@ def build():
              seo_desc("Автокран со стрелой %d м: %s" % (m_, lc_first(d["focus"])),
                       "Высота подъёма, вылет, расчёт геометрии",
                       ("Цена %s/смена" % money(pr).lower()) if pr else "Стоимость по расчёту"),
-             crumbs, hero("Автокраны · стрела %d м" % m_, h1, d["focus"], pr), body(prose, rel), ld)
+             crumbs, hero("Автокраны · стрела %d м" % m_, h1, lead, pr), body(prose, rel), ld)
         pages += 1
 
     # --- экскаваторы и самосвалы по моделям/параметрам
@@ -1881,7 +1891,7 @@ def build():
                  seo_desc("%s в аренду в Москве и области: %s" % (n, d_),
                           dd["focus"],
                           "Цена %s/смена с оператором" % money(p).lower()),
-                 crumbs, hero(kicker, h1, dd["focus"], p), body(prose, rel), ld)
+                 crumbs, hero(kicker, h1, lead, p), body(prose, rel), ld)
             pages += 1
 
     # --- блог
