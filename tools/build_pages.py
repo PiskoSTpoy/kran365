@@ -653,7 +653,10 @@ BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260
 # Поля статьи сверх кортежа BLOG (FAQ, источники, дата проверки фактов) — по
 # скелету статьи seo-2026-playbook. Кортеж не расширяем: его по четыре поля
 # распаковывают feed_gen, rebuild_blog_hub_cards и хаб блога.
-BLOG_EXTRA = dict(BLOG_EXTRA_20260925, **BLOG_EXTRA_20260926, **BLOG_EXTRA_20260927)
+from data_blog_faq_backfill import BLOG_FAQ_BACKFILL   # FAQ-бэкфилл старых статей (только faqs, без sources)
+# Порядок мержа: сначала бэкфилл, потом дневные — если у статьи появится полноценная
+# запись с источниками, она перекроет бэкфилл-заглушку с одним FAQ.
+BLOG_EXTRA = dict(BLOG_FAQ_BACKFILL, **BLOG_EXTRA_20260925, **BLOG_EXTRA_20260926, **BLOG_EXTRA_20260927)
 
 # Марки автокранов
 MARKI = [
@@ -1884,11 +1887,15 @@ def build():
         prose = content
         extra = BLOG_EXTRA.get(s)
         if extra:
-            checked = fix_geo2026._fmt(extra["checked"])
             prose += "<h2>Частые вопросы</h2>" + faq_html(extra["faqs"])
-            prose += ('<h2>Источники · проверено %s</h2><ul>%s</ul>' % (checked, "".join(
-                '<li>%s — <a href="%s" rel="nofollow noopener" target="_blank">%s</a></li>' % (
-                    esc(n), esc(u), esc(u.split("/")[2])) for n, u in extra["sources"])))
+            # Источники — только если у статьи есть реальная внешняя норма/цифра
+            # (правило №2/№8: не ставим блок под утверждение, которого нет).
+            # FAQ-backfill старых статей несёт только faqs, без sources.
+            if extra.get("sources"):
+                checked = fix_geo2026._fmt(extra["checked"])
+                prose += ('<h2>Источники · проверено %s</h2><ul>%s</ul>' % (checked, "".join(
+                    '<li>%s — <a href="%s" rel="nofollow noopener" target="_blank">%s</a></li>' % (
+                        esc(n), esc(u), esc(u.split("/")[2])) for n, u in extra["sources"])))
         prose += ('<h2>Нужна техника под вашу задачу?</h2><p>Опишите задачу — подберём машину и назовём точную цену за 5 минут. '
                   'Консультация бесплатна, приём заявок круглосуточно: <a href="tel:%s">%s</a>.</p>' % (PHONE_TEL, PHONE_DISP))
         rel = ('<div class="related"><h3>Другие статьи</h3><div class="related-grid">%s</div></div>' %
@@ -1912,7 +1919,11 @@ def build():
                    'опубликовано <time datetime="%s">%s</time>' % (published, fix_geo2026._fmt(published))]
             if updated:
                 row.append('обновлено <time datetime="%s">%s</time>' % (updated, fix_geo2026._fmt(updated)))
-            row += ["факты проверены %s" % checked, "%d мин чтения" % max(1, round(words_n / 180.0))]
+            # «факты проверены DATE» — только когда у статьи есть блок источников
+            # (внешняя сверка). У FAQ-backfill без источников эту пометку не даём.
+            if extra.get("sources"):
+                row.append("факты проверены %s" % fix_geo2026._fmt(extra["checked"]))
+            row.append("%d мин чтения" % max(1, round(words_n / 180.0)))
             i = hero_html.find('<p class="lead">')
             j = hero_html.find("</p>", i) + len("</p>")
             hero_html = hero_html[:j] + '<p class="small muted meta-row">%s</p>' % " · ".join(row) + hero_html[j:]
