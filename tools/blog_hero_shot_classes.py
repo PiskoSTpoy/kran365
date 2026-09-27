@@ -83,6 +83,9 @@ SHOTS = {
     "pri-kakom-vetre-nelzya-rabotat-kranom": "ph-crane-100",
     "teleskopicheskiy-ili-vilochnyy-pogruzchik": "ph-manip",
     "kran-na-gazone-moskva-shtraf": "ph-crane-25",
+    "skolko-vesit-blok-fbs-kakoy-kran-nuzhen": "ph-crane-25",
+    "avtokran-25-ili-32-tonny": "ph-crane-25",
+    "propusk-avtokrana-v-moskvu-mkad-ttk": "ph-crane-100",
 }
 
 MARK = 'class="page-hero"'
