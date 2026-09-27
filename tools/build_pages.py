@@ -1679,9 +1679,9 @@ def build():
             rows = "".join('<tr><td><a href="%s%s/" style="color:var(--ink)">%s</a></td><td>%s</td><td><b>%s</b> <span style="color:var(--muted-2);font-size:.82rem">/ смена</span></td></tr>' % (
                 base, s2, esc(n2), esc(d2), money(p2)) for s2, n2, d2, p2 in items)
             tbl = '<div class="ptable-wrap"><table class="ptable"><thead><tr><th>Техника</th><th>Параметры</th><th>Цена</th></tr></thead><tbody>%s</tbody></table></div>' % rows
-            prose = hub_extra_intro(t["slug"]) + ('<h2>Модели и цены</h2><p>Стоимость указана «от», за смену — включает работу оператора и топливо.</p>%s'
+            prose = hub_extra_intro(t["slug"]) + ('<h2>Модели и цены</h2><p>В таблице — %d моделей с ценами «от» за смену; оператор и топливо включены, подача считается отдельно.</p>%s'
                      '<h2>Частые вопросы</h2>%s') % (
-                     tbl, faq_html(faqs))
+                     len(items), tbl, faq_html(faqs))
             rel = ('<div class="related"><h3>Модели</h3><div class="related-grid">%s</div></div>' %
                    "".join('<a href="%s%s/">%s</a>' % (base, s2, esc(n2)) for s2, n2, _, _ in items)) + related_blog(*BLOG_FOR_TYPE.get(t["slug"], ())) + related_tasks() + related_types(t["slug"]) + related_geo()
         elif t["slug"] in HUBS_DATA:
@@ -2030,15 +2030,24 @@ def build():
             rows += '<tr><td>%s</td><td>%s</td><td><b>%s</b>%s</td></tr>' % (esc(it["name"]), specs, money(it.get("price")), price_hour_html(it.get("price")))
         table = ('<div class="ptable-wrap"><table class="ptable"><thead><tr><th>Модель</th><th>Характеристики</th>'
                  '<th>Цена</th></tr></thead><tbody>%s</tbody></table></div>') % rows
-        prose = ('<p>%s</p>%s'
+        # intro (>=25 слов) выносим в hero-lead (intro-ответ); в теле не повторяем.
+        _price = c.get("price_from")
+        if _price:
+            _mp = ("Аренда — от %s за смену: оператор и топливо включены, подача считается отдельно "
+                   "по адресу объекта." % money(_price).lower())
+        else:
+            _mp = ("В подборке ниже — %d позиций разного класса; точную цену по вашей задаче называем "
+                   "в течение дня после уточнения объёма и площадки." % len(c["items"]))
+        prose = ('%s'
                  '<h2>Модели и цены</h2>'
-                 '<p>Ниже — варианты, которые подбираем под задачу. Цена «от», за смену; окончательную называем после уточнения объёма и площадки.</p>%s'
-                 '<h2>Как мы работаем</h2><ul>'
+                 '<p>%s</p>%s'
+                 '<h2>Как мы работаем</h2>'
+                 '<p>Технику этого класса подаём по отработанной схеме из 4 шагов:</p><ul>'
                  '<li>Находим и подаём технику из проверенной сети — с оператором и ответственностью за сроки по договору</li>'
                  '<li>Подбираем класс машины под ваш объём, грунт и задачу</li>'
                  '<li>Договор, счёт, закрывающие документы, ЭДО для юрлиц</li>'
                  '<li>Работаем по Москве, области и регионам России</li></ul>'
-                 '<h2>Частые вопросы</h2>%s') % (esc(c["intro"]), cat_deepdive_html(c["slug"]), table, faq_html(faqs))
+                 '<h2>Частые вопросы</h2>%s') % (cat_deepdive_html(c["slug"]), _mp, table, faq_html(faqs))
         rel = related_cats(c["slug"]) + related_types() + related_tasks()
         ld = [breadcrumb_ld(crumbs), service_ld(c["h1"], c["lead"], c.get("price_from")), faq_ld(faqs), local_business_ld()]
         title = seo_title(c["h1"], "в Москве", title_price(c.get("price_from")))
@@ -2046,7 +2055,7 @@ def build():
                         "Оператор и топливо в стоимости смены",
                         "Договор, счёт и закрывающие документы")
         page("%s/index.html" % c["slug"], title, desc, crumbs,
-             hero("Спецтехника", c["h1"], c["lead"], c.get("price_from")), body(prose, rel) + TRUST, ld)
+             hero("Спецтехника", c["h1"], c["intro"], c.get("price_from")), body(prose, rel) + TRUST, ld)
         pages += 1
 
     # --- страница о редакции и методологии (пункт DoD скилла seo-2026-playbook:
