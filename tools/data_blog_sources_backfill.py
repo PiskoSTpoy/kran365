@@ -27,6 +27,9 @@ U_PP_491   = "https://www.consultant.ru/document/cons_doc_LAW_62293/"
 U_GOST_9818  = "https://docs.cntd.ru/document/1200122888"
 U_GOST_52044 = "https://docs.cntd.ru/document/1200031478"
 U_GOST_56195 = "https://docs.cntd.ru/document/1200114298"
+U_SNIP_1203  = "https://docs.cntd.ru/document/901794520"
+U_GOST_34017 = "https://docs.cntd.ru/document/1200144610"
+U_GOST_7473  = "https://docs.cntd.ru/document/1200085075"
 
 BLOG_SOURCES_BACKFILL = {
     "dogovor-arendy-spectehniki-s-ekipazhem": {
@@ -111,6 +114,18 @@ BLOG_SOURCES_BACKFILL = {
         "sources": [
             ("Правила содержания общего имущества в многоквартирном доме — ПП РФ от 13.08.2006 № 491, КонсультантПлюс", U_PP_491),
             ("ГОСТ Р 56195-2014 «Услуги содержания придомовой территории, сбора и вывоза бытовых отходов» — docs.cntd.ru", U_GOST_56195),
+        ],
+    },
+    "kran-dlya-montazha-opor-osveshheniya": {
+        "checked": CHECKED,
+        "sources": [
+            ("СНиП 12-03-2001 «Безопасность труда в строительстве. Часть 1» — расчёт и ограждение опасной зоны при подъёме, docs.cntd.ru", U_SNIP_1203),
+        ],
+    },
+    "razgruzka-plit-perekrytiya-kranom": {
+        "checked": CHECKED,
+        "sources": [
+            ("ФНП «Правила безопасности ОПО с подъёмными сооружениями» — приказ Ростехнадзора от 26.11.2020 № 461 (схема строповки — часть ППР), КонсультантПлюс", U_FNP_461),
         ],
     },
 }

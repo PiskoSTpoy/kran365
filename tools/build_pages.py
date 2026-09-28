@@ -1500,6 +1500,34 @@ def cat_deepdive_html(slug):
     return "".join("<h2>%s</h2><p>%s</p>" % (esc(h), t if "<a " in t else esc(t)) for h, t in items)
 
 
+# Источники для категорий, где в тексте (cat_deepdive) названа конкретная норма.
+# Только реальные нормы, ссылки сверены WebSearch 28.09.2026 (правило №2/№8).
+CAT_SOURCES = {
+    "avtobetonosmesiteli": {"checked": "2026-09-28", "sources": [
+        ("ГОСТ 7473-2010 «Смеси бетонные. Технические условия» — предельная продолжительность транспортирования смеси, docs.cntd.ru",
+         "https://docs.cntd.ru/document/1200085075")]},
+    "kran-balki-konsolnye-krany": {"checked": "2026-09-28", "sources": [
+        ("ГОСТ 34017-2016 «Краны грузоподъёмные. Классификация режимов работы» (классы A1–A8) — docs.cntd.ru",
+         "https://docs.cntd.ru/document/1200144610"),
+        ("ФНП «Правила безопасности ОПО с подъёмными сооружениями» — приказ Ростехнадзора от 26.11.2020 № 461 (сроки освидетельствования), КонсультантПлюс",
+         "https://www.consultant.ru/document/cons_doc_LAW_373321/")]},
+    "mostovye-krany": {"checked": "2026-09-28", "sources": [
+        ("ГОСТ 34017-2016 «Краны грузоподъёмные. Классификация режимов работы» — docs.cntd.ru",
+         "https://docs.cntd.ru/document/1200144610")]},
+}
+
+
+def cat_sources_html(slug):
+    """Блок «Источники» для категории, если у слага есть проверенная норма (CAT_SOURCES)."""
+    src = CAT_SOURCES.get(slug)
+    if not src:
+        return ""
+    checked = fix_geo2026._fmt(src["checked"])
+    return ('<h2>Источники · проверено %s</h2><ul>%s</ul>' % (checked, "".join(
+        '<li>%s — <a href="%s" rel="nofollow noopener" target="_blank">%s</a></li>' % (
+            esc(n), esc(u), esc(u.split("/")[2])) for n, u in src["sources"])))
+
+
 def task_deepdive_html(slug):
     """То же самое, для услуг (data_tasks.py) — см. cat_deepdive_html()."""
     items = TASK_DEEPDIVE.get(slug)
@@ -2061,6 +2089,7 @@ def build():
                  '<li>Договор, счёт, закрывающие документы, ЭДО для юрлиц</li>'
                  '<li>Работаем по Москве, области и регионам России</li></ul>'
                  '<h2>Частые вопросы</h2>%s') % (cat_deepdive_html(c["slug"]), _mp, table, faq_html(faqs))
+        prose += cat_sources_html(c["slug"])
         rel = related_cats(c["slug"]) + related_types() + related_tasks()
         ld = [breadcrumb_ld(crumbs), service_ld(c["h1"], c["lead"], c.get("price_from")), faq_ld(faqs), local_business_ld()]
         title = seo_title(c["h1"], "в Москве", title_price(c.get("price_from")))
