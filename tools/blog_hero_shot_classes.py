@@ -86,6 +86,9 @@ SHOTS = {
     "skolko-vesit-blok-fbs-kakoy-kran-nuzhen": "ph-crane-25",
     "avtokran-25-ili-32-tonny": "ph-crane-25",
     "propusk-avtokrana-v-moskvu-mkad-ttk": "ph-crane-100",
+    "skolko-vesit-plita-pag-14-kakoy-kran-nuzhen": "ph-crane-25",
+    "mini-pogruzchik-ili-frontalnyy-pogruzchik": "ph-exc",
+    "dokumenty-na-avtokran-chto-proverit-pered-arendoy": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'

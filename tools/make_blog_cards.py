@@ -110,6 +110,9 @@ CARDS = {
     "skolko-vesit-blok-fbs-kakoy-kran-nuzhen": ("Сколько весит блок ФБС и какой кран нужен", "ТЕХНИКА"),
     "avtokran-25-ili-32-tonny": ("Автокран 25 или 32 тонны: что выбрать", "ТЕХНИКА"),
     "propusk-avtokrana-v-moskvu-mkad-ttk": ("Пропуск автокрана в Москву: МКАД, ТТК, СК", "ДОКУМЕНТЫ"),
+    "skolko-vesit-plita-pag-14-kakoy-kran-nuzhen": ("Сколько весит плита ПАГ-14 и какой кран нужен", "ТЕХНИКА"),
+    "mini-pogruzchik-ili-frontalnyy-pogruzchik": ("Мини-погрузчик или фронтальный погрузчик", "ТЕХНИКА"),
+    "dokumenty-na-avtokran-chto-proverit-pered-arendoy": ("Документы на автокран: что проверить перед арендой", "ДОКУМЕНТЫ"),
 }
 
 # Фирменный знак сайта (#i-mark из index.html) — те же координаты, что в
