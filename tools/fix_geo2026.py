@@ -55,7 +55,10 @@ def _git_dates(rel_path: str) -> tuple[str, str | None]:
     """(опубликовано, обновлено|None) в формате YYYY-MM-DD, из git-истории файла."""
     try:
         r = subprocess.run(
-            ["git", "log", "--follow", "--format=%ad", "--date=short", "--", rel_path],
+            # -M90%: без порога --follow принимает новую статью за «копию» старой
+            # (общий шаблон страницы даёт ~54 % сходства) и отдаёт её дату публикации —
+            # так 28.09.2026 у 23 статей блога оказался datePublished 30–31.07.
+            ["git", "log", "--follow", "-M90%", "--format=%ad", "--date=short", "--", rel_path],
             cwd=ROOT, capture_output=True, text=True, timeout=10,
         )
     except Exception:
