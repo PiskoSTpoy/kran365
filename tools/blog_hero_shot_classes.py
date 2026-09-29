@@ -89,6 +89,9 @@ SHOTS = {
     "skolko-vesit-plita-pag-14-kakoy-kran-nuzhen": "ph-crane-25",
     "mini-pogruzchik-ili-frontalnyy-pogruzchik": "ph-exc",
     "dokumenty-na-avtokran-chto-proverit-pered-arendoy": "ph-crane-25",
+    "skolko-vesit-zhelezobetonnaya-svaya-kakoy-kran-nuzhen": "ph-crane-25",
+    "betononasos-ili-kran-s-badey": "ph-crane-25",
+    "kran-u-teplotrassy-ohrannaya-zona": "ph-crane-100",
 }
 
 MARK = 'class="page-hero"'
