@@ -92,6 +92,9 @@ SHOTS = {
     "skolko-vesit-zhelezobetonnaya-svaya-kakoy-kran-nuzhen": "ph-crane-25",
     "betononasos-ili-kran-s-badey": "ph-crane-25",
     "kran-u-teplotrassy-ohrannaya-zona": "ph-crane-100",
+    "skolko-vesit-dorozhnaya-plita-2p30-18-30-kakoy-kran-nuzhen": "ph-crane-25",
+    "bashennyy-kran-ili-avtokran-na-stroyke": "ph-crane-100",
+    "strahovanie-opo-arendodatelya-krana-chto-proverit": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'
