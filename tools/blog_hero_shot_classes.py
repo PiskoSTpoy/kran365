@@ -95,6 +95,9 @@ SHOTS = {
     "skolko-vesit-dorozhnaya-plita-2p30-18-30-kakoy-kran-nuzhen": "ph-crane-25",
     "bashennyy-kran-ili-avtokran-na-stroyke": "ph-crane-100",
     "strahovanie-opo-arendodatelya-krana-chto-proverit": "ph-crane-25",
+    "skolko-vesit-morskoy-konteyner-20-40-futov-kakoy-kran-nuzhen": "ph-crane-25",
+    "avtokran-16-ili-25-tonn": "ph-crane-25",
+    "yamobur-i-kran-u-metro-moskva-tehnicheskaya-zona": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'

@@ -119,6 +119,9 @@ CARDS = {
     "skolko-vesit-dorozhnaya-plita-2p30-18-30-kakoy-kran-nuzhen": ("Сколько весит дорожная плита 2П30.18-30", "ТЕХНИКА"),
     "bashennyy-kran-ili-avtokran-na-stroyke": ("Башенный кран или автокран на стройке", "ТЕХНИКА"),
     "strahovanie-opo-arendodatelya-krana-chto-proverit": ("Страховка ОПО арендодателя крана", "ДОКУМЕНТЫ"),
+    "skolko-vesit-morskoy-konteyner-20-40-futov-kakoy-kran-nuzhen": ("Сколько весит контейнер 20 и 40 футов", "ТЕХНИКА"),
+    "avtokran-16-ili-25-tonn": ("Автокран 16 или 25 тонн", "ТЕХНИКА"),
+    "yamobur-i-kran-u-metro-moskva-tehnicheskaya-zona": ("Ямобур и кран рядом с метро", "ДОКУМЕНТЫ"),
 }
 
 # Фирменный знак сайта (#i-mark из index.html) — те же координаты, что в
