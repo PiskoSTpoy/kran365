@@ -98,6 +98,9 @@ SHOTS = {
     "skolko-vesit-morskoy-konteyner-20-40-futov-kakoy-kran-nuzhen": "ph-crane-25",
     "avtokran-16-ili-25-tonn": "ph-crane-25",
     "yamobur-i-kran-u-metro-moskva-tehnicheskaya-zona": "ph-crane-25",
+    "skolko-vesit-bortovoy-kamen-kakoy-kran-nuzhen": "ph-crane-25",
+    "avtogreyder-ili-buldozer-dlya-ploshchadki": "ph-exc",
+    "ekskavator-i-yamobur-u-vodoprovoda-i-kanalizacii": "ph-exc",
 }
 
 MARK = 'class="page-hero"'
