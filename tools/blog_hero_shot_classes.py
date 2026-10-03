@@ -101,6 +101,9 @@ SHOTS = {
     "skolko-vesit-bortovoy-kamen-kakoy-kran-nuzhen": "ph-crane-25",
     "avtogreyder-ili-buldozer-dlya-ploshchadki": "ph-exc",
     "ekskavator-i-yamobur-u-vodoprovoda-i-kanalizacii": "ph-exc",
+    "skolko-vesit-kolco-kolodca-ks-kakoy-kran-nuzhen": "ph-manip",
+    "samosval-10-ili-20-kubov-dlya-vyvoza-grunta": "ph-samosval",
+    "opasnaya-zona-raboty-krana-raschet-ograzhdenie": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'
