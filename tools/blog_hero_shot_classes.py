@@ -104,6 +104,9 @@ SHOTS = {
     "skolko-vesit-kolco-kolodca-ks-kakoy-kran-nuzhen": "ph-manip",
     "samosval-10-ili-20-kubov-dlya-vyvoza-grunta": "ph-samosval",
     "opasnaya-zona-raboty-krana-raschet-ograzhdenie": "ph-crane-25",
+    "skolko-vesit-lentochnyy-fundament-fl-kakoy-kran-nuzhen": "ph-manip",
+    "gruntovyy-katok-12-ili-18-tonn-chto-vybrat": "ph-exc",
+    "order-oati-na-zemlyanye-raboty-moskva-ekskavator": "ph-exc",
 }
 
 MARK = 'class="page-hero"'
