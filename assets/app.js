@@ -86,7 +86,7 @@
   [100, 400, 800, 1400].forEach(function (t) { setTimeout(revealInView, t); });
 
   /* ---------- Ленивая загрузка hero-видео ----------
-     Грузим mp4 только на десктопе, при быстрой сети и без reduce-motion.
+     Грузим mp4 при быстрой сети и без reduce-motion; на телефоне — облегчённая копия.
      Пока файла нет / условия не выполнены — остаётся SVG-постер с Ken Burns. */
   var video = document.querySelector('.hero__video');
   function heroVideo() {
@@ -96,9 +96,10 @@
     var saveData = conn.saveData === true;
     var slow = /(2g|slow-2g)/.test(conn.effectiveType || '');
     var small = window.matchMedia('(max-width: 640px)').matches;
-    if (reduce || saveData || slow || small) return;
+    if (reduce || saveData || slow) return;
 
-    video.src = video.dataset.src;
+    // на телефоне — лёгкая копия (0,9 МБ вместо 4,8 МБ), на десктопе — полная
+    video.src = (small && video.dataset.srcM) ? video.dataset.srcM : video.dataset.src;
     video.load();
     var show = function () { video.classList.add('is-playing'); };
     var tryPlay = function () { var p = video.play(); if (p && p.catch) p.catch(function () {}); };
