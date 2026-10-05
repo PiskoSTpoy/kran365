@@ -107,6 +107,9 @@ SHOTS = {
     "skolko-vesit-lentochnyy-fundament-fl-kakoy-kran-nuzhen": "ph-manip",
     "gruntovyy-katok-12-ili-18-tonn-chto-vybrat": "ph-exc",
     "order-oati-na-zemlyanye-raboty-moskva-ekskavator": "ph-exc",
+    "skolko-vesit-plita-perekrytiya-pk-kakoy-kran-nuzhen": "ph-crane-25",
+    "jcb-3cx-ili-4cx-chto-vybrat": "ph-exc",
+    "kran-v-stesnennyh-usloviyah-ppr-koordinatnaya-zashchita": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'
