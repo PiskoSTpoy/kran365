@@ -110,6 +110,9 @@ SHOTS = {
     "skolko-vesit-plita-perekrytiya-pk-kakoy-kran-nuzhen": "ph-crane-25",
     "jcb-3cx-ili-4cx-chto-vybrat": "ph-exc",
     "kran-v-stesnennyh-usloviyah-ppr-koordinatnaya-zashchita": "ph-crane-25",
+    "skolko-vesit-dvutavr-12-metrov-kakoy-kran-nuzhen": "ph-manip",
+    "ekskavator-20-ili-30-tonn-hyundai-r220-r300": "ph-exc",
+    "kto-otvechaet-za-bezopasnost-raboty-krana-na-obekte": "ph-crane-100",
 }
 
 MARK = 'class="page-hero"'
