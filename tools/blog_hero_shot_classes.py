@@ -113,6 +113,9 @@ SHOTS = {
     "skolko-vesit-dvutavr-12-metrov-kakoy-kran-nuzhen": "ph-manip",
     "ekskavator-20-ili-30-tonn-hyundai-r220-r300": "ph-exc",
     "kto-otvechaet-za-bezopasnost-raboty-krana-na-obekte": "ph-crane-100",
+    "skolko-vesit-stalnaya-truba-12-metrov-kakoy-kran-nuzhen": "ph-manip",
+    "avtobetonosmesitel-7-ili-9-kubov-chto-vybrat": "ph-samosval",
+    "podzemnyy-kabel-na-ploshchadke-ohrannaya-zona-ekskavator-kran": "ph-exc",
 }
 
 MARK = 'class="page-hero"'
