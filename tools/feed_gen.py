@@ -79,15 +79,16 @@ from data_blog_daily_20261005 import BLOG_DAILY_20261005
 from data_blog_daily_20261006 import BLOG_DAILY_20261006
 from data_blog_daily_20261007 import BLOG_DAILY_20261007
 from data_blog_daily_20261008 import BLOG_DAILY_20261008
+from data_blog_daily_20261009 import BLOG_DAILY_20261009
 
 SITE = "https://kran365.ru"
 IMG_DIR = os.path.join(ROOT, "assets", "img")
 DZEN_IMG_DIR = os.path.join(IMG_DIR, "dzen")
 MIN_WIDTH = 700
 
-BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910 + BLOG_DAILY_20260911 + BLOG_DAILY_20260914 + BLOG_DAILY_20260915 + BLOG_DAILY_20260916 + BLOG_DAILY_20260917 + BLOG_DAILY_20260918 + BLOG_DAILY_20260919 + BLOG_DAILY_20260920 + BLOG_DAILY_20260924 + BLOG_DAILY_20260924B + BLOG_DAILY_20260925 + BLOG_DAILY_20260926 + BLOG_DAILY_20260927 + BLOG_DAILY_20260928 + BLOG_DAILY_20260929 + BLOG_DAILY_20260930 + BLOG_DAILY_20261001 + BLOG_DAILY_20261002 + BLOG_DAILY_20261003 + BLOG_DAILY_20261004 + BLOG_DAILY_20261005 + BLOG_DAILY_20261006 + BLOG_DAILY_20261007 + BLOG_DAILY_20261008
+BLOG = list(BLOG_BASE) + BLOG_RF + BLOG_NEW + BLOG_SEO_BATCH1 + BLOG_DAILY_20260902 + BLOG_DAILY_20260903 + BLOG_DAILY_20260904 + BLOG_DAILY_20260905 + BLOG_DAILY_20260906 + BLOG_DAILY_20260907 + BLOG_DAILY_20260908 + BLOG_DAILY_20260909 + BLOG_DAILY_20260909B + BLOG_DAILY_20260910 + BLOG_DAILY_20260911 + BLOG_DAILY_20260914 + BLOG_DAILY_20260915 + BLOG_DAILY_20260916 + BLOG_DAILY_20260917 + BLOG_DAILY_20260918 + BLOG_DAILY_20260919 + BLOG_DAILY_20260920 + BLOG_DAILY_20260924 + BLOG_DAILY_20260924B + BLOG_DAILY_20260925 + BLOG_DAILY_20260926 + BLOG_DAILY_20260927 + BLOG_DAILY_20260928 + BLOG_DAILY_20260929 + BLOG_DAILY_20260930 + BLOG_DAILY_20261001 + BLOG_DAILY_20261002 + BLOG_DAILY_20261003 + BLOG_DAILY_20261004 + BLOG_DAILY_20261005 + BLOG_DAILY_20261006 + BLOG_DAILY_20261007 + BLOG_DAILY_20261008 + BLOG_DAILY_20261009
 
-_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py", "tools/data_blog_daily_20260909.py", "tools/data_blog_daily_20260909b.py", "tools/data_blog_daily_20260910.py", "tools/data_blog_daily_20260911.py", "tools/data_blog_daily_20260914.py", "tools/data_blog_daily_20260915.py", "tools/data_blog_daily_20260916.py", "tools/data_blog_daily_20260917.py", "tools/data_blog_daily_20260918.py", "tools/data_blog_daily_20260919.py", "tools/data_blog_daily_20260920.py", "tools/data_blog_daily_20260924.py", "tools/data_blog_daily_20260924b.py", "tools/data_blog_daily_20260925.py", "tools/data_blog_daily_20260926.py", "tools/data_blog_daily_20260927.py", "tools/data_blog_daily_20260928.py", "tools/data_blog_daily_20260929.py", "tools/data_blog_daily_20260930.py", "tools/data_blog_daily_20261001.py", "tools/data_blog_daily_20261002.py", "tools/data_blog_daily_20261003.py", "tools/data_blog_daily_20261004.py", "tools/data_blog_daily_20261005.py", "tools/data_blog_daily_20261006.py", "tools/data_blog_daily_20261007.py", "tools/data_blog_daily_20261008.py"]
+_DATE_FILES = ["tools/data_blog_base.py", "tools/data_rf.py", "tools/data_blog_new.py", "tools/data_blog_seo_batch1.py", "tools/data_blog_daily_20260902.py", "tools/data_blog_daily_20260903.py", "tools/data_blog_daily_20260904.py", "tools/data_blog_daily_20260905.py", "tools/data_blog_daily_20260906.py", "tools/data_blog_daily_20260907.py", "tools/data_blog_daily_20260908.py", "tools/data_blog_daily_20260909.py", "tools/data_blog_daily_20260909b.py", "tools/data_blog_daily_20260910.py", "tools/data_blog_daily_20260911.py", "tools/data_blog_daily_20260914.py", "tools/data_blog_daily_20260915.py", "tools/data_blog_daily_20260916.py", "tools/data_blog_daily_20260917.py", "tools/data_blog_daily_20260918.py", "tools/data_blog_daily_20260919.py", "tools/data_blog_daily_20260920.py", "tools/data_blog_daily_20260924.py", "tools/data_blog_daily_20260924b.py", "tools/data_blog_daily_20260925.py", "tools/data_blog_daily_20260926.py", "tools/data_blog_daily_20260927.py", "tools/data_blog_daily_20260928.py", "tools/data_blog_daily_20260929.py", "tools/data_blog_daily_20260930.py", "tools/data_blog_daily_20261001.py", "tools/data_blog_daily_20261002.py", "tools/data_blog_daily_20261003.py", "tools/data_blog_daily_20261004.py", "tools/data_blog_daily_20261005.py", "tools/data_blog_daily_20261006.py", "tools/data_blog_daily_20261007.py", "tools/data_blog_daily_20261008.py", "tools/data_blog_daily_20261009.py"]
 
 
 def _first_commit_date(slug):
@@ -124,6 +125,9 @@ IMG_MAP = {
     "skolko-vesit-shveller-12-metrov-kakoy-kran-nuzhen": "obj-6.jpg",
     "paukoobraznyy-mini-kran-ili-avtokran-dlya-uzkogo-dvora": "crane-site-08.jpg",
     "stropy-kak-chasto-osmatrivat-fnp-461-srok-10-dney": "crane-tank-lift.jpg",
+    "skolko-vesit-armatura-12-metrov-kakoy-kran-nuzhen": "obj-6.jpg",
+    "avtokran-32-ili-50-tonn-chto-vybrat": "crane-allterrain-50t.jpg",
+    "tablichka-na-krane-fnp-461-chto-proverit-pri-priemke": "crane-site-23.jpg",
     "kran-ili-manipulyator": "manip-7.jpg",
     "podgotovka-ploshchadki": "obj-1.jpg",
     "vyvoz-grunta-kak-schitat": "samosval.jpg",

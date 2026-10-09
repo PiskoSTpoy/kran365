@@ -116,6 +116,9 @@ SHOTS = {
     "skolko-vesit-stalnaya-truba-12-metrov-kakoy-kran-nuzhen": "ph-manip",
     "avtobetonosmesitel-7-ili-9-kubov-chto-vybrat": "ph-samosval",
     "podzemnyy-kabel-na-ploshchadke-ohrannaya-zona-ekskavator-kran": "ph-exc",
+    "skolko-vesit-armatura-12-metrov-kakoy-kran-nuzhen": "ph-manip",
+    "avtokran-32-ili-50-tonn-chto-vybrat": "ph-crane-100",
+    "tablichka-na-krane-fnp-461-chto-proverit-pri-priemke": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'
