@@ -79,9 +79,11 @@ def check_snapshot(before, after):
     problems = []
     if after["mid"] < before["mid"]:
         problems.append("blog-body-img--mid: %d -> %d" % (before["mid"], after["mid"]))
-    if after["blog_hero"] != after["articles"]:
-        problems.append("page-hero--shot в блоге на %d из %d статей"
-                        % (after["blog_hero"], after["articles"]))
+    # Не «== articles»: у части статей героя-кадра нет (на 10.10.2026 — 96 из 99,
+    # так же в HEAD). Регрессия — когда после сборки героев стало меньше, чем до.
+    if after["blog_hero"] < before["blog_hero"]:
+        problems.append("page-hero--shot в блоге: %d -> %d"
+                        % (before["blog_hero"], after["blog_hero"]))
     if after["other_hero"] < before["other_hero"]:
         problems.append("page-hero--shot вне блога: %d -> %d"
                         % (before["other_hero"], after["other_hero"]))
@@ -157,7 +159,8 @@ def main():
         sys.exit(1)
 
     # Коммит и пуш
-    subprocess.run(["git", "add", "-A"], cwd=ROOT, check=True)
+    # STATUS.md часто «грязный» от других сессий — в коммит дрейфа его не берём
+    subprocess.run(["git", "add", "-A", "--", ".", ":(exclude)STATUS.md"], cwd=ROOT, check=True)
     diff = subprocess.run(["git", "diff", "--cached", "--stat"], cwd=ROOT,
                            capture_output=True, text=True).stdout
     if not diff.strip():

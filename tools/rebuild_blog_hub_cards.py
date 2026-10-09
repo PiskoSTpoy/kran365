@@ -85,7 +85,9 @@ def main():
     # прогона этого скрипта) там оказывается устаревший ptable, а не bt-grid —
     # оба случая должны замениться одинаково, по границам intro/related.
     intro = re.search(r'<div class="prose reveal"><p>.*?</p>', content, re.S)
-    related_idx = content.find('<div class="related"><h2>Все статьи</h2>')
+    # H2 после сборки получает id (<h2 id="vse-stati">), поэтому якорь — по regex.
+    rel = re.search(r'<div class="related"><h2[^>]*>Все статьи</h2>', content)
+    related_idx = rel.start() if rel else -1
     if not intro or related_idx == -1:
         print("PATTERN NOT FOUND — правь вручную")
         return 1
