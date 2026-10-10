@@ -119,6 +119,9 @@ SHOTS = {
     "skolko-vesit-armatura-12-metrov-kakoy-kran-nuzhen": "ph-manip",
     "avtokran-32-ili-50-tonn-chto-vybrat": "ph-crane-100",
     "tablichka-na-krane-fnp-461-chto-proverit-pri-priemke": "ph-crane-25",
+    "skolko-vesit-poddon-kirpicha-kakoy-manipulyator-nuzhen": "ph-manip",
+    "frontalnyy-pogruzchik-3-ili-5-tonn-xcmg-lw300-lw500": "ph-exc",
+    "kran-u-kotlovana-rasstoyanie-ot-otkosa-snip-12-03-2001": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'
