@@ -122,6 +122,9 @@ SHOTS = {
     "skolko-vesit-poddon-kirpicha-kakoy-manipulyator-nuzhen": "ph-manip",
     "frontalnyy-pogruzchik-3-ili-5-tonn-xcmg-lw300-lw500": "ph-exc",
     "kran-u-kotlovana-rasstoyanie-ot-otkosa-snip-12-03-2001": "ph-crane-25",
+    "skolko-vesit-ugolok-12-metrov-kakoy-kran-nuzhen": "ph-crane-25",
+    "avtokran-16-tonn-4x2-ili-6x6-chto-vybrat": "ph-crane-25",
+    "ogranichitel-gruzopodemnosti-vzveshivanie-gruza-fnp-461-p-134": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'
