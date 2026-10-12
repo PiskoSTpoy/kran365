@@ -16,6 +16,7 @@ from patch_forms_legal import CONSENT, HONEYPOT, FOOTER_LEGAL, POLICY_URL, CONSE
 import fix_schema
 import fix_sitemap_lastmod
 import fix_geo2026
+import brand_voice
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://kran365.ru"
@@ -174,8 +175,10 @@ def service_ld(name, desc, price, area="Москва и Московская о�
         "areaServed":area,"description":desc,"offers":offer}
 
 def faq_ld(faqs):
+    # brand_answer — одна функция и для JSON-LD, и для видимого HTML (faq_html ниже),
+    # чтобы в разметке и на странице стоял один и тот же текст ответа.
     return {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-        {"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faqs]}
+        {"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":brand_voice.brand_answer(q, a)}} for q,a in faqs]}
 
 def faq_html(faqs):
     # Ответ (a) НЕ экранируется через esc(): часть FAQ-ответов по всему сайту намеренно
@@ -184,7 +187,7 @@ def faq_html(faqs):
     # превращая их в видимый текст "<a href=...>...</a>" вместо кликабельной ссылки
     # (баг найден 03.09.2026 при добавлении FAQ по вывозу снега, задевал уже существовавший
     # ответ vyvoz-grunta на /geo/balashiha/ — исправлено для всех страниц разом).
-    rows = "".join('<details><summary>%s</summary><div>%s</div></details>' % (esc(q), a) for q,a in faqs)
+    rows = "".join('<details><summary>%s</summary><div>%s</div></details>' % (esc(q), brand_voice.brand_answer(q, a)) for q,a in faqs)
     return '<div class="faq">%s</div>' % rows
 
 def aside_form():
@@ -217,6 +220,25 @@ def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
             end = faq if faq != -1 else -1
         if end != -1:
             body_html = body_html[:end] + price_terms() + body_html[end:]
+
+    # GEO: если FAQ на коммерческой странице чисто технический (ни в одном ответе нет
+    # бренда) — добавляем один вопрос «сколько стоит и как заказать». HTML и JSON-LD
+    # получают один и тот же текст.
+    if not rel_path.startswith("blog/") and '<div class="faq">' in body_html:
+        _faq_ld = next((o for o in ld_objs if isinstance(o, dict) and o.get("@type") == "FAQPage"), None)
+        _h1 = re.search(r"<h1>(.*?)</h1>", hero_html or "", re.S)
+        if _faq_ld and _h1 and not any("КРАН365" in x["acceptedAnswer"]["text"]
+                                       for x in _faq_ld["mainEntity"]):
+            _price = re.search(r'<div class="price-badge"><b>([^<]+)</b>', hero_html or "")
+            _q, _a = brand_voice.service_faq(html.unescape(re.sub(r"<[^>]+>", "", _h1.group(1))),
+                                             _price.group(1) if _price else None, rel_path)
+            _end = body_html.find("</details></div>", body_html.find('<div class="faq">'))
+            if _end != -1:
+                _end += len("</details>")
+                body_html = (body_html[:_end] + "<details><summary>%s</summary><div>%s</div></details>"
+                             % (esc(_q), _a) + body_html[_end:])
+                _faq_ld["mainEntity"].append(
+                    {"@type": "Question", "name": _q, "acceptedAnswer": {"@type": "Answer", "text": _a}})
 
     crumbs_html = ""
     parts = []
@@ -913,9 +935,9 @@ def price_terms():
             '<ul><li>подача техники до объекта</li>'
                 '<li>переработка сверх смены</li></ul></div>'
         '</div>'
-        '<p class="price-terms__note">Цены в прайсе актуальны на <time datetime="%s">%s</time> и указаны «от», за смену. '
+        '<p class="price-terms__note">Цены КРАН365 в прайсе актуальны на <time datetime="%s">%s</time> и указаны «от», за смену. '
         'Итоговая стоимость зависит от адреса подачи, срока аренды и задачи, поэтому прайс на сайте '
-        'не является публичной офертой — точную цену называем по телефону или в ответ '
+        'не является публичной офертой — точную цену КРАН365 называет по телефону или в ответ '
         'на заявку.</p>'
       '</div>' % (PRICE_UPDATED, PRICE_UPDATED_HUMAN))
 

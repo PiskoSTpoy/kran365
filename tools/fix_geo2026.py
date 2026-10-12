@@ -22,6 +22,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import brand_voice  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
 
 _TRANSLIT = {
@@ -164,6 +167,18 @@ def patch_html(doc: str, rel_path: str) -> tuple[str, bool]:
             row = _meta_row_html(rel_path)
             insert_at = lead_m.end(1)
             main_html = main_html[:insert_at] + row + main_html[insert_at:]
+            changed = True
+
+    # Бренд в lead (intro-абзаце): это самый цитируемый кусок страницы. Статьи блога
+    # и справочные страницы — только замена глагола «мы …»; итоговая фраза про смену
+    # и перезвон — на коммерческих страницах (где есть цены).
+    lead_m = _LEAD_RE.search(main_html)
+    if lead_m:
+        inner = lead_m.group(1)[len('<p class="lead">'):-len("</p>")]
+        commercial = ("₽" in main_html or 'id="order"' in main_html) and not rel_path.startswith("blog/")
+        branded = brand_voice.brand_lead(inner, commercial)
+        if branded != inner:
+            main_html = main_html[: lead_m.start(1)] + '<p class="lead">%s</p>' % branded + main_html[lead_m.end(1):]
             changed = True
 
     if not changed:
