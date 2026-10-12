@@ -125,6 +125,9 @@ SHOTS = {
     "skolko-vesit-ugolok-12-metrov-kakoy-kran-nuzhen": "ph-crane-25",
     "avtokran-16-tonn-4x2-ili-6x6-chto-vybrat": "ph-crane-25",
     "ogranichitel-gruzopodemnosti-vzveshivanie-gruza-fnp-461-p-134": "ph-crane-25",
+    "skolko-vesit-profilnaya-truba-12-metrov-kakoy-kran-nuzhen": "ph-manip",
+    "mini-pogruzchik-bobcat-s450-ili-s650-chto-vybrat": "ph-exc",
+    "voditel-v-kabine-pri-razgruzke-kranom-fnp-461-p-125": "ph-manip",
 }
 
 MARK = 'class="page-hero"'
