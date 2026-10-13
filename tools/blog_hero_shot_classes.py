@@ -128,6 +128,9 @@ SHOTS = {
     "skolko-vesit-profilnaya-truba-12-metrov-kakoy-kran-nuzhen": "ph-manip",
     "mini-pogruzchik-bobcat-s450-ili-s650-chto-vybrat": "ph-exc",
     "voditel-v-kabine-pri-razgruzke-kranom-fnp-461-p-125": "ph-manip",
+    "skolko-vesit-stalnoy-list-1500-6000-kakoy-kran-nuzhen": "ph-manip",
+    "mini-ekskavator-kubota-u27-4-ili-u55-4-chto-vybrat": "ph-exc",
+    "peremeshchenie-gruza-nad-perekrytiem-lyudi-vnizu-fnp-461-p-128": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'
