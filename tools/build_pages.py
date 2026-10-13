@@ -240,6 +240,30 @@ def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
                 _faq_ld["mainEntity"].append(
                     {"@type": "Question", "name": _q, "acceptedAnswer": {"@type": "Answer", "text": _a}})
 
+    # Цены. Часть текстов (FAQ, абзацы «Сколько стоит») записана руками и округлена —
+    # «от 24 000 ₽», а недельный дрейф ±1% уводит цену плашки на «23 980». Число «от N ₽»
+    # вне таблиц, отличающееся от цены плашки страницы меньше чем на 1,5%, считаем той
+    # же ценой и приводим к ней — в тексте, в блоке FAQ и в JSON-LD. Таблицы моделей
+    # не трогаем: там у каждой строки своя цена. Статьи блога — оценки на дату публикации.
+    _pm = re.search(r'<div class="price-badge"><b>(?:от\s+)?([\d   ]+)\s*₽</b>', hero_html or "")
+    if _pm and not rel_path.startswith("blog/"):
+        _P = int(re.sub(r"\D", "", _pm.group(1)))
+        _P_txt = format(_P, ",d").replace(",", " ")
+        _near = re.compile(r"((?:от|От)\s+)([\d   ]{5,8})(\s*₽)")
+
+        def _fix_price(m):
+            n = int(re.sub(r"\D", "", m.group(2)))
+            if n != _P and abs(n - _P) <= _P * 0.015:
+                return m.group(1) + _P_txt + m.group(3)
+            return m.group(0)
+
+        body_html = "".join(seg if seg.startswith("<table") else _near.sub(_fix_price, seg)
+                            for seg in re.split(r"(<table.*?</table>)", body_html, flags=re.S))
+        for _o in ld_objs:
+            if isinstance(_o, dict) and _o.get("@type") == "FAQPage":
+                for _x in _o["mainEntity"]:
+                    _x["acceptedAnswer"]["text"] = _near.sub(_fix_price, _x["acceptedAnswer"]["text"])
+
     crumbs_html = ""
     parts = []
     for i,(n,u) in enumerate(crumbs):

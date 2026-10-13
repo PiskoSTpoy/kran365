@@ -43,6 +43,7 @@ def human_date(d):
 # дописывают поверх. См. память kran365-build-pipeline-order.
 PIPELINE = [
     ["build_pages.py"],
+    ["sync_home_prices.py"],   # цены и дата прайса на статичной главной — со страниц разделов
     ["fix_sitemap_lastmod.py"],
     ["feed_gen.py"],
     ["make_blog_cards.py"],
