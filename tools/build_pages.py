@@ -168,9 +168,13 @@ def local_business_ld():
         "geo":{"@type":"GeoCoordinates","latitude":55.6767,"longitude":37.6654},
         "openingHours":"Mo-Su 00:00-24:00","areaServed":"Москва и Московская область","sameAs":[TG,WA]}
 
-def service_ld(name, desc, price, area="Москва и Московская область"):
+def service_ld(name, desc, price, area="Москва и Московская область", unit_code=None):
     offer = {"@type":"Offer","priceCurrency":"RUB","availability":"https://schema.org/InStock"}
     if price: offer["price"] = str(price)
+    if price and unit_code:
+        # цена за период (MON — месяц аренды), а не за смену
+        offer["priceSpecification"] = {"@type":"UnitPriceSpecification","price":str(price),
+                                       "priceCurrency":"RUB","unitCode":unit_code}
     return {"@context":"https://schema.org","@type":"Service","serviceType":name,"provider":{"@type":"LocalBusiness","name":"КРАН365"},
         "areaServed":area,"description":desc,"offers":offer}
 
@@ -219,7 +223,7 @@ def page(rel_path, title, desc, crumbs, hero_html, body_html, ld_objs):
             faq = body_html.find('<div class="faq">')
             end = faq if faq != -1 else -1
         if end != -1:
-            body_html = body_html[:end] + price_terms() + body_html[end:]
+            body_html = body_html[:end] + price_terms(monthly='<span>/ месяц</span>' in (hero_html or "")) + body_html[end:]
 
     # GEO: если FAQ на коммерческой странице чисто технический (ни в одном ответе нет
     # бренда) — добавляем один вопрос «сколько стоит и как заказать». HTML и JSON-LD
@@ -420,11 +424,11 @@ def pricing_md():
     lines.append("- Подробнее: %s/traly/\n" % SITE)
 
     lines.append("## Гусеничные краны\n")
-    lines.append("- 50–750 тонн, тяжёлый монтаж — цена под запрос (зависит от модели, монтажа/демонтажа и срока; в прайсе Аркона не отражены)")
+    lines.append("- 50–750 тонн, тяжёлый монтаж — от %s/смена (ориентир по открытым прайсам арендодателей Москвы на октябрь 2026, класс 55–75 т; тяжёлые модели, монтаж/демонтаж и перебазировка — по расчёту под объект)" % rub(TYPE_BY_SLUG["gusenichnye-krany"]["price"]))
     lines.append("- Подробнее: %s/gusenichnye-krany/\n" % SITE)
 
     lines.append("## Башенные краны\n")
-    lines.append("- Аренда на объект, подбор по вылету и высоте — цена под запрос (в прайсе Аркона не отражены)")
+    lines.append("- Аренда на объект, подбор по вылету и высоте — от %s/месяц (ориентир по открытым прайсам арендодателей Москвы на октябрь 2026; монтаж, демонтаж и перебазировка считаются отдельно)" % rub(TYPE_BY_SLUG["bashennye-krany"]["price"]))
     lines.append("- Подробнее: %s/bashennye-krany/\n" % SITE)
 
     lines.append("## МТЗ и коммунальная техника\n")
@@ -563,11 +567,19 @@ TYPES = [
        meta="перевозка 20 – 40 тонн",
        lead="Низкорамные тралы для перевозки спецтехники и негабаритных грузов массой 20–40 тонн. Погрузка, крепление, сопровождение и оформление негабарита; низкорамник берёт экскаваторы, катки и краны, которые не идут по дорогам своим ходом."),
 ]
+# Гусеничные и башенные краны: собственного прайса (Аркона, Спецкар) на них нет. Цена «от» —
+# нижняя граница открытых прайсов арендодателей Москвы на 14.10.2026, по решению владельца
+# («ищи цены в интернете» / «от 240 000 ₽ / месяц»):
+#   гусеничные 50+ т — XCMG XGC55 (55 т) 36 000 ₽/смена, РМЗ СКГ-63/100 38 000, XCMG XGC75 40 000
+#   (mtarenda.ru/catalog/gusenichnye-krany/); МКГС-100 35–45 тыс. (dcs-rent.ru, spec-technix.ru);
+#   башенные — от 240 000 ₽/мес (kranauto.ru/price/), у других «от» 290–320 тыс. (rentakran.ru).
+# market=True: недельный дрейф ±1% к этим ценам НЕ применяется — они рыночные, а не из своего прайса.
+# unit="месяц": цена за месяц аренды, монтаж/демонтаж/перебазировка считаются отдельно.
 TYPES += [
-  dict(slug="gusenichnye-krany", name="Гусеничные краны", one="гусеничного крана", price=None,
+  dict(slug="gusenichnye-krany", name="Гусеничные краны", one="гусеничного крана", price=36000, market=True,
        meta="50 – 750 тонн, тяжёлый монтаж",
        lead="Гусеничные краны грузоподъёмностью от 50 до 750 тонн для тяжёлого монтажа на объектах с ограниченным доступом. Работают на слабых грунтах, перемещаются с грузом, монтаж и демонтаж — под ключ."),
-  dict(slug="bashennye-krany", name="Башенные краны", one="башенного крана", price=None,
+  dict(slug="bashennye-krany", name="Башенные краны", one="башенного крана", price=240000, unit="месяц", market=True,
        meta="монтаж и аренда на объект",
        lead="Башенные краны в аренду на объект: подбор по вылету и высоте, доставка, монтаж, пусконаладка и обслуживание на весь срок стройки. Оформляем документы для ввода в эксплуатацию."),
 ]
@@ -651,6 +663,8 @@ def _apply_price_drift():
     # TYPES определён раньше по файлу — те же dict-объекты уже висят в
     # TYPE_BY_SLUG, мутируем на месте, чтобы обе ссылки видели новую цену.
     for t in TYPES:
+        if t.get("market"):
+            continue
         t["price"] = price_adj(t["price"])
 
 _apply_price_drift()
@@ -947,7 +961,16 @@ def linkify_geo_neighbors(neigh, active_slug):
 PRICE_UPDATED = "2026-10-12"
 PRICE_UPDATED_HUMAN = "12 октября 2026"
 
-def price_terms():
+def price_terms(monthly=False):
+    if monthly:
+        # Страница с ценой за месяц аренды (башенные краны) — смена и оператор тут не при чём.
+        return (
+          '<div class="price-terms">'
+            '<p class="price-terms__note">Цена указана «от», за месяц аренды крана, на <time datetime="%s">%s</time>. '
+            'Монтаж, демонтаж, перебазировка и подготовка основания считаются отдельно, а итог зависит от '
+            'модели, высоты, срока и адреса, поэтому прайс на сайте не является публичной офертой — '
+            'точную цену КРАН365 называет по телефону или в ответ на заявку.</p>'
+          '</div>' % (PRICE_UPDATED, PRICE_UPDATED_HUMAN))
     return (
       # Подписи колонок — <p>, а не заголовки. Это ярлыки к двум коротким
       # спискам, а не разделы страницы: на /uslugi/ блок стоит выше первого h2,
@@ -972,8 +995,10 @@ def price_table_types(active=None):
     rows = ""
     for t in TYPES:
         cls = ' style="background:rgba(255,106,0,.06)"' if active==t["slug"] else ""
-        rows += '<tr%s><td><a href="/%s/" style="color:var(--ink)">%s</a></td><td>%s</td><td><b>%s</b> <span style="color:var(--muted-2);font-size:.82rem">/ смена</span>%s</td></tr>' % (
-            cls, t["slug"], esc(t["name"]), esc(t["meta"]), money(t["price"]), price_hour_html(t["price"]))
+        month = t.get("unit") == "месяц"
+        rows += '<tr%s><td><a href="/%s/" style="color:var(--ink)">%s</a></td><td>%s</td><td><b>%s</b> <span style="color:var(--muted-2);font-size:.82rem">/ %s</span>%s</td></tr>' % (
+            cls, t["slug"], esc(t["name"]), esc(t["meta"]), money(t["price"]), "месяц" if month else "смена",
+            "" if month else price_hour_html(t["price"]))
     return '<div class="ptable-wrap"><table class="ptable"><thead><tr><th>Техника</th><th>Параметры</th><th>Цена</th></tr></thead><tbody>%s</tbody></table></div>' % rows
 
 def tonnage_table(active=None):
@@ -1072,7 +1097,8 @@ def related_geo_rf(active_slug=None, limit=10):
 def hero(kicker, h1, lead, price, price_unit="/ смена"):
     badge = ""
     if price:
-        badge = '<div class="price-badge"><b>%s</b><span>%s</span>%s</div>' % (money(price), price_unit, price_hour_html(price))
+        badge = '<div class="price-badge"><b>%s</b><span>%s</span>%s</div>' % (
+            money(price), price_unit, price_hour_html(price) if price_unit == "/ смена" else "")
     return '''<section class="page-hero"><div class="wrap">
   <span class="eyebrow">%s</span><h1>%s</h1><p class="lead">%s</p>
   %s
@@ -1401,12 +1427,27 @@ def hub_prose(slug, lead):
     out += "<h2>Что советуем перед заказом</h2><p>%s</p>" % d["advice"]
 
     out += "<h2>Сколько это стоит</h2>"
-    out += ("<p>Технику этого класса не считают по прайсу: стоимость складывается из 3 частей — срок работ, "
-            "доставка и подготовка площадки — и на разных объектах отличается кратно. "
-            "Пришлите задачу — посчитаем и назовём сумму целиком, без сюрпризов в счёте. "
-            "Цены на технику с посменной ставкой смотрите в разделах "
-            '<a href="/avtokrany/">автокранов</a>, <a href="/avtovyshki/">автовышек</a> '
-            'и <a href="/manipulyatory/">манипуляторов</a>.</p>')
+    _mt = TYPE_BY_SLUG.get(slug) or {}
+    if _mt.get("market"):
+        # Цена рыночная (своего прайса на этот класс нет) — так и сказано в тексте.
+        if _mt.get("unit") == "месяц":
+            out += ("<p>Ориентир по открытым прайсам арендодателей Москвы на октябрь 2026 — %s в месяц "
+                    "за кран небольшого класса. Монтаж, демонтаж, перебазировка и подготовка основания "
+                    "считаются отдельно и составляют заметную часть сметы. Пришлите объект — КРАН365 "
+                    "посчитает аренду и монтаж целиком и назовёт сумму до подачи техники.</p>" % money(_mt["price"]))
+        else:
+            out += ("<p>Ориентир по открытым прайсам арендодателей Москвы на октябрь 2026 — %s за смену "
+                    "для крана 55–75 т; тяжёлые классы и длинные стрелы стоят дороже. К смене добавляются "
+                    "доставка тралами, сборка и разборка стрелы и подготовка площадки — на разных объектах "
+                    "они отличаются кратно. Пришлите задачу — КРАН365 посчитает сумму целиком и назовёт её "
+                    "до подачи техники.</p>" % money(_mt["price"]))
+    else:
+        out += ("<p>Технику этого класса не считают по прайсу: стоимость складывается из 3 частей — срок работ, "
+                "доставка и подготовка площадки — и на разных объектах отличается кратно. "
+                "Пришлите задачу — посчитаем и назовём сумму целиком, без сюрпризов в счёте. "
+                "Цены на технику с посменной ставкой смотрите в разделах "
+                '<a href="/avtokrany/">автокранов</a>, <a href="/avtovyshki/">автовышек</a> '
+                'и <a href="/manipulyatory/">манипуляторов</a>.</p>')
 
     out += CAT_CROSSLINK.get(slug, "")
     out += "<h2>Частые вопросы</h2>%s" % faq_html(d["faqs"])
@@ -1858,12 +1899,13 @@ def build():
         rel += related_cats(limit=8)
         h1 = "Аренда %s в Москве и области" % t["one"]
         title = seo_title(h1, None, title_price(t["price"]))
+        _month = t.get("unit") == "месяц"
         desc = seo_desc("Аренда %s в Москве и области: %s" % (t["one"], t["meta"]),
-                        "Цена %s/смена, оператор и топливо включены" % money(t["price"]).lower(),
+                        ("Цена %s/месяц, монтаж и демонтаж отдельно" if _month else "Цена %s/смена, оператор и топливо включены") % money(t["price"]).lower(),
                         "Подача от 1 дня, договор и ЭДО")
-        ld = [breadcrumb_ld(crumbs), service_ld("Аренда "+t["one"], t["lead"], t["price"]), faq_ld(faqs), local_business_ld()]
+        ld = [breadcrumb_ld(crumbs), service_ld("Аренда "+t["one"], t["lead"], t["price"], unit_code="MON" if _month else None), faq_ld(faqs), local_business_ld()]
         page("%s/index.html" % t["slug"], title, desc, crumbs,
-             hero("Аренда спецтехники", h1, t["lead"], t["price"]),
+             hero("Аренда спецтехники", h1, t["lead"], t["price"], "/ месяц" if _month else "/ смена"),
              body(prose, rel) + TRUST, ld)
         pages += 1
 
