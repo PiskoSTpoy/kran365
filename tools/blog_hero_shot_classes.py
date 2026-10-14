@@ -131,6 +131,9 @@ SHOTS = {
     "skolko-vesit-stalnoy-list-1500-6000-kakoy-kran-nuzhen": "ph-manip",
     "mini-ekskavator-kubota-u27-4-ili-u55-4-chto-vybrat": "ph-exc",
     "peremeshchenie-gruza-nad-perekrytiem-lyudi-vnizu-fnp-461-p-128": "ph-crane-25",
+    "skolko-vesit-lestnichnyy-marsh-lm-kakoy-kran-nuzhen": "ph-manip",
+    "mini-pogruzchik-bobcat-s590-ili-t590-kolesnyy-ili-gusenichnyy": "ph-exc",
+    "pri-kakoy-temperature-nelzya-rabotat-kranom-fnp-461-p-132": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'
