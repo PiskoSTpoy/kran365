@@ -134,6 +134,9 @@ SHOTS = {
     "skolko-vesit-lestnichnyy-marsh-lm-kakoy-kran-nuzhen": "ph-manip",
     "mini-pogruzchik-bobcat-s590-ili-t590-kolesnyy-ili-gusenichnyy": "ph-exc",
     "pri-kakoy-temperature-nelzya-rabotat-kranom-fnp-461-p-132": "ph-crane-25",
+    "skolko-vesit-peremychka-pb-kakoy-manipulyator-nuzhen": "ph-manip",
+    "manipulyator-fassi-f135a-ili-f245a-chto-vybrat": "ph-manip",
+    "kran-s-greyferom-ili-magnitom-fnp-461-p-130": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'
