@@ -137,6 +137,9 @@ SHOTS = {
     "skolko-vesit-peremychka-pb-kakoy-manipulyator-nuzhen": "ph-manip",
     "manipulyator-fassi-f135a-ili-f245a-chto-vybrat": "ph-manip",
     "kran-s-greyferom-ili-magnitom-fnp-461-p-130": "ph-crane-25",
+    "kak-rasschitat-strop-ugol-vetvey-koefficient-zapasa-fnp-461-p-217": "ph-crane-25",
+    "manipulyator-fassi-f215a-ili-f245a-chto-vybrat": "ph-manip",
+    "remont-traversy-i-zahvata-fnp-461-pp-220-223": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'
