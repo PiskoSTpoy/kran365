@@ -140,6 +140,9 @@ SHOTS = {
     "kak-rasschitat-strop-ugol-vetvey-koefficient-zapasa-fnp-461-p-217": "ph-crane-25",
     "manipulyator-fassi-f215a-ili-f245a-chto-vybrat": "ph-manip",
     "remont-traversy-i-zahvata-fnp-461-pp-220-223": "ph-crane-25",
+    "mozhno-li-peremeshchat-kran-s-gruzom-na-kryuke-fnp-461-p-161": "ph-crane-25",
+    "manipulyator-fassi-f155a-ili-f195a-chto-vybrat": "ph-manip",
+    "montazh-vitrazhey-ferm-stenovyh-paneley-kranom-fnp-461-p-163": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'
