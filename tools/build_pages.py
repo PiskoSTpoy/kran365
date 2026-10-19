@@ -962,8 +962,8 @@ def linkify_geo_neighbors(neigh, active_slug):
 #     публичной офертой по ст. 437 ГК РФ не является, и сказать это нужно
 #     прямо, иначе цифра в таблице читается как твёрдое обязательство.
 # Если владелец меняет прайс — здесь меняется дата, иначе оговорка врёт.
-PRICE_UPDATED = "2026-10-12"
-PRICE_UPDATED_HUMAN = "12 октября 2026"
+PRICE_UPDATED = "2026-10-19"
+PRICE_UPDATED_HUMAN = "19 октября 2026"
 
 def price_terms(monthly=False):
     if monthly:
