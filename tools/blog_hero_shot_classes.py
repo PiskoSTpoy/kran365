@@ -143,6 +143,9 @@ SHOTS = {
     "mozhno-li-peremeshchat-kran-s-gruzom-na-kryuke-fnp-461-p-161": "ph-crane-25",
     "manipulyator-fassi-f155a-ili-f195a-chto-vybrat": "ph-manip",
     "montazh-vitrazhey-ferm-stenovyh-paneley-kranom-fnp-461-p-163": "ph-crane-25",
+    "kak-podat-gruz-v-proem-perekrytiya-kranom-fnp-461-p-162": "ph-crane-25",
+    "manipulyator-fassi-f110b-ili-f135a-chto-vybrat": "ph-manip",
+    "ustanovka-avtokrana-na-ploshchadke-grunt-uklon-opory-fnp-461-pp-108-110": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'
