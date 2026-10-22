@@ -146,6 +146,9 @@ SHOTS = {
     "kak-podat-gruz-v-proem-perekrytiya-kranom-fnp-461-p-162": "ph-crane-25",
     "manipulyator-fassi-f110b-ili-f135a-chto-vybrat": "ph-manip",
     "ustanovka-avtokrana-na-ploshchadke-grunt-uklon-opory-fnp-461-pp-108-110": "ph-crane-25",
+    "podem-gruza-dvumya-kranami-fnp-461-p-127": "ph-crane-25",
+    "mini-pogruzchik-bobcat-t590-ili-t770-chto-vybrat": "ph-exc",
+    "zimnee-dizelnoe-toplivo-dlya-avtokrana-gost-305-i-32511": "ph-crane-25",
 }
 
 MARK = 'class="page-hero"'
