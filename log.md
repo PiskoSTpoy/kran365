@@ -217,3 +217,14 @@
 Предупреждение: изменение шаблонов/структуры/schema по навыку не применялось по прямому запрету владельца. Штатная публикация: push main → GitHub Pages; публичная проверка следует после deploy.
 
 2026-11-23T12:57:23.713222+00:00: ПУБЛИЧНАЯ ПРОВЕРКА 5/5 PASS. GitHub Pages build 07339189 completed/success. Все пять HTTPS URL — 200; H1/canonical/даты/JSON-LD и внутренние ссылки подтверждены. Все пять ссылок есть в живом блоге, sitemap.xml и feed.xml. Мобильное отображение 390px: 5/5 PASS. Выпуск 23.11.2026 опубликован полностью, повторно не выпускать.
+
+
+## 24.11.2026 — выпуск 5 статей, ЛОКАЛЬНО / НЕ ОПУБЛИКОВАНО
+До запуска 0/5 по origin/main c79b82e2 и журналу; Moscow calendar day.
+- razgruzka-chillera-avtokranom · Разгрузка чиллера автокраном · 3228 знаков без FAQ/шаблона · https://my.daikin.eu/content/dam/document-library/installation-manuals/as/water-cooled-chiller/EWW_L_HQ-G_Installation%20manual_D-EIMWC01208-17_English.pdf · локальный материал, публикация не подтверждена.
+- razgruzka-peredvizhnogo-kompressora-kranom · Разгрузка передвижного компрессора краном · 3350 знаков без FAQ/шаблона · https://pol.atlascopco.com/AssertWeb/en-US/AtlasCopco/Document/3610/DownloadConvertedFileAsPdf · локальный материал, публикация не подтверждена.
+- podem-ventilyacionnoy-ustanovki-avtokranom · Подъём вентиляционной установки автокраном · 3349 знаков без FAQ/шаблона · https://www.c-o-k.ru/library/instructions/wolf/ventilyacionnoe-oborudovanie-i-komplektuyuschie/41034/147021.pdf · локальный материал, публикация не подтверждена.
+- razgruzka-tokarnogo-stanka-avtokranom · Разгрузка токарного станка автокраном · 3305 знаков без FAQ/шаблона · https://haascnc.com/pre-install-guide/tl-3b · локальный материал, публикация не подтверждена.
+- razgruzka-suhogo-transformatora-avtokranom · Разгрузка сухого трансформатора автокраном · 3397 знаков без FAQ/шаблона · https://download.se.com/files?p_Doc_Ref=998-20496110AU&p_File_Name=Trihal_Manual_Installation+and+Operation_998-20496110AU_2021-07.pdf&p_enDocType=Instruction+sheet · локальный материал, публикация не подтверждена.
+Сборка: 315 страниц. Сохранены прежние HTML (163 побочных изменения восстановлены), добавлены только записи данных, строки хаба и sitemap. geo_check 5/5 без FAIL; эвристические WARN тезисов без распознанного числа разобраны: первые предложения называют предмет и условие, фиктивные числа не добавлены. uniqueness_check --internal: 323 страницы, 0 дублей.
+Первоисточники прочитаны через web, включая WOLF KG Flex (зеркало оригинальной инструкции); автоматическая полная проверка совпадений с источниками не завершена: DNS getaddrinfo failed. Прямой DNS kran365.ru и github.com также timeout. Публикация до завершения обязательных проверок запрещена. Прямой запрет владельца на изменение шаблонов/schema имеет приоритет над навыком. Исходные чужие изменения сохранены.
