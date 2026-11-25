@@ -1,0 +1,17 @@
+# Выпуск 25.11.2026 Europe/Moscow
+Цель: пять уникальных статей >2000 знаков основного текста, проверки и публикация.
+Свежий clone origin/main cd0fb219, main чистая. Сегодня по Git и log.md 0/5. Исходное дерево не изменено (status через C: failed work tree, D: permission denied).
+Прочитаны проектные KONTENT-PRAVILA, STATUS, content-style-guide, content-plan, log; AGENTS.md в clone отсутствует, действуют правила владельца из чата. Навыки seo-keyword и seo-2026-playbook прочитаны.
+План: источники/выдача → 5 записей → сборка → geo/uniqueness/ссылки/390px → deploy → публичная проверка.
+Ограничение владельца на шаблоны/schema имеет приоритет; изменения структуры не применять. Публикация прямо разрешена.
+Темы: барабан кабеля, крышный вентилятор (не секционная вентустановка), отдельный котёл (не модуль БМК), ячейка РУ (не КТП), бак Variomat. Метрики спроса не измерены. Выдача содержит услуги такелажа, инструкции и монтажные материалы; точный спрос по последней теме не измерен.
+
+
+## 25.11.2026 — выпуск пяти статей, проверен локально
+До запуска 0/5 за Europe/Moscow по Git и log.md, origin/main cd0fb219.
+- 2026-11-25 · razgruzka-kabelnogo-barabana-avtokranom · Разгрузка кабельного барабана автокраном · 3231 знаков основного текста · https://www.nexans.se/sv/dam/jcr:54d16e3f-774e-4b92-82b0-815e9ebb868c/Handling%20our%20%20products.pdf · локальные проверки PASS, публикация далее.
+- 2026-11-25 · montazh-kryshnogo-ventilyatora-avtokranom · Монтаж крышного вентилятора автокраном · 3125 знаков основного текста · https://www.vortice.com/media2/Export/Inglese/Libretti_Istruzioni/70_EN_15271_Libretti_Istruzioni_5671084566__25-11-2024_187684.pdf · локальные проверки PASS, публикация далее.
+- 2026-11-25 · razgruzka-promyshlennogo-kotla-avtokranom · Разгрузка промышленного котла автокраном · 3263 знаков основного текста · https://cdn0.scrvt.com/2828ebc457efab95be01dd36047e3b52/37b7cc531f624209/9d5e39322574/Vitomax-LW-Installation-Instructions.PDF · локальные проверки PASS, публикация далее.
+- 2026-11-25 · razgruzka-yacheek-ru-kranom · Разгрузка ячеек РУ краном · 3207 знаков основного текста · https://download.se.com/files?p_Doc_Ref=NVE7176401&p_File_Name=NVE7176401-06+SM6_Installation+and+Start-Up.pdf&p_enDocType=User+guide · локальные проверки PASS, публикация далее.
+- 2026-11-25 · montazh-rasshiritelnogo-baka-kranom · Монтаж расширительного бака краном · 3310 знаков основного текста · https://xom-web.reflex.de/xom-rest/assets/7afd80ca-ff7d-40bf-80a7-5c1ac1db32aa/content?locale=de · локальные проверки PASS, публикация далее.
+Сборка 320 страниц PASS. 166 побочных изменений прежних страниц восстановлены. Добавлены только контентные записи, карточки блога и URL sitemap/feed. H1/canonical/даты/JSON-LD/внутренние ссылки 5/5 PASS. Chromium390: 5/5 document=viewport=390, без JS ошибок; скриншоты просмотрены. geo_check 0 FAIL: эвристические WARN первых предложений проверены, условия конкретны, искусственные числа не добавлены. uniqueness_check --internal 328 страниц, 0 дублей. Первоисточники 5/5 HTTP200, проверка по полным загруженным текстам 0% общих 8-словных шинглов. Повторная сетевая загрузка прервана как избыточная; результаты по сохранённым текстам cached-sources.json. Шаблон/schema/CSS/JS/robots/canonical прежних страниц не менялись по прямому запрету владельца, он приоритетнее рекомендаций навыка.
